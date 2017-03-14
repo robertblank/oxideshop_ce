@@ -115,7 +115,32 @@ class UtilsobjectTest extends \OxidTestCase
     }
 
     /**
-     * Testing oxUtilsObject::_getObject();
+     * Test, that the method getInstance creates the object of the correct current edition namespace.
+     */
+    public function testEditionSpecificObjectIsCreatedCorrect()
+    {
+        $utilsObject = \OxidEsales\Eshop\Core\UtilsObject::getInstance();
+
+        $edition = $this->getConfig()->getEdition();
+        $expectedClass = 'OxidEsales\EshopCommunity\Core\UtilsObject';
+
+        switch ($edition) {
+            case 'CE':
+                $expectedClass = 'OxidEsales\EshopCommunity\Core\UtilsObject';
+                break;
+            case 'PE':
+                $expectedClass = 'OxidEsales\EshopProfessional\Core\UtilsObject';
+                break;
+            case 'EE':
+                $expectedClass = 'OxidEsales\EshopEnterprise\Core\UtilsObject';
+                break;
+        }
+
+        $this->assertEquals($expectedClass, get_class($utilsObject));
+    }
+
+    /**
+     * Testing oxUtilsObject object creation.
      *
      * @return null
      */
@@ -156,7 +181,7 @@ class UtilsobjectTest extends \OxidTestCase
 
         $config = $this->getConfig();
 
-        oxUtilsObject::getInstance()->setModuleVar("aModules", $aModules);
+        oxRegistry::getUtilsObject()->setModuleVar("aModules", $aModules);
         $config->setConfigParam("aModules", $aModules);
 
         $configFile = oxRegistry::get("oxConfigFile");
@@ -190,7 +215,7 @@ class UtilsobjectTest extends \OxidTestCase
 
         $config = $this->getConfig();
 
-        oxUtilsObject::getInstance()->setModuleVar("aModules", $aModules);
+        oxRegistry::getUtilsObject()->setModuleVar("aModules", $aModules);
         $config->setConfigParam("aModules", $aModules);
 
         $configFile = oxRegistry::get("oxConfigFile");
@@ -220,8 +245,8 @@ class UtilsobjectTest extends \OxidTestCase
      */
     public function testGenerateUid()
     {
-        $id1 = oxUtilsObject::getInstance()->generateUid();
-        $id2 = oxUtilsObject::getInstance()->generateUid();
+        $id1 = oxRegistry::getUtilsObject()->generateUid();
+        $id2 = oxRegistry::getUtilsObject()->generateUid();
         $this->assertNotEquals($id1, $id2);
     }
 
@@ -322,7 +347,7 @@ class UtilsobjectTest extends \OxidTestCase
             )
         ));
 
-        $oUtilsObject = oxNew('oxUtilsObject');
+        $oUtilsObject = oxRegistry::getUtilsObject();
         $oUtilsObject->setModuleVar('aModules', array($class => $extension));
 
         return $oUtilsObject;

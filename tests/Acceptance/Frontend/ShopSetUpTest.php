@@ -23,6 +23,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Frontend;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Setup\Utilities;
 use OxidEsales\EshopCommunity\Tests\Acceptance\FrontendTestCase;
 use OxidEsales\TestingLibrary\ServiceCaller;
 use OxidEsales\TestingLibrary\TestConfig;
@@ -84,12 +85,18 @@ class ShopSetUpTest extends FrontendTestCase
         $this->resetShop();
         parent::tearDown();
 
+        $this->cleanupDemodataPackageImitation();
+
         $oServiceCaller = new ServiceCaller($this->getTestConfig());
         $oServiceCaller->callService('ViewsGenerator', 1);
     }
 
     /**
-     * Tests installation of new shop version (setup)
+     * Tests installation of new shop version (setup).
+     * Test chooses demo data if possible test data otherwise.
+     * In CI:
+     * - nightlies run with demo data
+     * - dailies run without demo data
      *
      * @group main
      */
@@ -169,8 +176,7 @@ class ShopSetUpTest extends FrontendTestCase
         $this->type("aDB[dbHost]", $host);
         $this->assertEquals("3306", $this->getValue("aDB[dbPort]"));
         $this->type("aDB[dbPort]", $port);
-        $this->assertEquals(1, $this->getValue("aDB[dbiDemoData]"));
-        $this->check("aDB[dbiDemoData]");
+        $this->selectDemoDataIfExist();
         $this->checkForErrors();
 
         $this->assertElementPresent("step3Submit");
@@ -233,13 +239,7 @@ class ShopSetUpTest extends FrontendTestCase
         $this->openNewWindow($this->getTestConfig()->getShopUrl(), false);
         $this->assertElementNotPresent("link=subshop", "Element should not exist: link=subshop");
 
-        if (getenv('OXID_LOCALE') == 'international') {
-            $this->assertTextPresent("Just arrived");
-            $this->assertTextNotPresent("Frisch eingetroffen");
-        } else {
-            $this->assertTextPresent("Frisch eingetroffen");
-            $this->assertTextNotPresent("Just arrived");
-        }
+        $this->assertHomePageDisplaysCorrectData();
 
         //checking admin
         $this->openNewWindow($this->getTestConfig()->getShopUrl()."admin", false);
@@ -387,6 +387,71 @@ class ShopSetUpTest extends FrontendTestCase
     }
 
     /**
+     * @group setup
+     */
+    public function testSetupHaveDisabledDemodataCheckboxIfDemodataPackageNotInstalled()
+    {
+        $this->skipOnInstalledDemodata();
+
+        $this->clearDatabase();
+        $this->goToSetup();
+
+        $this->selectSetupLanguage();
+        $this->clickContinueAndProceedTo(self::WELCOME_STEP);
+
+        $this->selectEshopLanguage();
+        $this->clickContinueAndProceedTo(self::LICENSE_STEP);
+
+        $this->selectAgreeWithLicense(true);
+        $this->clickContinueAndProceedTo(self::DATABASE_INFO_STEP);
+
+        $this->waitForText("Demo data package not installed.");
+
+        $this->assertElementPresent(
+            "//input[@type='radio' and @name='aDB[dbiDemoData]' and @value='1' and @disabled]",
+            "Install demodata radio button is not disabled, but it should"
+        );
+
+        $this->assertElementPresent(
+            "//input[@type='radio' and @name='aDB[dbiDemoData]' and @value='0' and @checked]",
+            "Do not Install demodata radio button should be checked"
+        );
+    }
+
+    /**
+     * @group setup
+     */
+    public function testSetupHaveEnabledDemodataCheckboxIfDemodataPackageInstalled()
+    {
+        $this->clearDatabase();
+        $this->ensureDemodataPackage();
+
+        $this->goToSetup();
+
+        $this->selectSetupLanguage();
+        $this->clickContinueAndProceedTo(self::WELCOME_STEP);
+
+        $this->selectEshopLanguage();
+        $this->clickContinueAndProceedTo(self::LICENSE_STEP);
+
+        $this->selectAgreeWithLicense(true);
+        $this->clickContinueAndProceedTo(self::DATABASE_INFO_STEP);
+
+        $this->waitForText("Demodata");
+        $this->assertElementNotPresent(
+            "//input[@type='radio' and @name='aDB[dbiDemoData]' and @value='1' and @disabled]",
+            "Install demodata radio button is disabled, but it should not be"
+        );
+
+        $this->assertElementPresent(
+            "//input[@type='radio' and @name='aDB[dbiDemoData]' and @value='1' and @checked]",
+            "Do not Install demodata radio button is checked, but another should be"
+        );
+
+        $this->assertTextNotPresent("Demo data package not installed.");
+    }
+
+    /**
      * @param string $setupSqlFile
      *
      * @dataProvider setupSqlFilesProvider
@@ -473,7 +538,6 @@ class ShopSetUpTest extends FrontendTestCase
             [self::DATABASE_SCHEMA_SQL_FILENAME],
             [self::INITIAL_DATA_SQL_FILENAME],
             [self::EN_LANGUAGE_SQL_FILENAME],
-            [self::DEMODATA_SQL_FILENAME],
         ];
     }
 
@@ -1360,6 +1424,131 @@ SCRIPT;
     {
         if ($setupSqlFile === self::EN_LANGUAGE_SQL_FILENAME) {
             $this->markTestSkipped('Skipping this case to match functionality from current Setup implementation.');
+        }
+    }
+
+    private function skipOnInstalledDemodata()
+    {
+        if ($this->checkDemodataPackageExists()){
+            $this->markTestSkipped("The test checks the workflow with no demodata package");
+        }
+    }
+
+    private function checkDemodataPackageExists()
+    {
+        $utilities = new Utilities();
+        return is_dir($utilities->getActiveEditionDemodataPackagePath());
+    }
+
+    /**
+     * If demodata is not installed, creates imitation of demodata package (without composer.json file)
+     */
+    private function ensureDemodataPackage()
+    {
+        $packageExists = $this->checkDemodataPackageExists();
+        if (!$packageExists) {
+            $this->createDemodataPackageImitation();
+        }
+    }
+
+    /**
+     * Creates very basic structure of demodata package with empty files
+     */
+    private function createDemodataPackageImitation()
+    {
+        $packagePaths = $this->getDemodataPackageImitationPaths();
+
+        mkdir ($packagePaths['package'], 0777, true);
+        file_put_contents($packagePaths['composer'], "");
+        file_put_contents($packagePaths['demodata'], "");
+    }
+
+    /**
+     * Removes the imitation of demodata package created by method createDemodataPackageImitation
+     */
+    private function cleanupDemodataPackageImitation()
+    {
+        $packagePaths = $this->getDemodataPackageImitationPaths();
+
+        if (is_dir($packagePaths['package']) && !is_file($packagePaths['composer'])) {
+            unlink($packagePaths['demodata']);
+            rmdir($packagePaths['source']);
+            rmdir($packagePaths['package']);
+        }
+    }
+
+    /**
+     * Returns paths of virtual demodata package
+     *
+     * @return array ['package', 'composer', 'demodata', 'source']
+     */
+    private function getDemodataPackageImitationPaths()
+    {
+        $utilities = new Utilities();
+        $directory = $utilities->getActiveEditionDemodataPackagePath();
+
+        return [
+            'package' => $directory,
+            'composer' => $directory . DIRECTORY_SEPARATOR . 'composer.json',
+            'demodata' => implode(DIRECTORY_SEPARATOR, [
+                $directory,
+                $utilities::DEMODATA_PACKAGE_SOURCE_DIRECTORY,
+                $utilities::DEMODATA_SQL_FILENAME
+            ]),
+            'source' => $directory . DIRECTORY_SEPARATOR . $utilities::DEMODATA_PACKAGE_SOURCE_DIRECTORY
+        ];
+    }
+
+    /**
+     * Demo data choice is only available when the file exists.
+     * Choose demo data if possible, use test data otherwise.
+     */
+    private function selectDemoDataIfExist()
+    {
+        if ($this->checkDemodataPackageExists()) {
+            $this->assertEquals(1, $this->getValue("aDB[dbiDemoData]"));
+            $this->check("aDB[dbiDemoData]");
+        } else {
+            $this->assertEquals(0, $this->getValue("aDB[dbiDemoData]"));
+            $this->assertTextPresent('Demo data package not installed');
+        }
+    }
+
+    /**
+     * Home page will display different data dependent on testing environment:
+     * - International will use English language by default.
+     * - Not international will use German language by default.
+     * - Azure Theme is active by default wit test data.
+     * - Flow Theme is active by default wit test data.
+     */
+    private function assertHomePageDisplaysCorrectData()
+    {
+        if ($this->checkDemodataPackageExists()) {
+            $this->assertHomePageDisplaysFlowTheme();
+        } else {
+            $this->assertHomePageDisplaysAzureTheme();
+        }
+    }
+
+    private function assertHomePageDisplaysFlowTheme()
+    {
+        if (getenv('OXID_LOCALE') == 'international') {
+            $this->assertTextPresent("Just arrived");
+            $this->assertTextNotPresent("Frisch eingetroffen");
+        } else {
+            $this->assertTextPresent("Frisch eingetroffen");
+            $this->assertTextNotPresent("Just arrived");
+        }
+    }
+
+    private function assertHomePageDisplaysAzureTheme()
+    {
+        if (getenv('OXID_LOCALE') == 'international') {
+            $this->assertTextPresent("Home");
+            $this->assertTextNotPresent("Startseite");
+        } else {
+            $this->assertTextPresent("Startseite");
+            $this->assertTextNotPresent("Home");
         }
     }
 }

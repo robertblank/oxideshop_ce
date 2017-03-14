@@ -24,10 +24,14 @@ namespace OxidEsales\EshopCommunity\Application\Component;
 
 use oxDb;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Form\UpdatableFieldsConstructor;
 use oxRegistry;
 use oxUser;
 use Exception;
 use oxField;
+use OxidEsales\Eshop\Core\Contract\AbstractUpdatableFields;
+use OxidEsales\Eshop\Application\Model\User\UserUpdatableFields;
+use OxidEsales\Eshop\Application\Model\User\UserShippingAddressUpdatableFields;
 
 // defining login/logout states
 define('USER_LOGIN_SUCCESS', 1);
@@ -40,7 +44,7 @@ define('USER_LOGOUT', 3);
  *
  * @subpackage oxcmp
  */
-class UserComponent extends \oxView
+class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
 
     /**
@@ -211,12 +215,12 @@ class UserComponent extends \oxView
             $oUser = oxNew('oxuser');
             $oUser->login($sUser, $sPassword, $sCookie);
             $this->setLoginStatus(USER_LOGIN_SUCCESS);
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\UserException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\UserException $oEx) {
             // for login component send excpetion text to a custom component (if defined)
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, '', false);
 
             return 'user';
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\CookieException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\CookieException $oEx) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
 
             return 'user';
@@ -428,10 +432,11 @@ class UserComponent extends \oxView
         $sPassword2 = $oConfig->getRequestParameter('lgn_pwd2', true);
 
         $aInvAdress = $oConfig->getRequestParameter('invadr', true);
-        $aInvAdress = $this->cleanBillingAddress($aInvAdress);
+
+        $aInvAdress = $this->cleanAddress($aInvAdress, oxNew(UserUpdatableFields::class));
 
         $aDelAdress = $this->_getDelAddressData();
-        $aDelAdress = $this->cleanDeliveryAddress($aDelAdress);
+        $aDelAdress = $this->cleanAddress($aDelAdress, oxNew(UserShippingAddressUpdatableFields::class));
 
         $database = oxDb::getDb();
         $database->startTransaction();
@@ -484,22 +489,22 @@ class UserComponent extends \oxView
             $oUser->addToGroup('oxidnotyetordered');
             $oUser->logout();
             $database->commitTransaction();
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\UserException $exception) {
+        } catch (\OxidEsales\Eshop\Core\Exception\UserException $exception) {
             Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, true);
             $database->rollbackTransaction();
 
             return false;
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\InputException $exception) {
+        } catch (\OxidEsales\Eshop\Core\Exception\InputException $exception) {
             Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, true);
             $database->rollbackTransaction();
 
             return false;
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException $exception) {
+        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseConnectionException $exception) {
             Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, true);
             $database->rollbackTransaction();
 
             return false;
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\ConnectionException $exception) {
+        } catch (\OxidEsales\Eshop\Core\Exception\ConnectionException $exception) {
             Registry::get("oxUtilsView")->addErrorToDisplay($exception, false, true);
             $database->rollbackTransaction();
 
@@ -613,9 +618,29 @@ class UserComponent extends \oxView
      * Session variables:
      * <b>ordrem</b>
      *
+     * @deprecated since v6.0.0 (2017-02-27); Use changeUserWithoutRedirect().
+     *
      * @return  bool true on success, false otherwise
      */
     protected function _changeUser_noRedirect()
+    {
+        return $this->changeUserWithoutRedirect();
+    }
+
+    /**
+     * Mostly used for customer profile editing screen (OXID eShop ->
+     * MY ACCOUNT). Checks if oUser is set (oxcmp_user::oUser) - if
+     * not - executes oxcmp_user::_loadSessionUser(). If user unchecked newsletter
+     * subscription option - removes him from this group. There is an
+     * additional MUST FILL fields checking. Function returns true or false
+     * according to user data submission status.
+     *
+     * Session variables:
+     * <b>ordrem</b>
+     *
+     * @return  bool true on success, false otherwise
+     */
+    protected function changeUserWithoutRedirect()
     {
         if (!$this->getSession()->checkSessionChallenge()) {
             return;
@@ -629,11 +654,11 @@ class UserComponent extends \oxView
 
         // collecting values to check
         $aDelAdress = $this->_getDelAddressData();
-        $aDelAdress = $this->cleanDeliveryAddress($aDelAdress);
+        $aDelAdress = $this->cleanAddress($aDelAdress, oxNew(UserShippingAddressUpdatableFields::class));
 
         // if user company name, user name and additional info has special chars
         $aInvAdress = oxRegistry::getConfig()->getRequestParameter('invadr', true);
-        $aInvAdress = $this->cleanBillingAddress($aInvAdress);
+        $aInvAdress = $this->cleanAddress($aInvAdress, oxNew(UserUpdatableFields::class));
 
         $sUserName = $oUser->oxuser__oxusername->value;
         $sPassword = $sPassword2 = $oUser->oxuser__oxpassword->value;
@@ -649,18 +674,18 @@ class UserComponent extends \oxView
             $blForceCheckOptIn = ($sBillingUsername !== null && $sBillingUsername !== $sUserName);
             $blEmailParam = $this->getConfig()->getConfigParam('blOrderOptInEmail');
             $this->_blNewsSubscriptionStatus = $oUser->setNewsSubscription($blOptin, $blEmailParam, $blForceCheckOptIn);
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\UserException $oEx) { // errors in input
+        } catch (\OxidEsales\Eshop\Core\Exception\UserException $oEx) { // errors in input
             // marking error code
             //TODO
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true);
 
             return;
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\InputException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\InputException $oEx) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true);
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'input_not_all_fields');
 
             return;
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\ConnectionException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\ConnectionException $oEx) {
             //connection to external resource broken, change message and pass to the view
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true);
 
@@ -684,40 +709,6 @@ class UserComponent extends \oxView
         }
 
         return true;
-    }
-
-    /**
-     * Removes sensitive fields from billing address data.
-     *
-     * @param array $aBillingAddress
-     *
-     * @return array
-     */
-    private function cleanBillingAddress($aBillingAddress)
-    {
-        if (is_array($aBillingAddress)) {
-            $skipFields = array('oxuser__oxid', 'oxid', 'oxuser__oxpoints', 'oxpoints', 'oxuser__oxboni', 'oxboni');
-            $aBillingAddress = array_change_key_case($aBillingAddress);
-            $aBillingAddress = array_diff_key($aBillingAddress, array_flip($skipFields));
-        }
-        return $aBillingAddress;
-    }
-
-    /**
-     * Removes sensitive fields from billing address data.
-     *
-     * @param array $aDeliveryAddress
-     *
-     * @return array
-     */
-    private function cleanDeliveryAddress($aDeliveryAddress)
-    {
-        if (is_array($aDeliveryAddress)) {
-            $skipFields = array('oxaddress__oxid', 'oxid', 'oxaddress__oxuserid', 'oxuserid', 'oxaddress__oxaddressuserid', 'oxaddressuserid');
-            $aDeliveryAddress = array_change_key_case($aDeliveryAddress);
-            $aDeliveryAddress = array_diff_key($aDeliveryAddress, array_flip($skipFields));
-        }
-        return $aDeliveryAddress;
     }
 
     /**
@@ -828,5 +819,23 @@ class UserComponent extends \oxView
         if (!$sRe && ($sReNew = oxRegistry::getConfig()->getRequestParameter('re'))) {
             oxRegistry::getSession()->setVariable('re', $sReNew);
         }
+    }
+
+    /**
+     * @param array                   $address
+     * @param AbstractUpdatableFields $updatableFields
+     *
+     * @return array
+     */
+    private function cleanAddress($address, $updatableFields)
+    {
+        if (is_array($address)) {
+            /** @var UpdatableFieldsConstructor $updatableFieldsConstructor */
+            $updatableFieldsConstructor = oxNew(UpdatableFieldsConstructor::class);
+            $cleaner = $updatableFieldsConstructor->getAllowedFieldsCleaner($updatableFields);
+            return $cleaner->filterByUpdatableFields($address);
+        }
+
+        return $address;
     }
 }

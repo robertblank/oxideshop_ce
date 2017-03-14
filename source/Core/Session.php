@@ -23,7 +23,6 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use oxRegistry;
-use oxUtilsObject;
 use oxBasket;
 
 /**
@@ -31,7 +30,7 @@ use oxBasket;
  * Performs session managing function, such as variables deletion,
  * initialisation and other session functions.
  */
-class Session extends \oxSuperCfg
+class Session extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -302,7 +301,7 @@ class Session extends \oxSuperCfg
      */
     protected function _initNewSessionChallenge()
     {
-        $this->setVariable('sess_stoken', sprintf('%X', crc32(oxUtilsObject::getInstance()->generateUID())));
+        $this->setVariable('sess_stoken', sprintf('%X', crc32(oxRegistry::getUtilsObject()->generateUID())));
     }
 
     /**
@@ -562,7 +561,7 @@ class Session extends \oxSuperCfg
      *
      * @return null
      */
-    protected function _validateBasket(\OxidEsales\EshopCommunity\Application\Model\Basket $oBasket)
+    protected function _validateBasket(\OxidEsales\Eshop\Application\Model\Basket $oBasket)
     {
         $aCurrContent = $oBasket->getContents();
         if (empty($aCurrContent)) {

@@ -22,12 +22,12 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use oxDb;
-use oxUtilsObject;
+use oxRegistry;
 
 /**
  * Settings handler class.
  */
-class SettingsHandler extends \oxSuperCfg
+class SettingsHandler extends \OxidEsales\Eshop\Core\Base
 {
     /**
      * Module type.
@@ -85,7 +85,7 @@ class SettingsHandler extends \oxSuperCfg
 
         if (is_array($moduleSettings)) {
             foreach ($moduleSettings as $setting) {
-                $oxid = oxUtilsObject::getInstance()->generateUId();
+                $oxid = oxRegistry::getUtilsObject()->generateUId();
 
                 $module = $this->getModuleConfigId($moduleId);
                 $name = $setting["name"];

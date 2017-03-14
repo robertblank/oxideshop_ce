@@ -26,7 +26,6 @@ use Exception;
 use oxDb;
 use oxRegistry;
 use oxList;
-use oxUtilsObject;
 use oxField;
 
 /**
@@ -35,7 +34,7 @@ use oxField;
  * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
  *
  */
-class RecommendationList extends \oxBase implements \oxIUrl
+class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
 
     /**
@@ -231,7 +230,7 @@ class RecommendationList extends \oxBase implements \oxIUrl
             $database->startTransaction();
             try {
                 if (!$database->getOne("select oxid from oxobject2list where oxobjectid=" . $database->quote($sOXID) . " and oxlistid=" . $database->quote($this->getId()))) {
-                    $sUid = oxUtilsObject::getInstance()->generateUID();
+                    $sUid = oxRegistry::getUtilsObject()->generateUID();
                     $sQ = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', " . $database->quote($sOXID) . ", " . $database->quote($this->getId()) . ", " . $database->quote($sDesc) . " )";
                     $blAdd = $database->execute($sQ);
                 }
@@ -306,7 +305,7 @@ class RecommendationList extends \oxBase implements \oxIUrl
      * @param oxList $oRecommList recommendation list
      * @param array  $aIds        article ids
      */
-    protected function _loadFirstArticles(\OxidEsales\EshopCommunity\Core\Model\ListModel $oRecommList, $aIds)
+    protected function _loadFirstArticles(\OxidEsales\Eshop\Core\Model\ListModel $oRecommList, $aIds)
     {
         $aIds = oxDb::getDb()->quoteArray($aIds);
         $sIds = implode(", ", $aIds);

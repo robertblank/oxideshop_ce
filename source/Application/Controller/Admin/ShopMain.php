@@ -24,7 +24,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
-use oxUtilsObject;
 use oxException;
 
 /**
@@ -32,7 +31,7 @@ use oxException;
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Main Menu -> Core Settings -> Main.
  */
-class ShopMain extends \oxAdminDetails
+class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
     /** Identifies new shop. */
     const NEW_SHOP_ID = "-1";
@@ -147,7 +146,7 @@ class ShopMain extends \oxAdminDetails
 
         try {
             $shop->save();
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $e) {
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $e) {
             $this->checkExceptionType($e);
             return;
         }
@@ -184,7 +183,7 @@ class ShopMain extends \oxAdminDetails
     protected function _copyConfigVars($shop)
     {
         $config = $this->getConfig();
-        $utilsObject = oxUtilsObject::getInstance();
+        $utilsObject = oxRegistry::getUtilsObject();
         $db = oxDb::getDb();
 
         $nonCopyVars = $this->_getNonCopyConfigVars();

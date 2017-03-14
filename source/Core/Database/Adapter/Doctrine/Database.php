@@ -31,9 +31,9 @@ use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
-use OxidEsales\EshopCommunity\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\Exception\DatabaseException;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 use PDO;
 
 /**
@@ -348,7 +348,7 @@ class Database implements DatabaseInterface
         try {
             $resultSet = $this->select($query, $parameters);
             $result = $resultSet->fields;
-        } catch (DatabaseException $exception) {
+        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseException $exception) {
             /** Only log exception, do not re-throw here, as legacy code expects this behavior */
             $this->logException($exception);
             $result = array();
@@ -516,17 +516,7 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Execute read statements like SELECT or SHOW and return the results as a ResultSet.
      * Execute non read statements like INSERT, UPDATE, DELETE and return the number of rows affected by the statement.
-     *
-     * IMPORTANT:
-     * You are strongly encouraged to use prepared statements like this:
-     * $resultSet = Database::getDb->execute(
-     *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
-     *   array($id1, $id2)
-     * );
-     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
-     * SQL injection vulnerability.
      *
      * @param string $query      The sql statement we want to execute.
      * @param array  $parameters The parameters array.
@@ -592,7 +582,7 @@ class Database implements DatabaseInterface
             /** @var \Doctrine\DBAL\Driver\Statement $statement Statement is prepared and executed by executeQuery() */
             $statement = $this->getConnection()->executeQuery($query, $parameters);
 
-            $result = new ResultSet($statement);
+            $result = new \OxidEsales\Eshop\Core\Database\Adapter\Doctrine\ResultSet($statement);
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
@@ -856,7 +846,7 @@ class Database implements DatabaseInterface
                 // ConnectionException will be mapped to DatabaseConnectionException::class
                 // no break
             case is_a($exception->getPrevious(), '\Exception') && in_array($exception->getPrevious()->getCode(), ['2003']):
-                $exceptionClass = DatabaseConnectionException::class;
+                $exceptionClass = \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException::class;
                 break;
             case $exception instanceof DBALException:
                 /**
@@ -906,7 +896,7 @@ class Database implements DatabaseInterface
      * @throws DatabaseConnectionException
      * @throws DatabaseException
      */
-    protected function handleException(StandardException $exception)
+    protected function handleException(\OxidEsales\Eshop\Core\Exception\StandardException $exception)
     {
         throw $exception;
     }

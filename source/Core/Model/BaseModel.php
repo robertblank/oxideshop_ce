@@ -36,9 +36,8 @@ use oxObjectException;
 use oxRegistry;
 use oxField;
 use oxDb;
-use oxUtilsObject;
 
-class BaseModel extends \oxSuperCfg
+class BaseModel extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -338,7 +337,7 @@ class BaseModel extends \oxSuperCfg
                 self::$_blDisableFieldCaching[get_class($this)] = true;
             }
 
-            oxUtilsObject::getInstance()->resetInstanceCache(get_class($this));
+            oxRegistry::getUtilsObject()->resetInstanceCache(get_class($this));
         }
 
         //returns stdClass implementing __toString() method due to uknown scenario where this var should be used.
@@ -536,7 +535,7 @@ class BaseModel extends \oxSuperCfg
                 $shopID = $this->oxobject2category__oxshopid;
                 $this->_sOXID = md5($objectId . $categoryId . $shopID);
             } else {
-                $this->_sOXID = oxUtilsObject::getInstance()->generateUID();
+                $this->_sOXID = oxRegistry::getUtilsObject()->generateUID();
             }
         }
 
@@ -1309,7 +1308,7 @@ class BaseModel extends \oxSuperCfg
     protected function _getUpdateFieldValue($fieldName, $field)
     {
         $fieldValue = null;
-        if ($field instanceof \OxidEsales\EshopCommunity\Core\Field) {
+        if ($field instanceof \OxidEsales\Eshop\Core\Field) {
             $fieldValue = $field->getRawValue();
         } elseif (isset($field->value)) {
             $fieldValue = $field->value;

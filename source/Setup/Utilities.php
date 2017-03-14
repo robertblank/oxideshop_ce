@@ -36,6 +36,8 @@ use OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
  */
 class Utilities extends Core
 {
+    const CONFIG_FILE_NAME = 'config.inc.php';
+
     const DEMODATA_PACKAGE_NAME = 'oxideshop-demodata-%s';
 
     const DEMODATA_PACKAGE_SOURCE_DIRECTORY = 'src';
@@ -529,9 +531,8 @@ class Utilities extends Core
      */
     private function getVendorDirectory()
     {
-        /** @var ConfigFile $shopConfig */
-        $shopConfig = Registry::get("oxConfigFile");
-        $vendorDir = $shopConfig->getVar('vendorDirectory');
+        $configFile = new ConfigFile(OX_BASE_PATH . self::CONFIG_FILE_NAME);
+        $vendorDir = $configFile->getVar('vendorDirectory');
 
         return $vendorDir;
     }
@@ -608,15 +609,14 @@ class Utilities extends Core
     }
 
     /**
-     * Check if setup should import the demodata file created from demodata servers.
+     * Check if demodata package is installed.
      *
-     * @param int $useDemodata
      * @return bool
      */
-    public function checkIfDemodataPrepared($useDemodata)
+    public function isDemodataPrepared()
     {
         $demodataSqlFile = $this->getActiveEditionDemodataPackageSqlFilePath();
-        return $useDemodata && file_exists($demodataSqlFile) ? true : false;
+        return file_exists($demodataSqlFile) ? true : false;
     }
 
     /**
@@ -626,6 +626,23 @@ class Utilities extends Core
      */
     public function getActiveEditionDemodataPackageSqlFilePath()
     {
+        return implode(
+            DIRECTORY_SEPARATOR,
+            [
+                $this->getActiveEditionDemodataPackagePath(),
+                self::DEMODATA_PACKAGE_SOURCE_DIRECTORY,
+                self::DEMODATA_SQL_FILENAME,
+            ]
+        );
+    }
+
+    /**
+     * Return full path to demodata package based on current eShop edition.
+     *
+     * @return string
+     */
+    public function getActiveEditionDemodataPackagePath()
+    {
         $editionSelector = new EditionSelector();
 
         return implode(
@@ -634,8 +651,6 @@ class Utilities extends Core
                 $this->getUtilitiesInstance()->getVendorDirectory(),
                 EditionRootPathProvider::EDITIONS_DIRECTORY,
                 sprintf(self::DEMODATA_PACKAGE_NAME, strtolower($editionSelector->getEdition())),
-                self::DEMODATA_PACKAGE_SOURCE_DIRECTORY,
-                self::DEMODATA_SQL_FILENAME,
             ]
         );
     }

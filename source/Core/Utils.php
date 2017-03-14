@@ -32,7 +32,7 @@ use Exception;
  * General utils class
  *
  */
-class Utils extends \oxSuperCfg
+class Utils extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -1097,7 +1097,7 @@ class Utils extends \oxSuperCfg
 
         try { //may occur in case db is lost
             $this->getSession()->freeze();
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
             $oEx->debugOut();
             //do nothing else to make sure the redirect takes place
         }
@@ -1312,7 +1312,7 @@ class Utils extends \oxSuperCfg
     /**
      * Processes logging.
      *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
      *
      * @param string $sText     Log message text
      * @param bool   $blNewline If true, writes message to new line (default false)
@@ -1430,7 +1430,7 @@ class Utils extends \oxSuperCfg
     /**
      * Writes given log message. Returns write state
      *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
      *
      * @param string $logMessage  log message
      * @param string $logFileName log file name

@@ -25,14 +25,13 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 use oxDb;
 use oxRegistry;
 use oxField;
-use oxUtilsObject;
 
 /**
  * Article attributes manager.
  * Collects and keeps attributes of chosen article.
  *
  */
-class Attribute extends \oxI18n
+class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
     /**
      * Current class name
@@ -122,7 +121,7 @@ class Attribute extends \oxI18n
                     $sVarId = substr($sVarId, 6);
                     $oNewAssign = oxNew("oxBase");
                     $oNewAssign->init("oxobject2attribute");
-                    $sNewId = oxUtilsObject::getInstance()->generateUID();
+                    $sNewId = oxRegistry::getUtilsObject()->generateUID();
                     if ($oNewAssign->load($sId)) {
                         $oNewAssign->oxobject2attribute__oxobjectid = new oxField($sVarId);
                         $oNewAssign->setId($sNewId);

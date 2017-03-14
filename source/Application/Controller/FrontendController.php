@@ -37,7 +37,6 @@ use oxPrice;
 use oxRecommList;
 use oxRegistry;
 use oxShop;
-use oxUtilsObject;
 use oxVendor;
 use oxViewConfig;
 use stdClass;
@@ -52,7 +51,7 @@ define('VIEW_INDEXSTATE_NOINDEXFOLLOW', 2); //  no index / follow
  * Class is responsible for managing of components that must be
  * loaded and executed before any regular operation.
  */
-class FrontendController extends \oxView
+class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
     /**
      * Characters which should be removed while preparing meta keywords
@@ -903,7 +902,7 @@ class FrontendController extends \oxView
     {
         $sortDirections = array('desc', 'asc');
 
-        $request = Registry::get(Request::class);
+        $request = Registry::get(\OxidEsales\Eshop\Core\Request::class);
         $sortBy = $request->getRequestParameter($this->getSortOrderByParameterName());
         $sortOrder = $request->getRequestParameter($this->getSortOrderParameterName());
 
@@ -2578,7 +2577,7 @@ class FrontendController extends \oxView
     public function getFormId()
     {
         if ($this->_sFormId === null) {
-            $this->_sFormId = oxUtilsObject::getInstance()->generateUId();
+            $this->_sFormId = oxRegistry::getUtilsObject()->generateUId();
             oxRegistry::getSession()->setVariable('sessionuformid', $this->_sFormId);
         }
 

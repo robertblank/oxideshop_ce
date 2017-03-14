@@ -25,7 +25,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use oxRegistry;
 use oxDb;
 use oxField;
-use oxUtilsObject;
 use stdClass;
 
 /**
@@ -33,7 +32,7 @@ use stdClass;
  * There is possibility to change content description, enter page text etc.
  * Admin Menu: Customerinformations -> Content.
  */
-class ContentMain extends \oxAdminDetails
+class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -82,7 +81,7 @@ class ContentMain extends \oxAdminDetails
             }
         } else {
             // create ident to make life easier
-            $sUId = oxUtilsObject::getInstance()->generateUId();
+            $sUId = oxRegistry::getUtilsObject()->generateUId();
             $oContent->oxcontents__oxloadid = new oxField($sUId);
         }
 

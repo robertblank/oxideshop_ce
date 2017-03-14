@@ -23,13 +23,12 @@ namespace OxidEsales\EshopCommunity\Core\Module;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\Module\ClassProviderStorage;
-use OxidEsales\EshopCommunity\Core\Exception\ModuleValidationException;
-use OxidEsales\EshopCommunity\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Exception\ModuleValidationException;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 use oxModuleCache;
 use oxDb;
 use OxidEsales\Eshop\Core\Module\ModuleExtensionsCleaner;
 use OxidEsales\Eshop\Core\SettingsHandler;
-use oxUtilsObject;
 
 /**
  * Modules installer class.
@@ -37,7 +36,7 @@ use oxUtilsObject;
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-class ModuleInstaller extends \oxSuperCfg
+class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
 {
     /**
      * @var oxModuleCache
@@ -50,10 +49,10 @@ class ModuleInstaller extends \oxSuperCfg
     /**
      * Sets dependencies.
      *
-     * @param ModuleCache             $moduleCache
-     * @param ModuleExtensionsCleaner $moduleCleaner
+     * @param \OxidEsales\Eshop\Core\Module\ModuleCache $moduleCache
+     * @param ModuleExtensionsCleaner                   $moduleCleaner
      */
-    public function __construct(ModuleCache $moduleCache = null, $moduleCleaner = null)
+    public function __construct(\OxidEsales\Eshop\Core\Module\ModuleCache $moduleCache = null, $moduleCleaner = null)
     {
         $this->setModuleCache($moduleCache);
         if (is_null($moduleCleaner)) {
@@ -89,7 +88,7 @@ class ModuleInstaller extends \oxSuperCfg
      *
      * @return bool
      */
-    public function activate(\OxidEsales\EshopCommunity\Core\Module\Module $module)
+    public function activate(\OxidEsales\Eshop\Core\Module\Module $module)
     {
         $result = false;
         if ($moduleId = $module->getId()) {
@@ -118,7 +117,7 @@ class ModuleInstaller extends \oxSuperCfg
                     $lang = Registry::getLang();
                     $message = sprintf($lang->translateString('ERROR_METADATA_CONTROLLERS_NOT_UNIQUE', null, true), $exception->getMessage());
 
-                    $standardException = oxNew(StandardException::class);
+                    $standardException = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
                     $standardException->setMessage($message);
 
                     throw $standardException;
@@ -142,7 +141,7 @@ class ModuleInstaller extends \oxSuperCfg
      *
      * @return bool
      */
-    public function deactivate(\OxidEsales\EshopCommunity\Core\Module\Module $module)
+    public function deactivate(\OxidEsales\Eshop\Core\Module\Module $module)
     {
         $result = false;
         if ($moduleId = $module->getId()) {
@@ -344,9 +343,9 @@ class ModuleInstaller extends \oxSuperCfg
     /**
      * Add extension to module
      *
-     * @param Module $oModule
+     * @param OxidEsales\Eshop\Core\Module\Module $oModule
      */
-    protected function _addExtensions(\OxidEsales\EshopCommunity\Core\Module\Module $oModule)
+    protected function _addExtensions(\OxidEsales\Eshop\Core\Module\Module $oModule)
     {
         $aModules = $this->_removeNotUsedExtensions($this->getModulesWithExtendedClass(), $oModule);
 
@@ -421,7 +420,7 @@ class ModuleInstaller extends \oxSuperCfg
 
         if (is_array($moduleBlocks)) {
             foreach ($moduleBlocks as $moduleBlock) {
-                $id = oxUtilsObject::getInstance()->generateUId();
+                $id = Registry::getUtilsObject()->generateUId();
 
                 $template = $moduleBlock["template"];
                 $position = isset($moduleBlock['position']) && is_numeric($moduleBlock['position']) ?
@@ -579,14 +578,14 @@ class ModuleInstaller extends \oxSuperCfg
     /**
      * Removes garbage ( module not used extensions ) from all installed extensions list
      *
-     * @param array  $installedExtensions Installed extensions
-     * @param Module $module              Module
+     * @param array                                $installedExtensions Installed extensions
+     * @param \OxidEsales\Eshop\Core\Module\Module $module              Module
      *
      * @deprecated on b-dev, ModuleExtensionsCleaner::cleanExtensions() should be used.
      *
      * @return array
      */
-    protected function _removeNotUsedExtensions($installedExtensions, Module $module)
+    protected function _removeNotUsedExtensions($installedExtensions, \OxidEsales\Eshop\Core\Module\Module $module)
     {
         return $this->getModuleCleaner()->cleanExtensions($installedExtensions, $module);
     }
@@ -616,7 +615,7 @@ class ModuleInstaller extends \oxSuperCfg
     }
 
     /**
-     * @return \OxidEsales\EshopCommunity\Core\Contract\ControllerMapProviderInterface
+     * @return \OxidEsales\Eshop\Core\Contract\ControllerMapProviderInterface
      */
     protected function getModuleControllerMapProvider()
     {
@@ -624,7 +623,7 @@ class ModuleInstaller extends \oxSuperCfg
     }
 
     /**
-     * @return \OxidEsales\EshopCommunity\Core\Contract\ControllerMapProviderInterface
+     * @return \OxidEsales\Eshop\Core\Contract\ControllerMapProviderInterface
      */
     protected function getShopControllerMapProvider()
     {
@@ -665,7 +664,7 @@ class ModuleInstaller extends \oxSuperCfg
          */
         $duplicatedKeys = array_intersect_key(array_change_key_case($moduleControllers, CASE_LOWER), $existingMaps);
         if (!empty($duplicatedKeys)) {
-            throw new ModuleValidationException(implode(',', $duplicatedKeys));
+            throw new \OxidEsales\Eshop\Core\Exception\ModuleValidationException(implode(',', $duplicatedKeys));
         }
 
         /**
@@ -673,7 +672,7 @@ class ModuleInstaller extends \oxSuperCfg
          */
         $duplicatedValues = array_intersect($moduleControllers, $existingMaps);
         if (!empty($duplicatedValues)) {
-            throw new ModuleValidationException(implode(',', $duplicatedValues));
+            throw new \OxidEsales\Eshop\Core\Exception\ModuleValidationException(implode(',', $duplicatedValues));
         }
     }
 }

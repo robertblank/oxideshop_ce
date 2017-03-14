@@ -26,7 +26,6 @@ use oxCategory;
 use oxRegistry;
 use oxShop;
 use oxSystemComponentException;
-use oxUtilsObject;
 use oxView;
 use oxViewConfig;
 
@@ -34,7 +33,7 @@ use oxViewConfig;
  * Base view class. Collects and passes data to template engine, sets some global
  * configuration parameters.
  */
-class BaseController extends \oxSuperCfg
+class BaseController extends \OxidEsales\Eshop\Core\Base
 {
     /**
      * Array of data that is passed to template engine - array( "varName" => "varValue").
@@ -584,7 +583,7 @@ class BaseController extends \oxSuperCfg
             // looking for function name
             $aParams = explode('/', $aParams[0]);
             $sClassName = $aParams[0];
-            $realClassName = oxUtilsObject::getInstance()->getClassName($sClassName);
+            $realClassName = oxRegistry::getUtilsObject()->getClassName($sClassName);
 
             if (false === class_exists($realClassName)) {
                 //If redirect tries to use a not existing class throw an exception.

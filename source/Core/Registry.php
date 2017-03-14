@@ -39,6 +39,20 @@ class Registry
     protected static $instances = array();
 
     /**
+     * Hold BC class to virtual namespace class map
+     *
+     * @var null| array
+     */
+    protected static $backwardsCompatibilityClassMap = null;
+
+    /**
+     * Hold virtual namespace to class map
+     *
+     * @var null| array
+     */
+    protected static $virtualNameSpaceClassMap = null;
+
+    /**
      * Instance getter. Return existing instance or initializes the new one
      *
      * @param string $className Class name
@@ -49,11 +63,11 @@ class Registry
      */
     public static function get($className)
     {
-        $key = strtolower($className);
+        $key = self::getStorageKey($className);
         if (isset(self::$instances[$key])) {
             return self::$instances[$key];
         } else {
-            self::$instances[$key] = oxNew($className);
+            self::$instances[$key] = self::createObject($key, $className);
 
             return self::$instances[$key];
         }
@@ -71,15 +85,15 @@ class Registry
      */
     public static function set($className, $instance)
     {
-        $className = strtolower($className);
+        $key = self::getStorageKey($className);
 
         if (is_null($instance)) {
-            unset(self::$instances[$className]);
+            unset(self::$instances[$key]);
 
             return;
         }
 
-        self::$instances[$className] = $instance;
+        self::$instances[$key] = $instance;
     }
 
     /**
@@ -131,6 +145,18 @@ class Registry
     }
 
     /**
+     * Returns UtilsObject instance
+     *
+     * @static
+     *
+     * @return OxidEsales\Eshop\Core\UtilsObject
+     */
+    public static function getUtilsObject()
+    {
+        return self::get('oxUtilsObject');
+    }
+
+    /**
      * Returns ControllerClassNameProvider instance
      *
      * @static
@@ -161,6 +187,75 @@ class Registry
      */
     public static function instanceExists($className)
     {
-        return isset(self::$instances[strtolower($className)]);
+        $key = self::getStorageKey($className);
+        return isset(self::$instances[$key]);
+    }
+
+    /**
+     * Get backwardsCompatibilityClassMap
+     *
+     * @return array
+     */
+    public static function getBackwardsCompatibilityClassMap()
+    {
+        if (is_null(self::$backwardsCompatibilityClassMap)) {
+            $classMap = include CORE_AUTOLOADER_PATH . 'BackwardsCompatibilityClassMap.php';
+            self::$backwardsCompatibilityClassMap = array_flip(array_map('strtolower', $classMap));
+        }
+
+        return self::$backwardsCompatibilityClassMap;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getVirtualNameSpaceClassMap()
+    {
+        if (is_null(self::$virtualNameSpaceClassMap)) {
+            $classMap = new \OxidEsales\Eshop\Core\Autoload\VirtualNameSpaceClassMap;
+            self::$virtualNameSpaceClassMap = $classMap->getClassMap();
+        }
+
+        return self::$virtualNameSpaceClassMap;
+    }
+
+    /**
+     * Figure out which key to use for instance cache.
+     *
+     * @param string $className
+     *
+     * @return string
+     */
+    public static function getStorageKey($className)
+    {
+        $key = strtolower($className);
+        if (!\OxidEsales\EshopCommunity\Core\UtilsObject::isNamespacedClass($className)) {
+            $bcMap = self::getBackwardsCompatibilityClassMap();
+            $virtualKey = isset($bcMap[$key]) ? $bcMap[$key] : $key;
+            $key = $virtualKey;
+        }
+        return strtolower($key);
+    }
+
+    /**
+     * Special case handling: The recommended way to get an instance of OxUtilsObject is to use Registry::getUtilsObject
+     * IMPORTANT: the utilsobject is not delivered from Registry::instances this way, so Registry::set
+     *           will have no effect on which UtilsObject is delivered.
+     *           Also Registry::instanceExists will always return false for UtilsObject.
+     * This does only affect BC classname and virtual namespace, not the edition own classes atm.
+     *
+     * @param string $key       Class key used for instance caching.
+     * @param string $className Class name.
+     *
+     * @return object
+     */
+    protected static function createObject($key, $className)
+    {
+        if (('oxutilsobject' == $key) || (strtolower(\OxidEsales\Eshop\Core\UtilsObject::class) == $key)) {
+            $object = \OxidEsales\Eshop\Core\UtilsObject::getInstance();
+        } else {
+            $object = oxNew($className);
+        }
+        return $object;
     }
 }
