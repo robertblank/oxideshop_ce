@@ -785,4 +785,21 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
             $invalidModuleClasses[$extendedShopClass][] = $moduleClass;
         }
     }
+
+    /**
+     * Backwards compatible version of self::_getInvalidExtensions()
+     *
+     * @param string $sModulePath
+     * @param array  $aDeletedExt Note: This parameter is passed by reference
+     * @param string $sOxClass
+     *
+     * @deprecated since v6.0 (2017-03-14); This method will be removed in the future.
+     */
+    private function _backwardsCompatibleGetInvalidExtensions($sModulePath, &$aDeletedExt, $sOxClass)
+    {
+        $sExtPath = $this->getConfig()->getModulesDir() . $sModulePath . '.php';
+        if (!file_exists($sExtPath)) {
+            $aDeletedExt[$sOxClass][] = $sModulePath;
+        }
+    }
 }
