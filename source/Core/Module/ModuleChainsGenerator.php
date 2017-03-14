@@ -58,11 +58,7 @@ class ModuleChainsGenerator
             $classAlias = $className;
         }
 
-        $fullChain = $this->getFullChain($className, $classAlias);
-        $activeChain = array();
-        if (!empty($fullChain)) {
-            $activeChain = $this->filterInactiveExtensions($fullChain);
-        }
+        $activeChain = $this->getActiveChain($className, $classAlias);
         if (!empty($activeChain)) {
             $className = $this->createClassExtensions($activeChain, $classAlias);
         }
@@ -71,7 +67,28 @@ class ModuleChainsGenerator
     }
 
     /**
-     * SPIKE: extracted function to build full class chain
+     * Assembles class chains.
+     *
+     * @param string $className  Class name.
+     * @param string $classAlias Class alias, used for searching module extensions. Class is used if no alias given.
+     *
+     * @return string
+     */
+    public function getActiveChain($className, $classAlias = null)
+    {
+        if (!$classAlias) {
+            $classAlias = $className;
+        }
+        $fullChain = $this->getFullChain($className, $classAlias);
+        $activeChain = [];
+        if (!empty($fullChain)) {
+            $activeChain = $this->filterInactiveExtensions($fullChain);
+        }
+        return $activeChain;
+    }
+
+    /**
+     * Method to build full class chain.
      *
      * @param string $className
      * @param string $classAlias
