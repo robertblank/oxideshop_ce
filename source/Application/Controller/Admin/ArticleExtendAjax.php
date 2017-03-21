@@ -180,7 +180,7 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
             try {
                 $database = oxDb::getDb();
 
-                $objectToCategory = oxNew('oxobject2category');
+                $objectToCategory = oxNew(\OxidEsales\Eshop\Application\Model\Object2Category::class);
 
                 foreach ($categoriesToAdd as $sAdd) {
                     // check, if it's already in, then don't add it again

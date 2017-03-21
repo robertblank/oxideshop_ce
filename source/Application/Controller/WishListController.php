@@ -24,7 +24,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 use oxUBase;
-use oxList;
+use \OxidEsales\Eshop\Core\Model\ListModel;
 
 /**
  * The wishlist of someone else is displayed.
@@ -63,7 +63,7 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
     /**
      * List of users which were found according to search condition
      *
-     * @var oxlist
+     * @var \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected $_oWishListUsers = false;
 
@@ -88,7 +88,7 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
             $sWishIdParameter = oxRegistry::getConfig()->getRequestParameter('wishid');
             $sUserId = $sWishIdParameter ? $sWishIdParameter : oxRegistry::getSession()->getVariable('wishid');
             if ($sUserId) {
-                $oUser = oxNew('oxuser');
+                $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
                 if ($oUser->load($sUserId)) {
                     // passing wishlist information
                     $this->_oWishUser = $oUser;
@@ -138,7 +138,7 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
     {
         if ($sSearch = oxRegistry::getConfig()->getRequestParameter('search')) {
             // search for baskets
-            $oUserList = oxNew('oxuserlist');
+            $oUserList = oxNew(\OxidEsales\Eshop\Application\Model\UserList::class);
             $oUserList->loadWishlistUsers($sSearch);
             if ($oUserList->count()) {
                 $this->_oWishListUsers = $oUserList;
@@ -151,7 +151,7 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
      * Returns a list of users which were found according to search condition.
      * If no users were found - false is returned
      *
-     * @return oxlist | bool
+     * @return \OxidEsales\Eshop\Core\Model\ListModel | bool
      */
     public function getWishListUsers()
     {

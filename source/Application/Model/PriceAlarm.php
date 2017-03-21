@@ -121,7 +121,7 @@ class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if ($this->_oArticle == null) {
             $this->_oArticle = false;
-            $oArticle = oxNew("oxArticle");
+            $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             if ($oArticle->load($this->oxpricealarm__oxartid->value)) {
                 $this->_oArticle = $oArticle;
             }
@@ -186,7 +186,7 @@ class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
             if ($oArticle = $this->getArticle()) {
                 $this->_sTitle = $oArticle->oxarticles__oxtitle->value;
                 if ($oArticle->oxarticles__oxparentid->value && !$oArticle->oxarticles__oxtitle->value) {
-                    $oParent = oxNew("oxArticle");
+                    $oParent = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                     $oParent->load($oArticle->oxarticles__oxparentid->value);
                     $this->_sTitle = $oParent->oxarticles__oxtitle->value . " " . $oArticle->oxarticles__oxvarselect->value;
                 }

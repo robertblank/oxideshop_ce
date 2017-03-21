@@ -82,7 +82,7 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function setUserGroups()
     {
         if ($this->_oGroups === null) {
-            $this->_oGroups = oxNew('oxlist');
+            $this->_oGroups = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $this->_oGroups->init('oxgroups');
             $sViewName = getViewName("oxgroups");
             $sSelect = "select gr.* from {$sViewName} as gr, oxobject2group as o2g where
@@ -120,7 +120,7 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getVoucherList()
     {
-        $oVoucherList = oxNew('oxvoucherlist');
+        $oVoucherList = oxNew(\OxidEsales\Eshop\Application\Model\VoucherList::class);
         $sSelect = 'select * from oxvouchers where oxvoucherserieid = ' . oxDb::getDb()->quote($this->getId());
         $oVoucherList->selectString($sSelect);
 

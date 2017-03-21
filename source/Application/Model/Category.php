@@ -143,7 +143,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     /**
      * Parent category object container.
      *
-     * @var oxCategory
+     * @var \OxidEsales\Eshop\Application\Model\Category
      */
     protected $_oParent = null;
 
@@ -382,7 +382,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     /**
      * sets a single category, handles sorting and parent hasVisibleSubCats
      *
-     * @param oxCategory $oCat the category
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCat the category
      * @param string     $sKey (optional, default=null)  the key for that category, without a key, the category is just added to the array
      */
     public function setSubCat($oCat, $sKey = null)
@@ -424,7 +424,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     /**
      * sets a single category
      *
-     * @param oxCategory $oContent the category
+     * @param \OxidEsales\Eshop\Application\Model\Category $oContent the category
      * @param string     $sKey     optional, the key for that category, without a key, the category is just added to the array
      */
     public function setContentCat($oContent, $sKey = null)
@@ -730,7 +730,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
 
         $sKey = md5($sActCat . serialize(oxRegistry::getSession()->getVariable('session_attrfilter')));
         if (!isset(self::$_aCatAttributes[$sKey])) {
-            $oAttrList = oxNew("oxAttributeList");
+            $oAttrList = oxNew(\OxidEsales\Eshop\Application\Model\AttributeList::class);
             $oAttrList->getCategoryAttributes($sActCat, $this->getLanguage());
             self::$_aCatAttributes[$sKey] = $oAttrList;
         }
@@ -747,13 +747,13 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      */
     public function getCatInLang($oActCategory = null)
     {
-        $oCategoryInDefaultLanguage = oxNew("oxCategory");
+        $oCategoryInDefaultLanguage = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         if ($this->isPriceCategory()) {
             // get it in base language
-            $oCategoryInDefaultLanguage = oxNew("oxCategory");
+            $oCategoryInDefaultLanguage = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             $oCategoryInDefaultLanguage->loadInLang(0, $this->getId());
         } else {
-            $oCategoryInDefaultLanguage = oxNew("oxCategory");
+            $oCategoryInDefaultLanguage = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             $oCategoryInDefaultLanguage->loadInLang(0, $oActCategory->getId());
         }
 
@@ -763,7 +763,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     /**
      * Set parent category object for internal usage only.
      *
-     * @param oxCategory $oCategory parent category object
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCategory parent category object
      */
     public function setParentCategory($oCategory)
     {
@@ -773,7 +773,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     /**
      * Returns parent category object for current category (if it is available).
      *
-     * @return oxCategory
+     * @return \OxidEsales\Eshop\Application\Model\Category
      */
     public function getParentCategory()
     {
@@ -785,7 +785,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
             if ($this->_oParent) {
                 $oCat = $this->_oParent;
             } else {
-                $oCat = oxNew('oxCategory');
+                $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
                 if (!$oCat->load($this->oxcategories__oxparentid->value)) {
                     $oCat = null;
                 } else {
@@ -839,7 +839,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     {
         if ($this->oxcategories__oxparentid->value != "oxrootid") {
             // load parent
-            $oParent = oxNew("oxCategory");
+            $oParent = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             //#M317 check if parent is loaded
             if (!$oParent->load($this->oxcategories__oxparentid->value)) {
                 return false;

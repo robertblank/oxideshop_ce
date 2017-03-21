@@ -58,7 +58,7 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oOrder = oxNew("oxorder");
+            $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
             $oOrder->load($soxId);
 
             // paid ?
@@ -78,7 +78,7 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
 
             if ($oOrder->$sDelTypeField->value) {
                 // order user
-                $oUser = oxNew('oxuser');
+                $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
                 $oUser->load($oOrder->oxorder__oxuserid->value);
 
                 // order sum in default currency
@@ -109,7 +109,7 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $oOrder = oxNew("oxorder");
+        $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         if ($soxId != "-1") {
             $oOrder->load($soxId);
         } else {
@@ -139,7 +139,7 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
 
         $aDynvalues = oxRegistry::getConfig()->getRequestParameter("dynvalue");
         if (isset($aDynvalues)) {
-            $oPayment = oxNew("oxuserpayment");
+            $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
             $oPayment->load($oOrder->oxorder__oxpaymentid->value);
             $oPayment->oxuserpayments__oxvalue->setValue(oxRegistry::getUtils()->assignValuesToText($aDynvalues));
             $oPayment->save();
@@ -175,7 +175,7 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     public function sendOrder()
     {
         $soxId = $this->getEditObjectId();
-        $oOrder = oxNew("oxorder");
+        $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         if ($oOrder->load($soxId)) {
             // #632A
             $oOrder->oxorder__oxsenddate = new oxField(date("Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime()));
@@ -185,7 +185,7 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
             $oOrderArticles = $oOrder->getOrderArticles(true);
             if (oxRegistry::getConfig()->getRequestParameter("sendmail")) {
                 // send eMail
-                $oEmail = oxNew("oxemail");
+                $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
                 $oEmail->sendSendedNowMail($oOrder);
             }
             $this->onOrderSend();
@@ -198,9 +198,9 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     public function sendDownloadLinks()
     {
         $soxId = $this->getEditObjectId();
-        $oOrder = oxNew("oxorder");
+        $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         if ($oOrder->load($soxId)) {
-            $oEmail = oxNew("oxemail");
+            $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
             $oEmail->sendDownloadLinksMail($oOrder);
         }
     }
@@ -210,7 +210,7 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
      */
     public function resetOrder()
     {
-        $oOrder = oxNew("oxorder");
+        $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         if ($oOrder->load($this->getEditObjectId())) {
             $oOrder->oxorder__oxsenddate = new oxField("0000-00-00 00:00:00");
             $oOrder->save();

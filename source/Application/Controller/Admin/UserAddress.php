@@ -53,14 +53,14 @@ class UserAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $soxId = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oUser = oxNew("oxuser");
+            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             $oUser->load($soxId);
 
             // load adress
             $sAddressIdParameter = oxRegistry::getConfig()->getRequestParameter("oxaddressid");
             $soxAddressId = isset($this->sSavedOxid) ? $this->sSavedOxid : $sAddressIdParameter;
             if ($soxAddressId != "-1" && isset($soxAddressId)) {
-                $oAdress = oxNew("oxaddress");
+                $oAdress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
                 $oAdress->load($soxAddressId);
                 $this->_aViewData["edit"] = $oAdress;
             }
@@ -79,7 +79,7 @@ class UserAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $this->_aViewData["edituser"] = $oUser;
         }
 
-        $oCountryList = oxNew("oxCountryList");
+        $oCountryList = oxNew(\OxidEsales\Eshop\Application\Model\CountryList::class);
         $oCountryList->loadActiveCountries(oxRegistry::getLang()->getObjectTplLanguage());
 
         $this->_aViewData["countrylist"] = $oCountryList;
@@ -100,7 +100,7 @@ class UserAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
         if ($this->_allowAdminEdit($this->getEditObjectId())) {
             $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
-            $oAdress = oxNew("oxaddress");
+            $oAdress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
             if (isset($aParams['oxaddress__oxid']) && $aParams['oxaddress__oxid'] == "-1") {
                 $aParams['oxaddress__oxid'] = null;
             } else {
@@ -123,7 +123,7 @@ class UserAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         if ($this->_allowAdminEdit($this->getEditObjectId())) {
             $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
             if (isset($aParams['oxaddress__oxid']) && $aParams['oxaddress__oxid'] != "-1") {
-                $oAdress = oxNew("oxaddress");
+                $oAdress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
                 $this->_blDelete = $oAdress->delete($aParams['oxaddress__oxid']);
             }
         }

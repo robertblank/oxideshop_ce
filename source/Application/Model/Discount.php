@@ -124,7 +124,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         // Validate oxsort before saving
         if (!is_numeric($this->oxdiscount__oxsort->value)) {
-            $exception = oxNew('oxInputException');
+            $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
             $exception->setMessage('DISCOUNT_ERROR_OXSORT_NOT_A_NUMBER');
 
             throw $exception;
@@ -134,7 +134,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             $saveStatus = parent::save();
         } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
             if ($exception->getCode() == \OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database::DUPLICATE_KEY_ERROR_CODE && false !== strpos($exception->getMessage(), 'UNIQ_OXSORT')) {
-                $exception = oxNew('oxInputException');
+                $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
                 $exception->setMessage('DISCOUNT_ERROR_OXSORT_NOT_UNIQUE');
             }
 
@@ -167,7 +167,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Checks if discount applies for article
      *
-     * @param oxArticle $oArticle article object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      *
      * @return bool
      */
@@ -235,7 +235,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Tests if total amount or price (price priority) of articles that can be applied to current discount fits to discount configuration
      *
-     * @param oxbasket $oBasket basket
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket basket
      *
      * @return bool
      */
@@ -525,7 +525,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * Returns part of query for discount check. If product is variant - query contains both id check e.g.
      * "and (oxobjectid = '...' or oxobjectid = '...')
      *
-     * @param oxarticle $oProduct product used for discount check
+     * @param \OxidEsales\Eshop\Application\Model\Article $oProduct product used for discount check
      *
      * @return string
      */
@@ -545,7 +545,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Checks whether this article is assigned to discount
      *
-     * @param oxArticle $oArticle
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle
      *
      * @return bool
      */

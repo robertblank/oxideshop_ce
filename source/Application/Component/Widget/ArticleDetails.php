@@ -238,7 +238,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     {
         if ($sParentId && $this->_oParentProd === null) {
             $this->_oParentProd = false;
-            $oProduct = oxNew('oxArticle');
+            $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             if (($oProduct->load($sParentId))) {
                 $this->_processProduct($oProduct);
                 $this->_oParentProd = $oProduct;
@@ -294,7 +294,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
             $this->_blCanRate = false;
 
             if ($this->ratingIsActive() && $oUser = $this->getUser()) {
-                $oRating = oxNew('oxrating');
+                $oRating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
                 $this->_blCanRate = $oRating->allowRating($oUser->getId(), 'oxarticle', $this->getProduct()->getId());
             }
         }
@@ -458,7 +458,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
             $sParentIdField = 'oxarticles__oxparentid';
             $sArtId = $oProduct->$sParentIdField->value ? $oProduct->$sParentIdField->value : $oProduct->getId();
 
-            $oHistoryArtList = oxNew('oxArticleList');
+            $oHistoryArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
             $oHistoryArtList->loadHistoryArticles($sArtId, $iCnt);
             $this->_aLastProducts = $oHistoryArtList;
         }
@@ -884,7 +884,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
                 $sOxid = oxRegistry::getConfig()->getRequestParameter('anid');
 
                 // object is not yet loaded
-                $this->_oProduct = oxNew('oxArticle');
+                $this->_oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
                 if (!$this->_oProduct->load($sOxid)) {
                     $myUtils->redirect($myConfig->getShopHomeUrl());
@@ -929,7 +929,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
 
         parent::render();
 
-        $oCategory = oxNew('oxCategory');
+        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
 
         // if category parameter is not found, use category from product
         $sCatId = $this->getViewParameter("cnid");
@@ -973,8 +973,8 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     /**
      * Runs additional checks for article.
      *
-     * @param oxUtils  $myUtils  General utils
-     * @param oxConfig $myConfig Main shop configuration
+     * @param \OxidEsales\Eshop\Core\Utils  $myUtils  General utils
+     * @param \OxidEsales\Eshop\Core\Config $myConfig Main shop configuration
      */
     protected function _additionalChecksForArticle($myUtils, $myConfig)
     {

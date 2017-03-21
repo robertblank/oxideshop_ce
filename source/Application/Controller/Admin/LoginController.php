@@ -60,7 +60,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         }
 
         //resets user once on this screen.
-        $oUser = oxNew("oxUser");
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oUser->logout();
 
         oxView::render();
@@ -96,7 +96,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     {
         $myConfig = $this->getConfig();
 
-        $oBaseShop = oxNew("oxShop");
+        $oBaseShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         $oBaseShop->load($myConfig->getBaseShopId());
         $sVersion = $oBaseShop->oxshops__oxversion->value;
         $this->getViewConfig()->setViewConfigParam('sShopVersion', $sVersion);
@@ -118,7 +118,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
         try { // trying to login
             /** @var oxUser $oUser */
-            $oUser = oxNew("oxuser");
+            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             $oUser->login($sUser, $sPass);
             $iSubshop = (int) $oUser->oxuser__oxrights->value;
             if ($iSubshop) {
@@ -150,7 +150,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         oxRegistry::getUtils()->logger("login successful");
 
         //execute onAdminLogin() event
-        $oEvenHandler = oxNew("oxSystemEventHandler");
+        $oEvenHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
         $oEvenHandler->onAdminLogin(oxRegistry::getConfig()->getShopId());
 
         // #533

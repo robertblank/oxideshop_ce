@@ -258,7 +258,7 @@ class ModuleChainsGenerator
         if ($disableModuleOnError) {
             $this->disableModule($classExtension);
         } else {
-            $exception = oxNew("oxSystemComponentException");
+            $exception = oxNew(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
             $exception->setMessage("EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND");
             $exception->setComponent($moduleClass);
             throw $exception;
@@ -272,7 +272,7 @@ class ModuleChainsGenerator
      */
     public function disableModule($modulePath)
     {
-        $module = oxNew("oxModule");
+        $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
         $moduleId = $module->getIdByPath($modulePath);
         $module->load($moduleId);
 

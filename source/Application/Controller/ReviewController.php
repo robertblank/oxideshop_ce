@@ -222,7 +222,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
 
                 //save rating
                 if ($dRating !== null && $dRating >= 1 && $dRating <= 5) {
-                    $oRating = oxNew('oxrating');
+                    $oRating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
                     if ($oRating->allowRating($oRevUser->getId(), $sType, $oActObject->getId())) {
                         $oRating->oxratings__oxuserid = new oxField($oRevUser->getId());
                         $oRating->oxratings__oxtype = new oxField($sType);
@@ -237,7 +237,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
                 }
 
                 if (($sReviewText = trim(( string ) oxRegistry::getConfig()->getRequestParameter('rvw_txt', true)))) {
-                    $oReview = oxNew('oxreview');
+                    $oReview = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
                     $oReview->oxreviews__oxobjectid = new oxField($oActObject->getId());
                     $oReview->oxreviews__oxtype = new oxField($sType);
                     $oReview->oxreviews__oxtext = new oxField($sReviewText, oxField::T_RAW);
@@ -261,7 +261,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     {
         if ($this->_oRevUser === null) {
             $this->_oRevUser = false;
-            $oUser = oxNew("oxuser");
+            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
 
             if ($sUserId = $oUser->getReviewUserId($this->getReviewUserHash())) {
                 // review user, by link or other source?
@@ -342,7 +342,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
             $this->_oActiveRecommList = false;
 
             if ($sRecommId = oxRegistry::getConfig()->getRequestParameter('recommid')) {
-                $oActiveRecommList = oxNew('oxrecommlist');
+                $oActiveRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
                 if ($oActiveRecommList->load($sRecommId)) {
                     $this->_oActiveRecommList = $oActiveRecommList;
                 }
@@ -362,7 +362,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
         if ($this->_blRate === null) {
             $this->_blRate = false;
             if (($oActObject = $this->_getActiveObject()) && ($oRevUser = $this->getReviewUser())) {
-                $oRating = oxNew('oxrating');
+                $oRating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
                 $this->_blRate = $oRating->allowRating(
                     $oRevUser->getId(),
                     $this->_getActiveType(),
@@ -403,7 +403,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
         if ($this->_oRecommList === null) {
             $this->_oRecommList = false;
             if ($oProduct = $this->getProduct()) {
-                $oRecommList = oxNew('oxrecommlist');
+                $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
                 $this->_oRecommList = $oRecommList->getRecommListsByIds(array($oProduct->getId()));
             }
         }

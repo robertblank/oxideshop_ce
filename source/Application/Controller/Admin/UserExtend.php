@@ -46,11 +46,11 @@ class UserExtend extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
         $soxId = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oUser = oxNew("oxuser");
+            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             $oUser->load($soxId);
 
             //show country in active language
-            $oCountry = oxNew("oxCountry");
+            $oCountry = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
             $oCountry->loadInLang(oxRegistry::getLang()->getObjectTplLanguage(), $oUser->oxuser__oxcountryid->value);
             $oUser->oxuser__oxcountry = new oxField($oCountry->oxcountry__oxtitle->value);
 
@@ -81,7 +81,7 @@ class UserExtend extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
 
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $oUser = oxNew("oxuser");
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         if ($soxId != "-1") {
             $oUser->load($soxId);
         } else {

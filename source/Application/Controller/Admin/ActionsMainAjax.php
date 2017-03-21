@@ -209,7 +209,7 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
             if ($soxId && $soxId != "-1" && is_array($aArticles)) {
                 $sShopId = $myConfig->getShopId();
                 foreach ($aArticles as $sAdd) {
-                    $oNewGroup = oxNew('oxBase');
+                    $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                     $oNewGroup->init('oxactions2article');
                     $oNewGroup->oxactions2article__oxshopid = new oxField($sShopId);
                     $oNewGroup->oxactions2article__oxactionid = new oxField($soxId);
@@ -240,7 +240,7 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
         $sSelect .= "where oxactions2article.oxactionid = " . oxDb::getDb()->quote($sSelId) .
                     " and oxactions2article.oxshopid = '" . $myConfig->getShopID() . "' " . $this->_getSorting();
 
-        $oList = oxNew("oxlist");
+        $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oList->init("oxbase", "oxactions2article");
         $oList->selectString($sSelect);
 
@@ -286,10 +286,10 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
     /**
      * Getter for the rss feed handler.
      *
-     * @return oxRssFeed The rss feed handler.
+     * @return \OxidEsales\Eshop\Application\Model\RssFeed The rss feed handler.
      */
     protected function _getOxRssFeed()
     {
-        return oxNew('oxRssFeed');
+        return oxNew(\OxidEsales\Eshop\Application\Model\RssFeed::class);
     }
 }

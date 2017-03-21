@@ -200,7 +200,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
             if (($oUser = $this->getUser()) &&
                 ($sRecommId = oxRegistry::getConfig()->getRequestParameter('recommid'))
             ) {
-                $oRecommList = oxNew('oxrecommlist');
+                $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
                 $sUserIdField = 'oxrecommlists__oxuserid';
                 if (($oRecommList->load($sRecommId)) && $oUser->getId() === $oRecommList->$sUserIdField->value) {
                     $this->_oActRecommList = $oRecommList;
@@ -238,7 +238,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
 
         if (($oUser = $this->getUser())) {
             if (!($oRecommList = $this->getActiveRecommList())) {
-                $oRecommList = oxNew('oxrecommlist');
+                $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
                 $oRecommList->oxrecommlists__oxuserid = new oxField($oUser->getId());
                 $oRecommList->oxrecommlists__oxshopid = new oxField($this->getConfig()->getShopId());
             } else {

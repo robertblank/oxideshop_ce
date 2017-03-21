@@ -120,7 +120,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $oDb = oxDb::getDb();
 
-        $oRevs = oxNew('oxlist');
+        $oRevs = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oRevs->init('oxreview');
 
         $sObjectIdWhere = '';

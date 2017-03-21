@@ -104,7 +104,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getWrappingPrice($dAmount = 1)
     {
         if ($this->_oPrice === null) {
-            $this->_oPrice = oxNew('oxprice');
+            $this->_oPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
 
             if (!$this->_blWrappingVatOnTop) {
                 $this->_oPrice->setBruttoPriceMode();
@@ -130,7 +130,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getWrappingList($sWrapType)
     {
         // load wrapping
-        $oEntries = oxNew('oxlist');
+        $oEntries = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oEntries->init('oxwrapping');
         $sWrappingViewName = getViewName('oxwrapping');
         $sSelect = "select * from $sWrappingViewName where $sWrappingViewName.oxactive = '1' and $sWrappingViewName.oxtype = " . oxDb::getDb()->quote($sWrapType);

@@ -152,7 +152,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
         // loading order sometimes needed in template
         if ($this->_oBasket->getOrderId()) {
             // owners stock reminder
-            $oEmail = oxNew('oxEmail');
+            $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
             $oEmail->sendStockReminder($this->_oBasket->getContents());
         }
 
@@ -291,7 +291,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     public function getOrder()
     {
         if ($this->_oOrder === null) {
-            $this->_oOrder = oxNew('oxorder');
+            $this->_oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
             // loading order sometimes needed in template
             if ($sOrderId = $this->getBasket()->getOrderId()) {
                 $this->_oOrder->load($sOrderId);
@@ -310,7 +310,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     {
         $oOrder = $this->getOrder();
         if ($oOrder) {
-            $oCountry = oxNew('oxCountry');
+            $oCountry = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
             $oCountry->load($oOrder->oxorder__oxbillcountryid->value);
 
             return $oCountry->oxcountry__oxisoalpha3->value;

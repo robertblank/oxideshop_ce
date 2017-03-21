@@ -87,7 +87,7 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $aParams = oxRegistry::getConfig()->getRequestParameter('editval');
 
         // checking email address
-        if (!oxNew('oxMailValidator')->isValidEmail($aParams['oxuser__oxusername'])) {
+        if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams['oxuser__oxusername'])) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_INPUT_NOVALIDEMAIL');
 
             return false;
@@ -108,7 +108,7 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
                     $aParams['oxuser__oxlname'] . "(" . $aParams['oxuser__oxusername'] . ")<br /><br />" .
                     nl2br(oxRegistry::getConfig()->getRequestParameter('c_message'));
 
-        $oEmail = oxNew('oxemail');
+        $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
         if ($oEmail->sendContactMail($aParams['oxuser__oxusername'], $sSubject, $sMessage)) {
             $this->_blContactSendStatus = 1;
         } else {

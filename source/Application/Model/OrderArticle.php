@@ -71,14 +71,14 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     /**
      * Order article instance
      *
-     * @var oxarticle
+     * @var \OxidEsales\Eshop\Application\Model\Article
      */
     protected $_oOrderArticle = null;
 
     /**
      * Article instance
      *
-     * @var oxarticle
+     * @var \OxidEsales\Eshop\Application\Model\Article
      */
     protected $_oArticle = null;
 
@@ -152,9 +152,9 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      */
     public function updateArticleStock($dAddAmount, $blAllowNegativeStock = false)
     {
-        // TODO: use oxarticle reduceStock
+        // TODO: use \OxidEsales\Eshop\Application\Model\Article reduceStock
         // decrement stock if there is any
-        $oArticle = oxNew('oxArticle');
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->load($this->oxorderarticles__oxartid->value);
         $oArticle->beforeUpdate();
 
@@ -292,7 +292,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
         }
 
         $oDb = oxDb::getDb();
-        $oArticle = oxNew("oxArticle");
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $sQ = "select oxparentid from " . $oArticle->getViewName() . " where oxid=" . $oDb->quote($this->getProductId());
         $this->oxarticles__oxparentid = new oxField($oDb->getOne($sQ));
 
@@ -358,7 +358,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      *
      * @param string $sArticleId article id (optional, is not passed oxorderarticles__oxartid will be used)
      *
-     * @return oxarticle | false
+     * @return \OxidEsales\Eshop\Application\Model\Article | false
      */
     protected function _getOrderArticle($sArticleId = null)
     {
@@ -366,7 +366,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
             $this->_oOrderArticle = false;
 
             $sArticleId = $sArticleId ? $sArticleId : $this->getProductId();
-            $oArticle = oxNew("oxArticle");
+            $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             $oArticle->setLoadParentData(true);
             if ($oArticle->load($sArticleId)) {
                 $this->_oOrderArticle = $oArticle;
@@ -460,7 +460,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      *
      * @param double   $dAmount  basket item amount
      * @param array    $aSelList chosen selection list
-     * @param oxbasket $oBasket  basket
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket  basket
      *
      * @return oxprice
      */
@@ -533,7 +533,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      */
     public function getPrice()
     {
-        $oBasePrice = oxNew('oxPrice');
+        $oBasePrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
         // prices in db are ONLY brutto
         $oBasePrice->setBruttoPriceMode();
         $oBasePrice->setVat($this->oxorderarticles__oxvat->value);
@@ -573,7 +573,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     {
         if ($iNewAmount >= 0) {
             // to update stock we must first check if it is possible - article exists?
-            $oArticle = oxNew("oxArticle");
+            $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             if ($oArticle->load($this->oxorderarticles__oxartid->value)) {
                 // updating stock info
                 $iStockChange = $iNewAmount - $this->oxorderarticles__oxamount->value;
@@ -681,7 +681,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     public function getWrapping()
     {
         if ($this->oxorderarticles__oxwrapid->value) {
-            $oWrapping = oxNew('oxwrapping');
+            $oWrapping = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class);
             if ($oWrapping->load($this->oxorderarticles__oxwrapid->value)) {
                 return $oWrapping;
             }
@@ -756,7 +756,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
                 return $this->_aOrderCache[$this->oxorderarticles__oxorderid->value];
             }
             // creatina new order object and trying to load it
-            $oOrder = oxNew('oxOrder');
+            $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
             if ($oOrder->load($this->oxorderarticles__oxorderid->value)) {
                 return $this->_aOrderCache[$this->oxorderarticles__oxorderid->value] = $oOrder;
             }
@@ -795,12 +795,12 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     /**
      * Get article
      *
-     * @return oxArticle
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     public function getArticle()
     {
         if ($this->_oArticle === null) {
-            $oArticle = oxNew('oxArticle');
+            $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             $oArticle->load($this->oxorderarticles__oxartid->value);
             $this->_oArticle = $oArticle;
         }
@@ -828,7 +828,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
 
             if ($oFiles) {
                 foreach ($oFiles as $oFile) {
-                    $oOrderFile = oxNew('oxOrderFile');
+                    $oOrderFile = oxNew(\OxidEsales\Eshop\Application\Model\OrderFile::class);
                     $oOrderFile->setOrderId($sOrderId);
                     $oOrderFile->setOrderArticleId($sOrderArticleId);
                     $oOrderFile->setShopId($sShopId);

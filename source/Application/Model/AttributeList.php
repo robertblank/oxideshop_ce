@@ -168,7 +168,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         $aSessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
 
-        $oArtList = oxNew("oxArticleList");
+        $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $oArtList->loadCategoryIDs($sCategoryId, $aSessionFilter);
 
         // Only if we have articles
@@ -197,7 +197,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
             if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF && list($sAttId, $sAttTitle, $sAttValue) = $rs->fields) {
                     if (!$this->offsetExists($sAttId)) {
-                        $oAttribute = oxNew("oxattribute");
+                        $oAttribute = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);
                         $oAttribute->setTitle($sAttTitle);
 
                         $this->offsetSet($sAttId, $oAttribute);

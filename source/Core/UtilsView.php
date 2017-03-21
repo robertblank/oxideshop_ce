@@ -172,7 +172,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
         $aEx = oxRegistry::getSession()->getVariable('Errors');
         if ($oEr instanceof \OxidEsales\Eshop\Core\Exception\StandardException) {
-            $oEx = oxNew('oxExceptionToDisplay');
+            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             $oEx->setMessage($oEr->getMessage());
             $oEx->setExceptionType($oEr->getType());
 
@@ -187,7 +187,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         } elseif ($oEr && !($oEr instanceof \OxidEsales\Eshop\Core\Contract\IDisplayError)) {
             // assuming that a string was given
             $sTmp = $oEr;
-            $oEr = oxNew('oxDisplayError');
+            $oEr = oxNew(\OxidEsales\Eshop\Core\DisplayError::class);
             $oEr->setMessage($sTmp);
         } elseif ($oEr instanceof \OxidEsales\Eshop\Core\Contract\IDisplayError) {
             // take the object
@@ -216,7 +216,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      *
      * @param mixed  $sDesc       description or array of descriptions ( array( [] => array( _ident_, _value_to_process_ ) ) )
      * @param string $sOxid       current object id
-     * @param oxview $oActView    view data to use its view data (optional)
+     * @param \OxidEsales\Eshop\Core\Controller\BaseController $oActView    view data to use its view data (optional)
      * @param bool   $blRecompile force to recompile if found in cache
      *
      * @return mixed
@@ -247,7 +247,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         $smarty->force_compile = $blRecompile;
 
         if (!$oActView) {
-            $oActView = oxNew('oxUBase');
+            $oActView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
             $oActView->addGlobalParams();
         }
 
@@ -500,7 +500,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
             $ids = $this->_getActiveModuleInfo();
 
             $activeModulesId = array_keys($ids);
-            $activeThemeIds = oxNew('oxTheme')->getActiveThemesList();
+            $activeThemeIds = oxNew(\OxidEsales\Eshop\Core\Theme::class)->getActiveThemesList();
 
             $templateBlockRepository = oxNew(ModuleTemplateBlockRepository::class);
             $activeBlockTemplates = $templateBlockRepository->getBlocks($templateFileName, $activeModulesId, $shopId, $activeThemeIds);
@@ -523,7 +523,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     protected function _getActiveModuleInfo()
     {
         if ($this->_aActiveModuleInfo === null) {
-            $modulelist = oxNew('oxmodulelist');
+            $modulelist = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
             $this->_aActiveModuleInfo = $modulelist->getActiveModuleInfo();
         }
 

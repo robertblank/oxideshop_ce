@@ -77,7 +77,7 @@ class ShopList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != self::NEW_SHOP_ID) {
             // load object
-            $oShop = oxNew('oxShop');
+            $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
             if (!$oShop->load($soxId)) {
                 $soxId = $myConfig->getBaseShopId();
                 $oShop->load($soxId);

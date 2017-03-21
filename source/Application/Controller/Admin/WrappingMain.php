@@ -47,7 +47,7 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oWrapping = oxNew("oxwrapping");
+            $oWrapping = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class);
             $oWrapping->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oWrapping->getAvailableInLangs();
@@ -96,7 +96,7 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $aParams['oxwrapping__oxactive'] = 0;
         }
 
-        $oWrapping = oxNew("oxwrapping");
+        $oWrapping = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class);
 
         if ($soxId != "-1") {
             $oWrapping->loadInLang($this->_iEditLang, $soxId);
@@ -138,7 +138,7 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $aParams['oxwrapping__oxactive'] = 0;
         }
 
-        $oWrapping = oxNew("oxwrapping");
+        $oWrapping = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class);
 
         if ($soxId != "-1") {
             $oWrapping->load($soxId);

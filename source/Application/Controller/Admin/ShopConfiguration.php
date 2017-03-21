@@ -69,7 +69,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
                 // category choosen as default
                 $this->_aViewData["defcat"] = null;
                 if ($oShop->oxshops__oxdefcat->value) {
-                    $oCat = oxNew("oxCategory");
+                    $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
                     if ($oCat->load($oShop->oxshops__oxdefcat->value)) {
                         $this->_aViewData["defcat"] = $oCat;
                     }
@@ -82,7 +82,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
             $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
             if ($iAoc == 1) {
-                $oShopDefaultCategoryAjax = oxNew('shop_default_category_ajax');
+                $oShopDefaultCategoryAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ShopDefaultCategoryAjax::class);
                 $this->_aViewData['oxajax'] = $oShopDefaultCategoryAjax->getColumns();
 
                 return "popups/shop_default_category.tpl";
@@ -100,7 +100,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
         }
 
         // #251A passing country list
-        $oCountryList = oxNew("oxCountryList");
+        $oCountryList = oxNew(\OxidEsales\Eshop\Application\Model\CountryList::class);
         $oCountryList->loadActiveCountries(oxRegistry::getLang()->getObjectTplLanguage());
         if (isset($aConfVars['arr']["aHomeCountry"]) && count($aConfVars['arr']["aHomeCountry"]) && count($oCountryList)) {
             foreach ($oCountryList as $sCountryId => $oCountry) {
@@ -140,7 +140,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
         $sShopId = $this->getEditObjectId();
         $sModule = $this->_getModuleForConfigVars();
 
-        $configValidator = oxNew('oxNoJsValidator');
+        $configValidator = oxNew(\OxidEsales\Eshop\Core\NoJsValidator::class);
         foreach ($this->_aConfParams as $sType => $sParam) {
             $aConfVars = oxRegistry::getConfig()->getRequestParameter($sParam, true);
             if (is_array($aConfVars)) {
@@ -149,7 +149,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
                     if ($sValue !== $oldValue) {
                         $sValueToValidate = is_array($sValue) ? join(', ', $sValue) : $sValue;
                         if (!$configValidator->isValid($sValueToValidate)) {
-                            $error = oxNew('oxDisplayError');
+                            $error = oxNew(\OxidEsales\Eshop\Core\DisplayError::class);
                             $error->setFormatParameters(htmlspecialchars($sValueToValidate));
                             $error->setMessage("SHOP_CONFIG_ERROR_INVALID_VALUE");
                             oxRegistry::get("oxUtilsView")->addErrorToDisplay($error);
@@ -178,7 +178,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
         //saving additional fields ("oxshops__oxdefcat"") that goes directly to shop (not config)
         /** @var oxShop $oShop */
-        $oShop = oxNew("oxshop");
+        $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         if ($oShop->load($this->getEditObjectId())) {
             $oShop->assign(oxRegistry::getConfig()->getRequestParameter("editval"));
             $oShop->save();

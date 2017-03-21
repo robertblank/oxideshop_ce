@@ -1223,7 +1223,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
     protected function _getActiveModuleInfo()
     {
         if ($this->_aActiveModuleInfo === null) {
-            $oModuleList = oxNew('oxModuleList');
+            $oModuleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
             $this->_aActiveModuleInfo = $oModuleList->getActiveModuleInfo();
         }
 
@@ -1238,7 +1238,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
     protected function _getDisabledModuleInfo()
     {
         if ($this->_aDisabledModuleInfo === null) {
-            $oModuleList = oxNew('oxModuleList');
+            $oModuleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
             $this->_aDisabledModuleInfo = $oModuleList->getDisabledModuleInfo();
         }
 

@@ -25,7 +25,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use oxRegistry;
 use oxField;
 use stdClass;
-use oxCategory;
+use \OxidEsales\Eshop\Application\Model\Category;
 use oxUtilsPic;
 use oxUtilsFile;
 use oxExceptionToDisplay;
@@ -55,8 +55,8 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         parent::render();
 
-        /** @var oxCategory $oCategory */
-        $oCategory = oxNew("oxCategory");
+        /** @var \OxidEsales\Eshop\Application\Model\Category $oCategory */
+        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
 
         $categoryId = $this->getEditObjectId();
 
@@ -109,7 +109,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
             /** @var category_main_ajax $oCategoryMainAjax */
-            $oCategoryMainAjax = oxNew('category_main_ajax');
+            $oCategoryMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\CategoryMainAjax::class);
             $this->_aViewData['oxajax'] = $oCategoryMainAjax->getColumns();
 
             return "popups/category_main.tpl";
@@ -138,7 +138,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         , "OXVARMAXPRICE", "OXSHOWCUSTOMAGREEMENT"
         );
         /** @var oxDbMetaDataHandler $oDbHandler */
-        $oDbHandler = oxNew("oxDbMetaDataHandler");
+        $oDbHandler = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
         $aFields = array_merge($oDbHandler->getMultilangFields('oxarticles'), array_keys($oDbHandler->getSinglelangFields('oxarticles', 0)));
         $aFields = array_diff($aFields, $aSkipFields);
         $aFields = array_unique($aFields);
@@ -163,8 +163,8 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $myConfig->getRequestParameter("editval")
         );
 
-        /** @var oxCategory $oCategory */
-        $oCategory = oxNew("oxCategory");
+        /** @var \OxidEsales\Eshop\Application\Model\Category $oCategory */
+        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
 
         if ($soxId != self::NEW_CATEGORY_ID) {
             $this->resetCounter("catArticle", $soxId);
@@ -232,8 +232,8 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             return;
         }
 
-        /** @var oxCategory $oItem */
-        $oItem = oxNew('oxCategory');
+        /** @var \OxidEsales\Eshop\Application\Model\Category $oItem */
+        $oItem = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         $oItem->load($sOxId);
         $this->_deleteCatPicture($oItem, $sField);
     }
@@ -241,7 +241,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     /**
      * Delete category picture, specified in $sField parameter
      *
-     * @param oxCategory $item  active category object
+     * @param \OxidEsales\Eshop\Application\Model\Category $item  active category object
      * @param string     $field picture field name
      *
      * @return null
@@ -335,7 +335,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     /**
      * Set parameters, language and files to category object.
      *
-     * @param oxCategory $category
+     * @param \OxidEsales\Eshop\Application\Model\Category $category
      * @param array      $params
      * @param string     $categoryId
      */
@@ -357,10 +357,10 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     /**
      * Set parameters, language and files to category object.
      *
-     * @param oxCategory $category
+     * @param \OxidEsales\Eshop\Application\Model\Category $category
      * @param array      $params
      *
-     * @return oxCategory
+     * @return \OxidEsales\Eshop\Application\Model\Category
      */
     protected function updateCategoryOnSave($category, $params)
     {

@@ -56,7 +56,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * User object
      *
-     * @var oxUser
+     * @var \OxidEsales\Eshop\Application\Model\User
      */
     protected $_oUser = null;
 
@@ -109,7 +109,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
      * assigned users, countries or user groups. Performs
      * additional filtering according to these parameters
      *
-     * @param oxUser $oUser      session user object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser      session user object
      * @param string $sCountryId user country id
      * @param string $sDelSet    user chosen delivery set
      *
@@ -149,7 +149,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Creates delivery list filter SQL to load current state delivery list
      *
-     * @param oxUser $oUser      session user object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser      session user object
      * @param string $sCountryId user country id
      * @param string $sDelSet    user chosen delivery set
      *
@@ -234,7 +234,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
      *    $myConfig->aDeliveryList.
      *
      * @param object $oBasket     basket object
-     * @param oxUser $oUser       session user
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser       session user
      * @param string $sDelCountry user country id
      * @param string $sDelSet     delivery set id
      *
@@ -308,8 +308,8 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Checks if deliveries in list fits for current basket and delivery set
      *
-     * @param oxBasket $oBasket        shop basket
-     * @param oxUser   $oUser          session user
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket        shop basket
+     * @param \OxidEsales\Eshop\Application\Model\User   $oUser          session user
      * @param string   $sDelCountry    delivery country
      * @param string   $sDeliverySetId delivery set id to check its relation to delivery list
      *
@@ -336,7 +336,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Get current user object. If user is not set, try to get current user.
      *
-     * @return oxUser
+     * @return \OxidEsales\Eshop\Application\Model\User
      */
     public function getUser()
     {
@@ -350,7 +350,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Set current user object
      *
-     * @param oxUser $oUser user object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser user object
      */
     public function setUser($oUser)
     {

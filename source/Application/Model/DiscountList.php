@@ -67,7 +67,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
      * For iterating through the list, use getArray() on the list,
      * as iterating on object itself can cause concurrency problems.
      *
-     * @param oxuser $oUser user object (optional)
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser user object (optional)
      *
      * @return array
      */
@@ -93,7 +93,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Returns user country id for for discount selection
      *
-     * @param oxuser $oUser oxuser object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser oxuser object
      *
      * @return string
      */
@@ -118,7 +118,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Creates discount list filter SQL to load current state discount list
      *
-     * @param oxuser $oUser user object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser user object
      *
      * @return string
      */
@@ -180,8 +180,8 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Returns array of discounts that can be globally (transparently) applied
      *
-     * @param oxarticle $oArticle article object
-     * @param oxuser    $oUser    oxuser object (optional)
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
+     * @param \OxidEsales\Eshop\Application\Model\User    $oUser    oxuser object (optional)
      *
      * @return array
      */
@@ -202,8 +202,8 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
      * Returns array of discounts that can be applied for individual basket item
      *
      * @param mixed    $oArticle article object or article id (according to needs)
-     * @param oxbasket $oBasket  array of basket items containing article id, amount and price
-     * @param oxuser   $oUser    user object (optional)
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket  array of basket items containing article id, amount and price
+     * @param \OxidEsales\Eshop\Application\Model\User   $oUser    user object (optional)
      *
      * @return array
      */
@@ -224,8 +224,8 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Returns array of discounts that can be applied for whole basket
      *
-     * @param oxbasket $oBasket basket
-     * @param oxuser   $oUser   user object (optional)
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket basket
+     * @param \OxidEsales\Eshop\Application\Model\User   $oUser   user object (optional)
      *
      * @return array
      */
@@ -246,9 +246,9 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Returns array of bundle discounts that can be applied for whole basket
      *
-     * @param oxarticle $oArticle article object
-     * @param oxbasket  $oBasket  basket
-     * @param oxuser    $oUser    user object (optional)
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
+     * @param \OxidEsales\Eshop\Application\Model\Basket  $oBasket  basket
+     * @param \OxidEsales\Eshop\Application\Model\User    $oUser    user object (optional)
      *
      * @return array
      */
@@ -269,8 +269,8 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Returns array of basket bundle discounts
      *
-     * @param oxbasket $oBasket oxbasket object
-     * @param oxuser   $oUser   oxuser object (optional)
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket oxbasket object
+     * @param \OxidEsales\Eshop\Application\Model\User   $oUser   oxuser object (optional)
      *
      * @return array
      */

@@ -445,7 +445,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         // in Category, only then category is empty ant not equal to default category
         $sDefCat = oxRegistry::getConfig()->getActiveShop()->oxshops__oxdefcat->value;
         $sActCat = oxRegistry::getConfig()->getRequestParameter('cnid');
-        $oActCat = oxnew('oxcategory');
+        $oActCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         if ($sActCat && $sActCat != $sDefCat && $oActCat->load($sActCat)) {
             $sActRoot = $oActCat->oxcategories__oxrootid->value;
             if ($oBasket->getBasketRootCatId() && $sActRoot != $oBasket->getBasketRootCatId()) {
@@ -479,7 +479,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     /**
      * Deletes user basket object from session and saved one from DB if needed.
      *
-     * @param oxBasket $oBasket
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket
      */
     protected function emptyBasket($oBasket)
     {
@@ -513,7 +513,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     /**
      * Add one item to basket. Handle eventual errors.
      *
-     * @param oxBasket $basket
+     * @param \OxidEsales\Eshop\Application\Model\Basket $basket
      * @param array    $itemData
      * @param string   $errorDestination
      *

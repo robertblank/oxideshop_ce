@@ -49,7 +49,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
     {
         //preventing edit for anyone except malladmin
         if (oxRegistry::getSession()->getVariable("malladmin")) {
-            $oMetaData = oxNew('oxDbMetaDataHandler');
+            $oMetaData = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
             $this->_aViewData["blViewSuccess"] = $oMetaData->updateViews();
         }
     }
@@ -59,7 +59,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      */
     public function performsql()
     {
-        $oAuthUser = oxNew('oxuser');
+        $oAuthUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oAuthUser->loadAdminUser();
         if ($oAuthUser->oxuser__oxrights->value === "malladmin") {
             $sUpdateSQL = oxRegistry::getConfig()->getRequestParameter("updatesql");

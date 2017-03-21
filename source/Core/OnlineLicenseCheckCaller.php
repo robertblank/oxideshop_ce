@@ -22,7 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxOnlineLicenseCheckRequest;
+use \OxidEsales\Eshop\Core\OnlineLicenseCheckRequest;
 use oxRegistry;
 use oxUtilsXml;
 use oxException;
@@ -55,7 +55,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
     /**
      * Performs Web service request
      *
-     * @param oxOnlineLicenseCheckRequest $oRequest Object with request parameters
+     * @param \OxidEsales\Eshop\Core\OnlineLicenseCheckRequest $oRequest Object with request parameters
      *
      * @throws oxException
      * @return oxOnlineLicenseCheckResponse
@@ -68,7 +68,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
     /**
      * Removes serial keys from request and forms email body.
      *
-     * @param oxOnlineLicenseCheckRequest $oRequest
+     * @param \OxidEsales\Eshop\Core\OnlineLicenseCheckRequest $oRequest
      *
      * @return string
      */
@@ -109,7 +109,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
         $oNodes = $oResponseNode->childNodes;
 
         /** @var oxOnlineLicenseCheckResponse $oResponse */
-        $oResponse = oxNew('oxOnlineLicenseCheckResponse');
+        $oResponse = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckResponse::class);
 
         // iterate through response node to get response parameters
         for ($i = 0; $i < $oNodes->length; $i++) {

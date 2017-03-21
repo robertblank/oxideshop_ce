@@ -45,7 +45,7 @@ class NewsText extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oNews = oxNew("oxnews");
+            $oNews = oxNew(\OxidEsales\Eshop\Application\Model\News::class);
             $iNewsLang = oxRegistry::getConfig()->getRequestParameter("newslang");
 
             if (!isset($iNewsLang)) {
@@ -85,7 +85,7 @@ class NewsText extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $oNews = oxNew("oxnews");
+        $oNews = oxNew(\OxidEsales\Eshop\Application\Model\News::class);
 
         $iNewsLang = oxRegistry::getConfig()->getRequestParameter("newslang");
 

@@ -59,7 +59,7 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oDelivery = oxNew("oxdelivery");
+            $oDelivery = oxNew(\OxidEsales\Eshop\Application\Model\Delivery::class);
             $oDelivery->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oDelivery->getAvailableInLangs();
@@ -98,7 +98,7 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $this->_aViewData["deltypes"] = $aDelTypes;
 
         if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-            $oDeliveryMainAjax = oxNew('delivery_main_ajax');
+            $oDeliveryMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryMainAjax::class);
             $this->_aViewData['oxajax'] = $oDeliveryMainAjax->getColumns();
 
             return "popups/delivery_main.tpl";
@@ -119,7 +119,7 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $oDelivery = oxNew("oxdelivery");
+        $oDelivery = oxNew(\OxidEsales\Eshop\Application\Model\Delivery::class);
 
         if ($soxId != "-1") {
             $oDelivery->loadInLang($this->_iEditLang, $soxId);
@@ -169,7 +169,7 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $oDelivery = oxNew("oxdelivery");
+        $oDelivery = oxNew(\OxidEsales\Eshop\Application\Model\Delivery::class);
 
         if ($soxId != "-1") {
             $oDelivery->loadInLang($this->_iEditLang, $soxId);

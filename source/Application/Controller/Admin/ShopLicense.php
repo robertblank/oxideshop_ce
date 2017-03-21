@@ -62,7 +62,7 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if ($soxId != "-1") {
             // load object
-            $oShop = oxNew("oxshop");
+            $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
             $oShop->load($soxId);
             $this->_aViewData["edit"] = $oShop;
         }
@@ -113,7 +113,7 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
         $iLang = $oLang->getTplLanguage();
         $sLang = $oLang->getLanguageAbbr($iLang);
 
-        $oCurl = oxNew('oxCurl');
+        $oCurl = oxNew(\OxidEsales\Eshop\Core\Curl::class);
         $oCurl->setMethod("POST");
         $oCurl->setUrl($sUrl . "/" . $sLang);
         $oCurl->setParameters($aParams);

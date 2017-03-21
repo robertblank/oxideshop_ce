@@ -959,7 +959,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
     /**
      * Loads if exists or prepares and saves new seo url for passed object
      *
-     * @param oxbase $oObject object to prepare seo data
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $oObject object to prepare seo data
      * @param string $sType   type of object (oxvendor/oxcategory)
      * @param string $sStdUrl stanradr url
      * @param string $sSeoUrl seo uri

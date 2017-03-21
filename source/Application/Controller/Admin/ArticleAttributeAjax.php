@@ -112,7 +112,7 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
 
         if ($soxId && $soxId != "-1" && is_array($aAddCat)) {
             foreach ($aAddCat as $sAdd) {
-                $oNew = oxNew("oxBase");
+                $oNew = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oNew->init("oxobject2attribute");
                 $oNew->oxobject2attribute__oxobjectid = new oxField($soxId);
                 $oNew->oxobject2attribute__oxattrid = new oxField($sAdd);
@@ -137,7 +137,7 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
         $attributeId = oxRegistry::getConfig()->getRequestParameter("attr_oxid");
         $attributeValue = oxRegistry::getConfig()->getRequestParameter("attr_value");
 
-        $article = oxNew("oxArticle");
+        $article = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         if ($article->load($articleId)) {
             if ($article->isDerived()) {
                 return;
@@ -150,7 +150,7 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
                 $quotedArticleId = $database->quote($article->oxarticles__oxid->value);
                 $select = "select * from {$viewName} where {$viewName}.oxobjectid= {$quotedArticleId} and
                             {$viewName}.oxattrid= " . $database->quote($attributeId);
-                $objectToAttribute = oxNew("oxi18n");
+                $objectToAttribute = oxNew(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class);
                 $objectToAttribute->setLanguage(oxRegistry::getConfig()->getRequestParameter('editlanguage'));
                 $objectToAttribute->init("oxobject2attribute");
                 if ($objectToAttribute->assignRecord($select)) {
@@ -173,7 +173,7 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
     /**
      * Method is used to bind to attribute value change.
      *
-     * @param oxArticle $article
+     * @param \OxidEsales\Eshop\Application\Model\Article $article
      */
     protected function onAttributeValueChange($article)
     {

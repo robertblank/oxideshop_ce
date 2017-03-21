@@ -63,7 +63,7 @@ class PriceAlarmMail extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
                         $this->_aViewData['iAllCnt'] += 1;
                     }
                 } else {
-                    $article = oxNew("oxArticle");
+                    $article = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                     if ($article->load($articleId)) {
                         $articlePrice = $simpleCache[$articleId] = $article->getPrice()->getBruttoPrice();
                         if ($articlePrice <= $price) {

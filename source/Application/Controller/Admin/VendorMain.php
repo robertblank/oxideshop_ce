@@ -46,7 +46,7 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oVendor = oxNew("oxvendor");
+            $oVendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
             $oVendor->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oVendor->getAvailableInLangs();
@@ -79,7 +79,7 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
         }
 
         if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-            $oVendorMainAjax = oxNew('vendor_main_ajax');
+            $oVendorMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\VendorMainAjax::class);
             $this->_aViewData['oxajax'] = $oVendorMainAjax->getColumns();
 
             return "popups/vendor_main.tpl";
@@ -104,7 +104,7 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
             $aParams['oxvendor__oxactive'] = 0;
         }
 
-        $oVendor = oxNew("oxvendor");
+        $oVendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
         if ($soxId != "-1") {
             $oVendor->loadInLang($this->_iEditLang, $soxId);
         } else {
@@ -140,7 +140,7 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
             $aParams['oxvendor__oxactive'] = 0;
         }
 
-        $oVendor = oxNew("oxvendor");
+        $oVendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
 
         if ($soxId != "-1") {
             $oVendor->loadInLang($this->_iEditLang, $soxId);

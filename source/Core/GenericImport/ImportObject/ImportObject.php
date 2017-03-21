@@ -23,7 +23,7 @@
 namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
 
 use Exception;
-use oxBase;
+use \OxidEsales\Eshop\Core\Model\BaseModel;
 use oxDb;
 use oxI18n;
 use OxidEsales\Eshop\Core\GenericImport\GenericImport;
@@ -70,7 +70,7 @@ abstract class ImportObject
      * Basic access check for writing data, checks for same shopId, should be overridden if field oxshopid does not
      * exist.
      *
-     * @param oxBase $shopObject Loaded shop object.
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject Loaded shop object.
      * @param array  $data       Fields to be written, null for default.
      *
      * @throws Exception on now access
@@ -136,7 +136,7 @@ abstract class ImportObject
         if ($objectName) {
             $shopObject = oxNew($objectName);
         } else {
-            $shopObject = oxNew('oxBase');
+            $shopObject = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
             $shopObject->init($this->getTableName());
         }
 
@@ -188,7 +188,7 @@ abstract class ImportObject
     /**
      * Issued before saving an object. can modify aData for saving.
      *
-     * @param oxBase $shopObject        shop object
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject        shop object
      * @param array  $data              data to prepare
      * @param bool   $allowCustomShopId if allow custom shop id
      *
@@ -219,7 +219,7 @@ abstract class ImportObject
      * Prepares object for saving in shop.
      * Returns true if save can proceed further.
      *
-     * @param oxBase $shopObject Shop object.
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject Shop object.
      * @param array  $data       Data for importing.
      *
      * @return boolean
@@ -286,7 +286,7 @@ abstract class ImportObject
     /**
      * Post saving hook. can finish transactions if needed or adjust related data.
      *
-     * @param oxBase $shopObject Shop object.
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject Shop object.
      * @param array  $data       Data to save.
      *
      * @return mixed data to return
@@ -340,7 +340,7 @@ abstract class ImportObject
      */
     protected function isAllowedToEdit($shopId)
     {
-        $user = oxNew('oxUser');
+        $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $user->loadAdminUser();
 
         if ($user->oxuser__oxrights->value == "malladmin" || $user->oxuser__oxrights->value == (int) $shopId) {
@@ -369,7 +369,7 @@ abstract class ImportObject
     /**
      * Creates shop object.
      *
-     * @return oxBase
+     * @return \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function createShopObject()
     {

@@ -51,14 +51,14 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
         $this->_aViewData['subjlang'] = $this->_iEditLang;
 
         // loading shop
-        $oShop = oxNew('oxShop');
+        $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         $oShop->loadInLang($this->_iEditLang, $this->_aViewData['edit']->getId());
         $this->_aViewData['edit'] = $oShop;
 
         // loading static seo urls
         $sQ = "select oxstdurl, oxobjectid from oxseo where oxtype='static' and oxshopid=" . oxDb::getDb()->quote($oShop->getId()) . " group by oxobjectid order by oxstdurl";
 
-        $oList = oxNew('oxlist');
+        $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oList->init('oxbase', 'oxseo');
         $oList->selectString($sQ);
 
@@ -108,7 +108,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
         // saving config params
         $this->saveConfVars();
 
-        $oShop = oxNew('oxShop');
+        $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         if ($oShop->loadInLang($this->_iEditLang, $this->getEditObjectId())) {
             //assigning values
             $oShop->setLanguage(0);

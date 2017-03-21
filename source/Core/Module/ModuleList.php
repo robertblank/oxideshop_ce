@@ -402,7 +402,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModule()
     {
-        return oxNew('oxModule');
+        return oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
     }
 
     /**
@@ -599,7 +599,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModuleValidatorFactory()
     {
-        return oxNew('oxModuleValidatorFactory');
+        return oxNew(\OxidEsales\Eshop\Core\Module\ModuleValidatorFactory::class);
     }
 
     /**

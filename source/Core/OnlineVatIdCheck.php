@@ -22,7 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxCompanyVatIn;
+use \OxidEsales\Eshop\Application\Model\CompanyVatIn;
 use stdClass;
 use oxRegistry;
 use oxInputException;
@@ -81,7 +81,7 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
     /**
      * Validates VAT.
      *
-     * @param oxCompanyVatIn $oVatIn Company VAT identification number object.
+     * @param \OxidEsales\Eshop\Application\Model\CompanyVatIn $oVatIn Company VAT identification number object.
      *
      * @return bool
      */
@@ -116,7 +116,7 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
         $sLogMessage = "Warning: $sErrStr in $sErrFile on line $iErrLine";
 
         // fetching exception log file name
-        $oEx = oxNew("oxException");
+        $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
         $sLogFileName = $oEx->getLogFileName();
 
         // logs error message

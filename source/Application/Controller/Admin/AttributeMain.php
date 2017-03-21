@@ -46,7 +46,7 @@ class AttributeMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
         $myConfig = $this->getConfig();
 
-        $oAttr = oxNew("oxattribute");
+        $oAttr = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
 
         // copy this tree for our article choose
@@ -84,7 +84,7 @@ class AttributeMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $this->_aViewData["edit"] = $oAttr;
 
         if ($myConfig->getRequestParameter("aoc")) {
-            $oAttributeMainAjax = oxNew('attribute_main_ajax');
+            $oAttributeMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\AttributeMainAjax::class);
             $this->_aViewData['oxajax'] = $oAttributeMainAjax->getColumns();
 
             return "popups/attribute_main.tpl";
@@ -105,7 +105,7 @@ class AttributeMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $oAttr = oxNew("oxattribute");
+        $oAttr = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);
 
         if ($soxId != "-1") {
             $oAttr->loadInLang($this->_iEditLang, $soxId);
@@ -140,7 +140,7 @@ class AttributeMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $oAttr = oxNew("oxattribute");
+        $oAttr = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);
 
         if ($soxId != "-1") {
             $oAttr->loadInLang($this->_iEditLang, $soxId);

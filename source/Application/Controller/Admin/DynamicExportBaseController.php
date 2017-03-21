@@ -166,10 +166,10 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
     public function createMainExportView()
     {
         // parent categorie tree
-        $this->_aViewData["cattree"] = oxNew("oxCategoryList");
+        $this->_aViewData["cattree"] = oxNew(\OxidEsales\Eshop\Application\Model\CategoryList::class);
         $this->_aViewData["cattree"]->loadList();
 
-        $oLangObj = oxNew('oxLang');
+        $oLangObj = oxNew(\OxidEsales\Eshop\Core\Language::class);
         $aLangs = $oLangObj->getLanguageArray();
         foreach ($aLangs as $id => $language) {
             $language->selected = ($id == $this->_iEditLang);
@@ -400,7 +400,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
     /**
      * Loads article default category
      *
-     * @param oxarticle $oArticle Article object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle Article object
      *
      * @return record set
      */
@@ -454,7 +454,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
     /**
      * Searches for deepest path to a categorie this article is assigned to
      *
-     * @param oxarticle $oArticle article object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      *
      * @return string
      */
@@ -663,7 +663,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
             $iExpLang = oxRegistry::getSession()->getVariable("iExportLanguage");
         }
 
-        $oArticle = oxNew('oxArticle');
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->setLanguage($iExpLang);
 
         $sO2CView = getViewName('oxobject2category', $iExpLang);
@@ -829,7 +829,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
     /**
      * finds deepest category path
      *
-     * @param oxarticle $oArticle article object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      *
      * @return string
      */
@@ -878,7 +878,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
     {
         $oRs = $this->getDb()->selectLimit("select oxid from $sHeapTable", 1, $iCnt);
         if ($oRs != false && $oRs->count() > 0) {
-            $oArticle = oxNew('oxArticle');
+            $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             $oArticle->setLoadParentData(true);
 
             $oArticle->setLanguage(oxRegistry::getSession()->getVariable("iExportLanguage"));
@@ -904,9 +904,9 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
     /**
      * sets detail link for campaigns
      *
-     * @param oxarticle $oArticle article object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      *
-     * @return oxarticle
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     protected function _setCampaignDetailLink($oArticle)
     {
@@ -939,9 +939,9 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
     /**
      * Updates Article object. Method is used for overriding.
      *
-     * @param oxArticle $article
+     * @param \OxidEsales\Eshop\Application\Model\Article $article
      *
-     * @return oxArticle
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     protected function updateArticle($article)
     {

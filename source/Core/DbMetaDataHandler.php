@@ -579,7 +579,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
         $success = true;
         foreach ($shops as $shopValues) {
             $shopId = $shopValues[0];
-            $shop = oxNew('oxShop');
+            $shop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
             $shop->load($shopId);
             $shop->setMultiShopTables($tables);
             $mallInherit = array();

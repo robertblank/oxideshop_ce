@@ -48,7 +48,7 @@ class DeliverySetMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $odeliveryset = oxNew("oxdeliveryset");
+            $odeliveryset = oxNew(\OxidEsales\Eshop\Application\Model\DeliverySet::class);
             $odeliveryset->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $odeliveryset->getAvailableInLangs();
@@ -78,7 +78,7 @@ class DeliverySetMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         }
 
         if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-            $oDeliverysetMainAjax = oxNew('deliveryset_main_ajax');
+            $oDeliverysetMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetMainAjax::class);
             $this->_aViewData['oxajax'] = $oDeliverysetMainAjax->getColumns();
 
             return "popups/deliveryset_main.tpl";
@@ -99,7 +99,7 @@ class DeliverySetMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $oDelSet = oxNew("oxdeliveryset");
+        $oDelSet = oxNew(\OxidEsales\Eshop\Application\Model\DeliverySet::class);
 
         if ($soxId != "-1") {
             $oDelSet->loadInLang($this->_iEditLang, $soxId);
@@ -142,7 +142,7 @@ class DeliverySetMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             $aParams['oxdeliveryset__oxactive'] = 0;
         }
 
-        $oDelSet = oxNew("oxdeliveryset");
+        $oDelSet = oxNew(\OxidEsales\Eshop\Application\Model\DeliverySet::class);
 
         if ($soxId != "-1") {
             $oDelSet->loadInLang($this->_iEditLang, $soxId);

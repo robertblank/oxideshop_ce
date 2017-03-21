@@ -27,7 +27,7 @@ use oxField;
 use oxRegistry;
 use oxDb;
 use oxStr;
-use oxConfig;
+use \OxidEsales\Eshop\Core\Config;
 use Exception;
 
 /**
@@ -284,7 +284,7 @@ class Email extends \PHPMailer
      */
     protected $_sCharSet = null;
 
-    /** @var oxConfig */
+    /** @var \OxidEsales\Eshop\Core\Config */
     protected $_oConfig = null;
 
     /**
@@ -337,7 +337,7 @@ class Email extends \PHPMailer
     /**
      * oxConfig instance getter
      *
-     * @return oxConfig
+     * @return \OxidEsales\Eshop\Core\Config
      */
     public function getConfig()
     {
@@ -351,7 +351,7 @@ class Email extends \PHPMailer
     /**
      * oxConfig instance setter
      *
-     * @param oxConfig $config config object
+     * @param \OxidEsales\Eshop\Core\Config $config config object
      */
     public function setConfig($config)
     {
@@ -462,7 +462,7 @@ class Email extends \PHPMailer
     /**
      * Sets SMTP mailer parameters, such as user name, password, location.
      *
-     * @param oxShop $shop Object, that keeps base shop info
+     * @param \OxidEsales\Eshop\Application\Model\Shop $shop Object, that keeps base shop info
      *
      * @return null
      */
@@ -524,7 +524,7 @@ class Email extends \PHPMailer
      * Sets mailer additional settings and sends ordering mail to user.
      * Returns true on success.
      *
-     * @param oxOrder $order   Order object
+     * @param \OxidEsales\Eshop\Application\Model\Order $order   Order object
      * @param string  $subject user defined subject [optional]
      *
      * @return bool
@@ -579,7 +579,7 @@ class Email extends \PHPMailer
      * Sets mailer additional settings and sends ordering mail to shop owner.
      * Returns true on success.
      *
-     * @param oxOrder $order   Order object
+     * @param \OxidEsales\Eshop\Application\Model\Order $order   Order object
      * @param string  $subject user defined subject [optional]
      *
      * @return bool
@@ -656,13 +656,13 @@ class Email extends \PHPMailer
     /**
      * Method is called when order email is sent to owner.
      *
-     * @param oxUser  $user
-     * @param oxOrder $order
+     * @param \OxidEsales\Eshop\Application\Model\User  $user
+     * @param \OxidEsales\Eshop\Application\Model\Order $order
      */
     protected function onOrderEmailToOwnerSent($user, $order)
     {
         // add user history
-        $remark = oxNew("oxRemark");
+        $remark = oxNew(\OxidEsales\Eshop\Application\Model\Remark::class);
         $remark->oxremark__oxtext = new oxField($this->getAltBody(), oxField::T_RAW);
         $remark->oxremark__oxparentid = new oxField($user->getId(), oxField::T_RAW);
         $remark->oxremark__oxtype = new oxField("o", oxField::T_RAW);
@@ -673,7 +673,7 @@ class Email extends \PHPMailer
      * Sets mailer additional settings and sends registration mail to user.
      * Returns true on success.
      *
-     * @param oxUser $user    user object
+     * @param \OxidEsales\Eshop\Application\Model\User $user    user object
      * @param string $subject user defined subject [optional]
      *
      * @return bool
@@ -693,7 +693,7 @@ class Email extends \PHPMailer
      * Sets mailer additional settings and sends registration mail to user.
      * Returns true on success.
      *
-     * @param oxUser $user    user object
+     * @param \OxidEsales\Eshop\Application\Model\User $user    user object
      * @param string $subject user defined subject [optional]
      *
      * @return bool
@@ -763,7 +763,7 @@ class Email extends \PHPMailer
 
         $select = "select oxid from oxuser where $where $order";
         if (($oxId = $db->getOne($select))) {
-            $user = oxNew('oxuser');
+            $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             if ($user->load($oxId)) {
                 // create messages
                 $smarty = $this->_getSmarty();
@@ -828,7 +828,7 @@ class Email extends \PHPMailer
      * Sets mailer additional settings and sends "NewsletterDBOptInMail" mail to user.
      * Returns true on success.
      *
-     * @param oxUser $user    user object
+     * @param \OxidEsales\Eshop\Application\Model\User $user    user object
      * @param string $subject user defined subject [optional]
      *
      * @return bool
@@ -892,8 +892,8 @@ class Email extends \PHPMailer
      * Sets mailer additional settings and sends "newsletter" mail to user.
      * Returns true on success.
      *
-     * @param oxNewsletter $newsLetter newsletter object
-     * @param oxUser       $user       user object
+     * @param \OxidEsales\Eshop\Application\Model\Newsletter $newsLetter newsletter object
+     * @param \OxidEsales\Eshop\Application\Model\User       $user       user object
      * @param string       $subject    user defined subject [optional]
      *
      * @return bool
@@ -1050,7 +1050,7 @@ class Email extends \PHPMailer
      * Sets mailer additional settings and sends "SendedNowMail" mail to user.
      * Returns true on success.
      *
-     * @param oxOrder $order   order object
+     * @param \OxidEsales\Eshop\Application\Model\Order $order   order object
      * @param string  $subject user defined subject [optional]
      *
      * @return bool
@@ -1075,7 +1075,7 @@ class Email extends \PHPMailer
 
         if ($myConfig->getConfigParam("bl_perfLoadReviews")) {
             $this->setViewData("blShowReviewLink", true);
-            $user = oxNew('oxuser');
+            $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             $this->setViewData("reviewuserhash", $user->getReviewUserHash($order->oxorder__oxuserid->value));
         }
 
@@ -1116,7 +1116,7 @@ class Email extends \PHPMailer
      * Sets mailer additional settings and sends "SendDownloadLinks" mail to user.
      * Returns true on success.
      *
-     * @param oxOrder $order   order object
+     * @param \OxidEsales\Eshop\Application\Model\Order $order   order object
      * @param string  $subject user defined subject [optional]
      *
      * @return bool
@@ -1139,7 +1139,7 @@ class Email extends \PHPMailer
         $this->setViewData("order", $order);
         $this->setViewData("shopTemplateDir", $myConfig->getTemplateDir(false));
 
-        $user = oxNew('oxuser');
+        $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $this->setViewData("reviewuserhash", $user->getReviewUserHash($order->oxorder__oxuserid->value));
 
         // Process view data array through oxoutput processor
@@ -1279,7 +1279,7 @@ class Email extends \PHPMailer
     {
         $send = false;
 
-        $articleList = oxNew("oxArticleList");
+        $articleList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $articleList->loadStockRemindProducts($basketContents);
 
         // nothing to remind?
@@ -1312,7 +1312,7 @@ class Email extends \PHPMailer
      * Sets mailer additional settings and sends "WishlistMail" mail to user.
      * Returns true on success.
      *
-     * @param oxUser|object $params Mailing parameters object
+     * @param \OxidEsales\Eshop\Application\Model\User|object $params Mailing parameters object
      *
      * @return bool
      */
@@ -1346,7 +1346,7 @@ class Email extends \PHPMailer
      * Returns true on success.
      *
      * @param array        $params  Parameters array
-     * @param oxPriceAlarm $alarm   oxPriceAlarm object
+     * @param \OxidEsales\Eshop\Application\Model\PriceAlarm $alarm   oxPriceAlarm object
      * @param string       $subject user defined subject [optional]
      *
      * @return bool
@@ -1361,7 +1361,7 @@ class Email extends \PHPMailer
 
         $alarmLang = $alarm->oxpricealarm__oxlang->value;
 
-        $article = oxNew("oxArticle");
+        $article = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         //$article->setSkipAbPrice( true );
         $article->loadInLang($alarmLang, $params['aid']);
         $lang = oxRegistry::getLang();
@@ -1389,7 +1389,7 @@ class Email extends \PHPMailer
      * Returns true on success.
      *
      * @param string       $recipient      email
-     * @param oxPriceAlarm $alarm          oxPriceAlarm object
+     * @param \OxidEsales\Eshop\Application\Model\PriceAlarm $alarm          oxPriceAlarm object
      * @param string       $body           optional mail body
      * @param bool         $returnMailBody returns mail body instead of sending
      *
@@ -1402,7 +1402,7 @@ class Email extends \PHPMailer
         $shop = $this->_getShop();
 
         if ($shop->getId() != $alarm->oxpricealarm__oxshopid->value) {
-            $shop = oxNew("oxshop");
+            $shop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
             $shop->load($alarm->oxpricealarm__oxshopid->value);
             $this->setShop($shop);
         }
@@ -1465,7 +1465,7 @@ class Email extends \PHPMailer
                 $imageCache = array();
                 $myUtils = oxRegistry::getUtils();
                 $myUtilsObject = $this->getUtilsObjectInstance();
-                $imgGenerator = oxNew("oxDynImgGenerator");
+                $imgGenerator = oxNew(\OxidEsales\Eshop\Core\DynamicImageGenerator::class);
 
                 foreach ($matches as $image) {
                     $imageName = $image[1];
@@ -1644,7 +1644,7 @@ class Email extends \PHPMailer
      */
     public function setReplyTo($email = null, $name = null)
     {
-        if (!oxNew('oxMailValidator')->isValidEmail($email)) {
+        if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($email)) {
             $email = $this->_getShop()->oxshops__oxorderemail->value;
         }
 
@@ -1915,9 +1915,9 @@ class Email extends \PHPMailer
      * This method is called from oxEmail::sendOrderEMailToUser() to do
      * additional operation with order object before sending email
      *
-     * @param oxOrder $order Ordering object
+     * @param \OxidEsales\Eshop\Application\Model\Order $order Ordering object
      *
-     * @return oxOrder
+     * @return \OxidEsales\Eshop\Application\Model\Order
      */
     protected function _addUserInfoOrderEMail($order)
     {
@@ -1929,9 +1929,9 @@ class Email extends \PHPMailer
      * This method is called from oxEmail::SendRegisterEMail() to do
      * additional operation with user object before sending email
      *
-     * @param oxUser $user User object
+     * @param \OxidEsales\Eshop\Application\Model\User $user User object
      *
-     * @return oxUser
+     * @return \OxidEsales\Eshop\Application\Model\User
      */
     protected function _addUserRegisterEmail($user)
     {
@@ -1943,9 +1943,9 @@ class Email extends \PHPMailer
      * This method is called from oxemail::SendForgotPWDEMail() to do
      * additional operation with shop object before sending email
      *
-     * @param oxShop $shop Shop object
+     * @param \OxidEsales\Eshop\Application\Model\Shop $shop Shop object
      *
-     * @return oxShop
+     * @return \OxidEsales\Eshop\Application\Model\Shop
      */
     protected function _addForgotPwdEmail($shop)
     {
@@ -1957,9 +1957,9 @@ class Email extends \PHPMailer
      * This method is called from oxEmail::SendNewsletterDBOptInMail() to do
      * additional operation with user object before sending email
      *
-     * @param oxUser $user User object
+     * @param \OxidEsales\Eshop\Application\Model\User $user User object
      *
-     * @return oxUser
+     * @return \OxidEsales\Eshop\Application\Model\User
      */
     protected function _addNewsletterDbOptInMail($user)
     {
@@ -1981,7 +1981,7 @@ class Email extends \PHPMailer
     /**
      * Set mail From, FromName, SMTP values
      *
-     * @param oxShop $shop Shop object
+     * @param \OxidEsales\Eshop\Application\Model\Shop $shop Shop object
      */
     protected function _setMailParams($shop = null)
     {
@@ -2002,7 +2002,7 @@ class Email extends \PHPMailer
      * @param int $langId language id
      * @param int $shopId shop id
      *
-     * @return oxShop
+     * @return \OxidEsales\Eshop\Application\Model\Shop
      */
     protected function _getShop($langId = null, $shopId = null)
     {
@@ -2016,7 +2016,7 @@ class Email extends \PHPMailer
 
         $myConfig = $this->getConfig();
 
-        $shop = oxNew('oxShop');
+        $shop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         if ($shopId !== null) {
             $shop->setShopId($shopId);
         }
@@ -2032,7 +2032,7 @@ class Email extends \PHPMailer
      * Sets smtp authentification parameters.
      *
      * @param string $userName     smtp user
-     * @param oxShop $userPassword smtp password
+     * @param \OxidEsales\Eshop\Application\Model\Shop $userPassword smtp password
      */
     protected function _setSmtpAuthInfo($userName = null, $userPassword = null)
     {
@@ -2065,7 +2065,7 @@ class Email extends \PHPMailer
      */
     protected function _makeOutputProcessing()
     {
-        $output = oxNew("oxOutput");
+        $output = oxNew(\OxidEsales\Eshop\Core\Output::class);
         $this->setBody($output->process($this->getBody(), "oxemail"));
         $this->setAltBody($output->process($this->getAltBody(), "oxemail"));
         $output->processEmail($this);
@@ -2082,7 +2082,7 @@ class Email extends \PHPMailer
         try {
             $result = parent::send();
         } catch (Exception $exception) {
-            $ex = oxNew("oxException");
+            $ex = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
             $ex->setMessage($exception->getMessage());
             $ex->debugOut();
             if ($this->getConfig()->getConfigParam('iDebug') != 0) {
@@ -2100,7 +2100,7 @@ class Email extends \PHPMailer
     protected function _processViewArray()
     {
         $smarty = $this->_getSmarty();
-        $outputProcessor = oxNew("oxOutput");
+        $outputProcessor = oxNew(\OxidEsales\Eshop\Core\Output::class);
 
         // processing all view data
         foreach ($this->_aViewData as $key => $value) {
@@ -2132,7 +2132,7 @@ class Email extends \PHPMailer
     /**
      * Get shop object
      *
-     * @return oxShop
+     * @return \OxidEsales\Eshop\Application\Model\Shop
      */
     public function getShop()
     {
@@ -2142,7 +2142,7 @@ class Email extends \PHPMailer
     /**
      * Set shop object
      *
-     * @param oxShop $shop shop object
+     * @param \OxidEsales\Eshop\Application\Model\Shop $shop shop object
      */
     public function setShop($shop)
     {
@@ -2219,7 +2219,7 @@ class Email extends \PHPMailer
     /**
      * Set user to view data
      *
-     * @param oxUser $user user object
+     * @param \OxidEsales\Eshop\Application\Model\User $user user object
      */
     public function setUser($user)
     {
@@ -2229,7 +2229,7 @@ class Email extends \PHPMailer
     /**
      * Get user
      *
-     * @return oxUser
+     * @return \OxidEsales\Eshop\Application\Model\User
      */
     public function getUser()
     {
@@ -2245,7 +2245,7 @@ class Email extends \PHPMailer
      */
     public function getOrderFileList($orderId)
     {
-        $orderList = oxNew('oxOrderFileList');
+        $orderList = oxNew(\OxidEsales\Eshop\Application\Model\OrderFileList::class);
         $orderList->loadOrderFiles($orderId);
 
         if (count($orderList) > 0) {

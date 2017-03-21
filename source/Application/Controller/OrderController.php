@@ -228,7 +228,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
         $oBasket = $this->getSession()->getBasket();
         if ($oBasket->getProductsCount()) {
             try {
-                $oOrder = oxNew('oxorder');
+                $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
 
                 //finalizing ordering process (validating, storing order into DB, executing payment, setting status ...)
                 $iSuccess = $oOrder->finalizeOrder($oBasket, $oUser);
@@ -264,7 +264,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
 
             // payment is set ?
             $sPaymentid = $oBasket->getPaymentId();
-            $oPayment = oxNew('oxpayment');
+            $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
 
             if ($sPaymentid && $oPayment->load($sPaymentid) &&
                 $oPayment->isValidPayment(
@@ -352,7 +352,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     {
         if ($this->_oDelAddress === null) {
             $this->_oDelAddress = false;
-            $oOrder = oxNew('oxorder');
+            $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
             $this->_oDelAddress = $oOrder->getDelAddressInfo();
         }
 
@@ -369,7 +369,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
         if ($this->_oShipSet === null) {
             $this->_oShipSet = false;
             if ($oBasket = $this->getBasket()) {
-                $oShipSet = oxNew('oxdeliveryset');
+                $oShipSet = oxNew(\OxidEsales\Eshop\Application\Model\DeliverySet::class);
                 if ($oShipSet->load($oBasket->getShippingId())) {
                     $this->_oShipSet = $oShipSet;
                 }
@@ -433,7 +433,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
         if ($this->_iWrapCnt === null) {
             $this->_iWrapCnt = 0;
 
-            $oWrap = oxNew('oxwrapping');
+            $oWrap = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class);
             $this->_iWrapCnt += $oWrap->getWrappingCount('WRAP');
             $this->_iWrapCnt += $oWrap->getWrappingCount('CARD');
         }
@@ -483,7 +483,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
 
         // delivery address
         if (oxRegistry::getSession()->getVariable('deladrid')) {
-            $oDelAdress = oxNew('oxAddress');
+            $oDelAdress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
             $oDelAdress->load(oxRegistry::getSession()->getVariable('deladrid'));
 
             $sDelAddress .= $oDelAdress->getEncodedDeliveryAddress();

@@ -299,7 +299,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sArticleTable = $oBaseObject->getViewName();
         $sArticleFields = $oBaseObject->getSelectFields();
 
-        $oBase = oxNew("oxActions");
+        $oBase = oxNew(\OxidEsales\Eshop\Application\Model\Actions::class);
         $sActiveSql = $oBase->getSqlActiveSnippet();
         $sViewName = $oBase->getViewName();
 
@@ -822,7 +822,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             // recalculate oxvarminprice and oxvarmaxprice for parent
             if (is_array($aUpdatedArticleIds)) {
                 foreach ($aUpdatedArticleIds as $sArticleId) {
-                    $oArticle = oxNew('oxArticle');
+                    $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                     $oArticle->load($sArticleId);
                     $oArticle->onChange();
                 }

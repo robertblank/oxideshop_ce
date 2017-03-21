@@ -49,7 +49,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * User object
      *
-     * @var oxUser
+     * @var \OxidEsales\Eshop\Application\Model\User
      */
     protected $_oUser = null;
 
@@ -91,7 +91,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
      * assigned users, countries or user groups. Performs
      * additional filtering according to these parameters
      *
-     * @param oxUser $oUser      user object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser      user object
      * @param string $sCountryId user country id
      *
      * @return array
@@ -132,7 +132,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Creates delivery set list filter SQL to load current state delivery set list
      *
-     * @param oxUser $oUser      user object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser      user object
      * @param string $sCountryId user country id
      *
      * @return string
@@ -195,7 +195,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Creates current state delivery set list
      *
-     * @param oxUser $oUser      user object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser      user object
      * @param string $sCountryId user country id
      * @param string $sDelSet    preferred delivery set ID (optional)
      *
@@ -227,7 +227,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
      *   3. payment list for active ship set (array)
      *
      * @param string $sShipSet current ship set id (can be null if not set yet)
-     * @param oxUser $oUser    active user
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser    active user
      * @param double $oBasket  basket object
      *
      * @return array
@@ -281,7 +281,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Get current user object. If user is not set, try to get current user.
      *
-     * @return oxUser
+     * @return \OxidEsales\Eshop\Application\Model\User
      */
     public function getUser()
     {
@@ -295,7 +295,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Set current user object
      *
-     * @param oxUser $oUser user object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser user object
      */
     public function setUser($oUser)
     {

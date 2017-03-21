@@ -50,7 +50,7 @@ class NewsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oNews = oxNew("oxNews");
+            $oNews = oxNew(\OxidEsales\Eshop\Application\Model\News::class);
             $oNews->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oNews->getAvailableInLangs();
@@ -76,7 +76,7 @@ class NewsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
             }
         }
         if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-            $oNewsMainAjax = oxNew('news_main_ajax');
+            $oNewsMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\NewsMainAjax::class);
             $this->_aViewData['oxajax'] = $oNewsMainAjax->getColumns();
 
             return "popups/news_main.tpl";
@@ -111,7 +111,7 @@ class NewsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $oConvObject->value = $aParams['oxnews__oxdate'];
         $aParams['oxnews__oxdate'] = oxRegistry::get("oxUtilsDate")->convertDBDate($oConvObject, true);
 
-        $oNews = oxNew("oxnews");
+        $oNews = oxNew(\OxidEsales\Eshop\Application\Model\News::class);
 
         if ($soxId != "-1") {
             $oNews->loadInLang($this->_iEditLang, $soxId);
@@ -162,7 +162,7 @@ class NewsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $oConvObject->value = $aParams['oxnews__oxdate'];
         $aParams['oxnews__oxdate'] = oxRegistry::get("oxUtilsDate")->convertDBDate($oConvObject, true);
 
-        $oNews = oxNew("oxnews");
+        $oNews = oxNew(\OxidEsales\Eshop\Application\Model\News::class);
 
         if ($soxId != "-1") {
             $oNews->loadInLang($this->_iEditLang, $soxId);

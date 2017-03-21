@@ -22,10 +22,10 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxCurl;
-use oxOnlineServerEmailBuilder;
-use oxSimpleXml;
-use oxOnlineRequest;
+use \OxidEsales\Eshop\Core\Curl;
+use \OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
+use \OxidEsales\Eshop\Core\SimpleXml;
+use \OxidEsales\Eshop\Core\OnlineRequest;
 use oxRegistry;
 use oxException;
 use Exception;
@@ -50,17 +50,17 @@ abstract class OnlineCaller
     const CURL_CONNECT_TIMEOUT = 3;
 
     /**
-     * @var oxCurl
+     * @var \OxidEsales\Eshop\Core\Curl
      */
     private $_oCurl;
 
     /**
-     * @var oxOnlineServerEmailBuilder
+     * @var \OxidEsales\Eshop\Core\OnlineServerEmailBuilder
      */
     private $_oEmailBuilder;
 
     /**
-     * @var oxSimpleXml
+     * @var \OxidEsales\Eshop\Core\SimpleXml
      */
     private $_oSimpleXml;
 
@@ -81,9 +81,9 @@ abstract class OnlineCaller
     /**
      * Sets dependencies.
      *
-     * @param oxCurl                     $oCurl         Sends request to OXID servers.
-     * @param oxOnlineServerEmailBuilder $oEmailBuilder Forms email when OXID servers are unreachable.
-     * @param oxSimpleXml                $oSimpleXml    Forms XML from Request for sending to OXID servers.
+     * @param \OxidEsales\Eshop\Core\Curl                     $oCurl         Sends request to OXID servers.
+     * @param \OxidEsales\Eshop\Core\OnlineServerEmailBuilder $oEmailBuilder Forms email when OXID servers are unreachable.
+     * @param \OxidEsales\Eshop\Core\SimpleXml                $oSimpleXml    Forms XML from Request for sending to OXID servers.
      */
     public function __construct(\OxidEsales\Eshop\Core\Curl $oCurl, \OxidEsales\Eshop\Core\OnlineServerEmailBuilder $oEmailBuilder, \OxidEsales\Eshop\Core\SimpleXml $oSimpleXml)
     {
@@ -95,7 +95,7 @@ abstract class OnlineCaller
     /**
      * Makes curl call with given parameters to given url.
      *
-     * @param oxOnlineRequest $oRequest Information set in Request object will be sent to OXID servers.
+     * @param \OxidEsales\Eshop\Core\OnlineRequest $oRequest Information set in Request object will be sent to OXID servers.
      *
      * @return null|string In XML format.
      */
@@ -108,7 +108,7 @@ abstract class OnlineCaller
             $sOutputXml = $this->_executeCurlCall($this->_getServiceUrl(), $sXml);
             if ($this->_getCurl()->getStatusCode() != 200) {
                 /** @var oxException $oException */
-                $oException = oxNew('oxException');
+                $oException = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
                 throw $oException;
             }
             $this->_resetFailedCallsCount($iFailedCallsCount);
@@ -134,7 +134,7 @@ abstract class OnlineCaller
     protected function _castExceptionAndWriteToLog(Exception $oEx)
     {
         if (!($oEx instanceof \OxidEsales\Eshop\Core\Exception\StandardException)) {
-            $oOxException = oxNew("oxException");
+            $oOxException = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
             $oOxException->setMessage($oEx->getMessage());
             $oOxException->debugOut();
         } else {
@@ -145,7 +145,7 @@ abstract class OnlineCaller
     /**
      * Forms email.
      *
-     * @param oxOnlineRequest $oRequest Request object from which email should be formed.
+     * @param \OxidEsales\Eshop\Core\OnlineRequest $oRequest Request object from which email should be formed.
      *
      * @return string
      */
@@ -157,7 +157,7 @@ abstract class OnlineCaller
     /**
      * Forms XML request.
      *
-     * @param oxOnlineRequest $oRequest Request object from which server request should be formed.
+     * @param \OxidEsales\Eshop\Core\OnlineRequest $oRequest Request object from which server request should be formed.
      *
      * @return string
      */
@@ -169,7 +169,7 @@ abstract class OnlineCaller
     /**
      * Gets simple XML.
      *
-     * @return oxSimpleXml
+     * @return \OxidEsales\Eshop\Core\SimpleXml
      */
     protected function _getSimpleXml()
     {
@@ -189,7 +189,7 @@ abstract class OnlineCaller
     /**
      * Gets email builder.
      *
-     * @return oxOnlineServerEmailBuilder
+     * @return \OxidEsales\Eshop\Core\OnlineServerEmailBuilder
      */
     protected function _getEmailBuilder()
     {

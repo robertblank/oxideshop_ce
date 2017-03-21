@@ -21,7 +21,7 @@
  */
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxException;
+use \OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
@@ -342,7 +342,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         }
 
         startProfile('executeMaintenanceTasks');
-        oxNew("oxArticleList")->updateUpcomingPrices();
+        oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class)->updateUpcomingPrices();
         stopProfile('executeMaintenanceTasks');
     }
 
@@ -487,7 +487,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         // check if template dir exists
         $templateFile = $this->getConfig()->getTemplatePath($templateName, $this->isAdmin());
         if (!file_exists($templateFile)) {
-            $ex = oxNew('oxSystemComponentException');
+            $ex = oxNew(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
             $ex->setMessage('EXCEPTION_SYSTEMCOMPONENT_TEMPLATENOTFOUND');
             $ex->setComponent($templateName);
 
@@ -533,7 +533,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected function _getOutputManager()
     {
         if (!$this->_oOutput) {
-            $this->_oOutput = oxNew('oxOutput');
+            $this->_oOutput = oxNew(\OxidEsales\Eshop\Core\Output::class);
         }
 
         return $this->_oOutput;
@@ -592,7 +592,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             // check if setup is still there
             if (file_exists($config->getConfigParam('sShopDir') . '/Setup/index.php')) {
                 $tpl = 'message/err_setup.tpl';
-                $activeView = oxNew('oxUBase');
+                $activeView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
                 $smarty = oxRegistry::get("oxUtilsView")->getSmarty();
                 $smarty->assign('oView', $activeView);
                 $smarty->assign('oViewConf', $activeView->getViewConfig());
@@ -675,7 +675,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     {
         if ($this->_isDebugMode() && !$this->isAdmin()) {
             $debugLevel = $this->getConfig()->getConfigParam('iDebug');
-            $debugInfo = oxNew('oxDebugInfo');
+            $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);
 
             $logId = md5(time() . rand() . rand());
             $header = $debugInfo->formatGeneralInfo();
@@ -711,7 +711,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function formMonitorMessage($view)
     {
-        $debugInfo = oxNew('oxDebugInfo');
+        $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);
 
         $debugLevel = $this->getConfig()->getConfigParam('iDebug');
 
@@ -736,7 +736,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * Shows exceptionError page.
      * possible reason: class does not exist etc. --> just redirect to start page.
      *
-     * @param oxException $exception
+     * @param \OxidEsales\Eshop\Core\Exception\StandardException $exception
      */
     protected function _handleSystemException($exception)
     {
@@ -766,7 +766,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     /**
      * Redirect to start page, in debug mode shows error message.
      *
-     * @param oxException $exception Exception
+     * @param \OxidEsales\Eshop\Core\Exception\StandardException $exception Exception
      */
     protected function _handleCookieException($exception)
     {
@@ -830,7 +830,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     /**
      * Handling other not caught exceptions.
      *
-     * @param oxException $exception
+     * @param \OxidEsales\Eshop\Core\Exception\StandardException $exception
      */
     protected function _handleBaseException($exception)
     {

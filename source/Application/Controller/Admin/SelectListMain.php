@@ -56,7 +56,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $sArticleTable = getViewName('oxarticles');
 
         //create empty edit object
-        $this->_aViewData["edit"] = oxNew("oxselectlist");
+        $this->_aViewData["edit"] = oxNew(\OxidEsales\Eshop\Application\Model\SelectList::class);
 
         if (isset($sOxId) && $sOxId != "-1") {
             // generating category tree for select list
@@ -65,7 +65,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             $this->_createCategoryTree("artcattree", $sOxId);
 
             // load object
-            $oAttr = oxNew("oxselectlist");
+            $oAttr = oxNew(\OxidEsales\Eshop\Application\Model\SelectList::class);
             $oAttr->loadInLang($this->_iEditLang, $sOxId);
 
             $aFieldList = $oAttr->getFieldList();
@@ -112,7 +112,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             oxRegistry::getSession()->setVariable("iErrorCode", ERR_SUCCESS);
         }
         if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-            $oSelectlistMainAjax = oxNew('selectlist_main_ajax');
+            $oSelectlistMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\SelectListMainAjax::class);
             $this->_aViewData['oxajax'] = $oSelectlistMainAjax->getColumns();
 
             return "popups/selectlist_main.tpl";
@@ -133,7 +133,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $sOxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $oAttr = oxNew("oxselectlist");
+        $oAttr = oxNew(\OxidEsales\Eshop\Application\Model\SelectList::class);
 
         if ($sOxId != "-1") {
             $oAttr->loadInLang($this->_iEditLang, $sOxId);
@@ -184,7 +184,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $sOxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $oObj = oxNew("oxselectlist");
+        $oObj = oxNew(\OxidEsales\Eshop\Application\Model\SelectList::class);
 
         if ($sOxId != "-1") {
             $oObj->loadInLang($this->_iEditLang, $sOxId);
@@ -218,7 +218,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      */
     public function delFields()
     {
-        $oSelectlist = oxNew("oxselectlist");
+        $oSelectlist = oxNew(\OxidEsales\Eshop\Application\Model\SelectList::class);
         if ($oSelectlist->loadInLang($this->_iEditLang, $this->getEditObjectId())) {
             // Disable editing for derived items.
             if ($oSelectlist->isDerived()) {
@@ -250,7 +250,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      */
     public function addField()
     {
-        $oSelectlist = oxNew("oxselectlist");
+        $oSelectlist = oxNew(\OxidEsales\Eshop\Application\Model\SelectList::class);
         if ($oSelectlist->loadInLang($this->_iEditLang, $this->getEditObjectId())) {
             //Disable editing for derived items.
             if ($oSelectlist->isDerived()) {
@@ -298,7 +298,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
         $aChangeFields = oxRegistry::getConfig()->getRequestParameter("aFields");
         if (is_array($aChangeFields) && count($aChangeFields)) {
-            $oSelectlist = oxNew("oxselectlist");
+            $oSelectlist = oxNew(\OxidEsales\Eshop\Application\Model\SelectList::class);
             if ($oSelectlist->loadInLang($this->_iEditLang, $this->getEditObjectId())) {
                 $this->aFieldArray = oxRegistry::getUtils()->assignValuesFromText($oSelectlist->oxselectlist__oxvaldesc->getRawValue());
                 $sChangeFieldName = $this->parseFieldName($aChangeFields[0]);

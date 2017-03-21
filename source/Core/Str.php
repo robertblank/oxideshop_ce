@@ -60,7 +60,7 @@ class Str
     {
         if (!isset(self::$_oHandler)) {
             //let's init now non-static instance of oxStr to get the instance of str handler
-            self::$_oHandler = oxNew("oxStr")->_getStrHandler();
+            self::$_oHandler = oxNew(\OxidEsales\Eshop\Core\Str::class)->_getStrHandler();
         }
 
         return self::$_oHandler;
@@ -76,9 +76,9 @@ class Str
     protected function _getStrHandler()
     {
         if (function_exists('mb_strlen')) {
-            return oxNew("oxStrMb");
+            return oxNew(\OxidEsales\Eshop\Core\StrMb::class);
         }
 
-        return oxNew("oxStrRegular");
+        return oxNew(\OxidEsales\Eshop\Core\StrRegular::class);
     }
 }

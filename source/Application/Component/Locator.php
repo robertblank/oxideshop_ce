@@ -74,8 +74,8 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     /**
      * Executes locator method according locator type
      *
-     * @param oxarticle $oCurrArticle   current article
-     * @param oxubase   $oLocatorTarget oxubase object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oCurrArticle   current article
+     * @param \OxidEsales\Eshop\Application\Controller\FrontendController   $oLocatorTarget oxubase object
      */
     public function setLocatorData($oCurrArticle, $oLocatorTarget)
     {
@@ -89,8 +89,8 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     /**
      * Sets details locator data for articles that came from regular list.
      *
-     * @param oxUBase   $oLocatorTarget view object
-     * @param oxArticle $oCurrArticle   current article
+     * @param \OxidEsales\Eshop\Application\Controller\FrontendController   $oLocatorTarget view object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oCurrArticle   current article
      */
     protected function _setListLocatorData($oLocatorTarget, $oCurrArticle)
     {
@@ -136,8 +136,8 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     /**
      * Sets details locator data for articles that came from vendor list.
      *
-     * @param oxUBase   $oLocatorTarget oxUBase object
-     * @param oxArticle $oCurrArticle   current article
+     * @param \OxidEsales\Eshop\Application\Controller\FrontendController   $oLocatorTarget oxUBase object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oCurrArticle   current article
      */
     protected function _setVendorLocatorData($oLocatorTarget, $oCurrArticle)
     {
@@ -148,7 +148,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
             $blSeo = $myUtils->seoIsActive();
 
             // loading data for article navigation
-            $oIdList = oxNew("oxArticleList");
+            $oIdList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
             if ($oLocatorTarget->showSorting()) {
                 $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
             }
@@ -182,8 +182,8 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     /**
      * Sets details locator data for articles that came from Manufacturer list.
      *
-     * @param oxubase   $oLocatorTarget oxubase object
-     * @param oxarticle $oCurrArticle   current article
+     * @param \OxidEsales\Eshop\Application\Controller\FrontendController   $oLocatorTarget oxubase object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oCurrArticle   current article
      */
     protected function _setManufacturerLocatorData($oLocatorTarget, $oCurrArticle)
     {
@@ -194,7 +194,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
             $blSeo = $myUtils->seoIsActive();
 
             // loading data for article navigation
-            $oIdList = oxNew("oxArticleList");
+            $oIdList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
             if ($oLocatorTarget->showSorting()) {
                 $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
             }
@@ -238,8 +238,8 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     /**
      * Sets details locator data for articles that came from search list.
      *
-     * @param oxubase   $oLocatorTarget oxubase object
-     * @param oxarticle $oCurrArticle   current article
+     * @param \OxidEsales\Eshop\Application\Controller\FrontendController   $oLocatorTarget oxubase object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oCurrArticle   current article
      */
     protected function _setSearchLocatorData($oLocatorTarget, $oCurrArticle)
     {
@@ -259,7 +259,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
             $sSearchManufacturer = $sSearchManufacturer ? rawurldecode($sSearchManufacturer) : $sSearchManufacturer;
 
             // loading data for article navigation
-            $oIdList = oxNew('oxArticleList');
+            $oIdList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
             if ($oLocatorTarget->showSorting()) {
                 $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
             }
@@ -307,8 +307,8 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      * Template variables:
      * <b>sSearchTitle</b>, <b>searchparamforhtml</b>
      *
-     * @param oxubase   $oLocatorTarget oxubase object
-     * @param oxarticle $oCurrArticle   current article
+     * @param \OxidEsales\Eshop\Application\Controller\FrontendController   $oLocatorTarget oxubase object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oCurrArticle   current article
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      */
@@ -316,7 +316,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     {
         if (($oRecommList = $oLocatorTarget->getActiveRecommList())) {
             // loading data for article navigation
-            $oIdList = oxNew('oxArticleList');
+            $oIdList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
             $oIdList->loadRecommArticleIds($oRecommList->getId(), null);
 
             //page number
@@ -367,7 +367,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     /**
      * Setting product position in list, amount of articles etc
      *
-     * @param oxcategory $oCategory    active category id
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCategory    active category id
      * @param object     $oCurrArticle current article
      * @param string     $sOrderBy     order by fields
      *
@@ -375,7 +375,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      */
     protected function _loadIdsInList($oCategory, $oCurrArticle, $sOrderBy = null)
     {
-        $oIdList = oxNew('oxArticleList');
+        $oIdList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $oIdList->setCustomSorting($sOrderBy);
 
         // additionally check if this category is loaded and is price category ?
@@ -415,8 +415,8 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      * for position in list, article ids list and current article id must be passed
      *
      * @param int       $iPageNr  current page number (user defined or passed by request)
-     * @param oxlist    $oIdList  list of article ids (optional)
-     * @param oxarticle $oArticle active article id (optional)
+     * @param \OxidEsales\Eshop\Core\Model\ListModel    $oIdList  list of article ids (optional)
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle active article id (optional)
      *
      * @return int
      */
@@ -456,9 +456,9 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     /**
      * Searches for current article in article list and sets previous/next product ids
      *
-     * @param oxarticle $oArticle       current Article
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle       current Article
      * @param object    $oIdList        articles list containing only fake article objects !!!
-     * @param oxubase   $oLocatorTarget oxubase object
+     * @param \OxidEsales\Eshop\Application\Controller\FrontendController   $oLocatorTarget oxubase object
      *
      * @return integer
      */
@@ -474,7 +474,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
             $iPos = oxRegistry::getUtils()->arrayStringSearch($sOxid, $aIds);
 
             if (array_key_exists($iPos - 1, $aIds)) {
-                $oBackProduct = oxNew('oxArticle');
+                $oBackProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                 $oBackProduct->modifyCacheKey('_locator');
                 $oBackProduct->setNoVariantLoading(true);
                 if ($oBackProduct->load($aIds[$iPos - 1])) {
@@ -484,7 +484,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
             }
 
             if (array_key_exists($iPos + 1, $aIds)) {
-                $oNextProduct = oxNew('oxArticle');
+                $oNextProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                 $oNextProduct->modifyCacheKey('_locator');
                 $oNextProduct->setNoVariantLoading(true);
                 if ($oNextProduct->load($aIds[$iPos + 1])) {

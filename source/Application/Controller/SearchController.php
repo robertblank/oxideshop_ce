@@ -193,7 +193,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
 
         // searching ..
         /** @var oxSearch $oSearchHandler */
-        $oSearchHandler = oxNew('oxsearch');
+        $oSearchHandler = oxNew(\OxidEsales\Eshop\Application\Model\Search::class);
         $oSearchList = $oSearchHandler->getSearchArticles(
             $sSearchParamForQuery,
             $sInitialSearchCat,
@@ -233,7 +233,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
 
         $oConfig = $this->getConfig();
         if ($oConfig->getConfigParam('bl_rssSearch')) {
-            $oRss = oxNew('oxrssfeed');
+            $oRss = oxNew(\OxidEsales\Eshop\Application\Model\RssFeed::class);
             $sSearch = $oConfig->getRequestParameter('searchparam', true);
             $sCnid = $oConfig->getRequestParameter('searchcnid', true);
             $sVendor = $oConfig->getRequestParameter('searchvendor', true);

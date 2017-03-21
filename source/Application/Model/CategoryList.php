@@ -200,7 +200,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         //excluding long desc
         if (!$this->isAdmin() && !$this->_blHideEmpty && !$this->getLoadFull()) {
-            $oCat = oxNew('oxCategory');
+            $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             if (!($this->_sActCat && $oCat->load($this->_sActCat) && $oCat->oxcategories__oxrootid->value)) {
                 $oCat = null;
                 $this->_sActCat = null;
@@ -225,7 +225,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      * constructs the sql snippet responsible for depth optimizations,
      * loads only selected category's siblings
      *
-     * @param oxCategory $oCat selected category
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCat selected category
      *
      * @return string
      */
@@ -260,7 +260,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      * siblings of the same root (siblings of the category, and parents and
      * grandparents etc)
      *
-     * @param oxCategory $oCat     current category object
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCat     current category object
      * @param array      $aColumns required column names (optional)
      *
      * @return string
@@ -346,7 +346,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected function _ppLoadFullCategory($sId)
     {
         if (isset($this->_aArray[$sId])) {
-            $oNewCat = oxNew('oxCategory');
+            $oNewCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             if ($oNewCat->load($sId)) {
                 // replace aArray object with fully loaded category
                 $this->_aArray[$sId] = $oNewCat;
@@ -398,7 +398,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Getter for active category
      *
-     * @return oxCategory
+     * @return \OxidEsales\Eshop\Application\Model\Category
      */
     public function getClickCat()
     {
@@ -486,7 +486,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected function _ppAddContentCategories()
     {
         // load content pages for adding them into menu tree
-        $oContentList = oxNew("oxContentList");
+        $oContentList = oxNew(\OxidEsales\Eshop\Application\Model\ContentList::class);
         $oContentList->loadCatMenues();
 
         foreach ($oContentList as $sCatId => $aContent) {

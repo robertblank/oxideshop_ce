@@ -130,7 +130,7 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
             try {
                 $database = oxDb::getDb();
                 foreach ($aAddSel as $sAdd) {
-                    $oNew = oxNew("oxBase");
+                    $oNew = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                     $oNew->init("oxobject2selectlist");
                     $sObjectIdField = 'oxobject2selectlist__oxobjectid';
                     $sSelectetionIdField = 'oxobject2selectlist__oxselnid';

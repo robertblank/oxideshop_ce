@@ -47,7 +47,7 @@ class UserGroupMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oGroup = oxNew("oxgroups");
+            $oGroup = oxNew(\OxidEsales\Eshop\Application\Model\Groups::class);
             $oGroup->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oGroup->getAvailableInLangs();
@@ -73,7 +73,7 @@ class UserGroupMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             }
         }
         if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-            $oUsergroupMainAjax = oxNew('usergroup_main_ajax');
+            $oUsergroupMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\UserGroupMainAjax::class);
             $this->_aViewData['oxajax'] = $oUsergroupMainAjax->getColumns();
 
             return "popups/usergroup_main.tpl";
@@ -96,7 +96,7 @@ class UserGroupMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             $aParams['oxgroups__oxactive'] = 0;
         }
 
-        $oGroup = oxNew("oxgroups");
+        $oGroup = oxNew(\OxidEsales\Eshop\Application\Model\Groups::class);
         if ($soxId != "-1") {
             $oGroup->load($soxId);
         } else {

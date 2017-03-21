@@ -273,7 +273,7 @@ class Curl
             /**
              * @var oxException $exception
              */
-            $exception = oxNew('oxException');
+            $exception = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
             $lang = oxRegistry::getLang();
             $exception->setMessage(sprintf($lang->translateString('EXCEPTION_NOT_VALID_CURL_CONSTANT', $lang->getTplLanguage()), $name));
             throw $exception;
@@ -314,7 +314,7 @@ class Curl
             /**
              * @var oxException $exception
              */
-            $exception = oxNew('oxException');
+            $exception = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
             $lang = oxRegistry::getLang();
             $exception->setMessage(sprintf($lang->translateString('EXCEPTION_CURL_ERROR', $lang->getTplLanguage()), $curlErrorNumber));
             throw $exception;

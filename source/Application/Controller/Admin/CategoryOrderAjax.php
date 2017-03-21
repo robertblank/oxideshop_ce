@@ -188,7 +188,7 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      */
     public function saveNewOrder()
     {
-        $oCategory = oxNew("oxCategory");
+        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         $sId = oxRegistry::getConfig()->getRequestParameter("oxid");
         if ($oCategory->load($sId)) {
             //Disable editing for derived items
@@ -202,7 +202,7 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
             if (is_array($aNewOrder) && count($aNewOrder)) {
                 $sO2CView = $this->_getViewName('oxobject2category');
                 $sSelect = "select * from $sO2CView where $sO2CView.oxcatnid='" . $oCategory->getId() . "' and $sO2CView.oxobjectid in (" . implode(", ", oxDb::getDb()->quoteArray($aNewOrder)) . " )";
-                $oList = oxNew("oxlist");
+                $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
                 $oList->init("oxbase", "oxobject2category");
                 $oList->selectString($sSelect);
 
@@ -228,7 +228,7 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      */
     public function remNewOrder()
     {
-        $oCategory = oxNew("oxCategory");
+        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         $sId = oxRegistry::getConfig()->getRequestParameter("oxid");
         if ($oCategory->load($sId)) {
             //Disable editing for derived items

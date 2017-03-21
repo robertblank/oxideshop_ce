@@ -189,7 +189,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _getStateObject()
     {
         if (is_null($this->_oStateObject)) {
-            $this->_oStateObject = oxNew('oxState');
+            $this->_oStateObject = oxNew(\OxidEsales\Eshop\Application\Model\State::class);
         }
 
         return $this->_oStateObject;
@@ -270,7 +270,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             return $this->_oNewsSubscription;
         }
 
-        $this->_oNewsSubscription = oxNew('oxnewssubscribed');
+        $this->_oNewsSubscription = oxNew(\OxidEsales\Eshop\Application\Model\NewsSubscribed::class);
 
         // if subscription object is not set yet - we should create one
         if (!$this->_oNewsSubscription->loadFromUserId($this->getId())) {
@@ -368,7 +368,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $sUserId = isset($sUserId) ? $sUserId : $this->getId();
         if (!isset($this->_aAddresses[$sUserId])) {
-            $oUserAddressList = oxNew('oxUserAddressList');
+            $oUserAddressList = oxNew(\OxidEsales\Eshop\Application\Model\UserAddressList::class);
             $oUserAddressList->load($sUserId);
             $this->_aAddresses[$sUserId] = $oUserAddressList;
 
@@ -496,7 +496,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
             $sSelect = 'select * from oxuserpayments where oxuserid = ' . oxDb::getDb()->quote($sOXID) . ' ';
 
-            $this->_oPayments = oxNew('oxList');
+            $this->_oPayments = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $this->_oPayments->init('oxUserPayment');
             $this->_oPayments->selectString($sSelect);
         }
@@ -535,7 +535,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         //add registered remark
         if ($blAddRemark && $blRet) {
-            $oRemark = oxNew('oxremark');
+            $oRemark = oxNew(\OxidEsales\Eshop\Application\Model\Remark::class);
             $oRemark->oxremark__oxtext = new \OxidEsales\Eshop\Core\Field(
                 Registry::getLang()->translateString('usrRegistered', null, true),
                 \OxidEsales\Eshop\Core\Field::T_RAW
@@ -704,7 +704,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getOrders($iLimit = false, $iPage = 0)
     {
-        $oOrders = oxNew('oxList');
+        $oOrders = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oOrders->init('oxorder');
 
         if ($iLimit !== false) {
@@ -802,13 +802,13 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sDeliveryCountry = '';
         $soxAddressId = Registry::getSession()->getVariable('deladrid');
         if ($soxAddressId) {
-            $oDelAddress = oxNew('oxAddress');
+            $oDelAddress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
             $oDelAddress->load($soxAddressId);
             $sDeliveryCountry = $oDelAddress->oxaddress__oxcountryid->value;
         } elseif ($this->getId()) {
             $sDeliveryCountry = $this->oxuser__oxcountryid->value;
         } else {
-            $oUser = oxNew('oxuser');
+            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             if ($oUser->loadActiveUser()) {
                 $sDeliveryCountry = $oUser->oxuser__oxcountryid->value;
             }
@@ -848,7 +848,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
             if ($masterDb->getOne($sQ)) {
                 /** @var oxUserException $oEx */
-                $oEx = oxNew('oxUserException');
+                $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\UserException::class);
                 $oLang = Registry::getLang();
                 $oEx->setMessage(sprintf($oLang->translateString('ERROR_MESSAGE_USER_USEREXISTS', $oLang->getTplLanguage()), $this->oxuser__oxusername->value));
                 throw $oEx;
@@ -862,7 +862,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $oDb->execute("update oxuserpayments set oxuserpayments.oxuserid = " . $oDb->quote($this->oxuser__oxusername->value) . " where oxuserpayments.oxuserid = " . $oDb->quote($this->oxuser__oxid->value) . " ");
         } else {
             /** @var oxUserException $oEx */
-            $oEx = oxNew('oxUserException');
+            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\UserException::class);
             $oEx->setMessage('ERROR_MESSAGE_USER_USERCREATIONFAILED');
             throw $oEx;
         }
@@ -881,9 +881,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if (!$this->inGroup($sGroupID)) {
             // create oxgroup object
-            $oGroup = oxNew('oxGroups');
+            $oGroup = oxNew(\OxidEsales\Eshop\Application\Model\Groups::class);
             if ($oGroup->load($sGroupID)) {
-                $oNewGroup = oxNew('oxobject2group');
+                $oNewGroup = oxNew(\OxidEsales\Eshop\Application\Model\Object2Group::class);
                 $oNewGroup->oxobject2group__oxobjectid = new \OxidEsales\Eshop\Core\Field($this->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
                 $oNewGroup->oxobject2group__oxgroupsid = new \OxidEsales\Eshop\Core\Field($sGroupID, \OxidEsales\Eshop\Core\Field::T_RAW);
                 if ($oNewGroup->save()) {
@@ -905,7 +905,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function removeFromGroup($sGroupID = null)
     {
         if ($sGroupID != null && $this->inGroup($sGroupID)) {
-            $oGroups = oxNew('oxList');
+            $oGroups = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oGroups->init('oxobject2group');
             $sSelect = 'select * from oxobject2group where oxobject2group.oxobjectid = "' . $this->getId() . '" and oxobject2group.oxgroupsid = "' . $sGroupID . '" ';
             $oGroups->selectString($sSelect);
@@ -1124,7 +1124,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
                     // double-opt-in check enabled - sending confirmation email and setting waiting status
                     if ($iOptInStatus != 2) {
                         // sending double-opt-in mail
-                        $oEmail = oxNew('oxemail');
+                        $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
                         $blSuccess = $oEmail->sendNewsletterDbOptInMail($this);
                     } else {
                         // mail already was sent, so just confirming that
@@ -1218,7 +1218,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $sAddressId = $this->getConfig()->getRequestParameter('oxaddressid');
             $sAddressId = ($sAddressId === null || $sAddressId == -1 || $sAddressId == -2) ? null : $sAddressId;
 
-            $oAddress = oxNew('oxAddress');
+            $oAddress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
             $oAddress->setId($sAddressId);
             $oAddress->load($sAddressId);
             $oAddress->assign($aDelAddress);
@@ -1326,7 +1326,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if ($this->isAdmin() && !count(Registry::get("oxUtilsServer")->getOxCookie())) {
             /** @var oxCookieException $oEx */
-            $oEx = oxNew('oxCookieException');
+            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\CookieException::class);
             $oEx->setMessage('ERROR_MESSAGE_COOKIE_NOCOOKIE');
             throw $oEx;
         }
@@ -1362,7 +1362,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             return true;
         } else {
             /** @var oxUserException $oEx */
-            $oEx = oxNew('oxUserException');
+            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\UserException::class);
             $oEx->setMessage('ERROR_MESSAGE_USER_NOVALIDLOGIN');
             throw $oEx;
         }
@@ -1550,7 +1550,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             }
         } else {
             /** @var oxUserException $oEx */
-            $oEx = oxNew('oxUserException');
+            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\UserException::class);
             $oEx->setMessage('ERROR_MESSAGE_USER_NOVALUES');
             throw $oEx;
         }
@@ -1719,7 +1719,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
 
 
-        $oRecommList = oxNew('oxList');
+        $oRecommList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oRecommList->init('oxrecommlist');
         $oRecommList->setSqlLimit($iNrofCatArticles * $iActPage, $iNrofCatArticles);
         $iShopId = $this->getConfig()->getShopId();
@@ -1889,7 +1889,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function encodePassword($sPassword, $sSalt)
     {
         /** @var oxSha512Hasher $oSha512Hasher */
-        $oSha512Hasher = oxNew('oxSha512Hasher');
+        $oSha512Hasher = oxNew(\OxidEsales\Eshop\Core\Sha512Hasher::class);
         /** @var oxPasswordHasher $oHasher */
         $oHasher = oxNew('oxPasswordHasher', $oSha512Hasher);
 
@@ -1904,7 +1904,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function setPassword($sPassword = null)
     {
         /** @var oxOpenSSLFunctionalityChecker $oOpenSSLFunctionalityChecker */
-        $oOpenSSLFunctionalityChecker = oxNew('oxOpenSSLFunctionalityChecker');
+        $oOpenSSLFunctionalityChecker = oxNew(\OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker::class);
         // setting salt if password is not empty
         /** @var  oxPasswordSaltGenerator $oSaltGenerator */
         $oSaltGenerator = oxNew('oxPasswordSaltGenerator', $oOpenSSLFunctionalityChecker);
@@ -2020,7 +2020,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oDb = oxDb::getDb();
         $sUserId = $oDb->quote($this->getId());
         $sShopId = $this->getConfig()->getShopId();
-        $sVersion = oxNew("oxcontent")->getTermsVersion();
+        $sVersion = oxNew(\OxidEsales\Eshop\Application\Model\Content::class)->getTermsVersion();
 
         $oDb->execute("replace oxacceptedterms set oxuserid={$sUserId}, oxshopid='{$sShopId}', oxtermversion='{$sVersion}'");
     }
@@ -2047,7 +2047,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             if ($blSet = $this->save()) {
                 // updating users statistics
                 $masterDb->execute("UPDATE oxinvitations SET oxpending = '0', oxaccepted = '1' where oxuserid = " . $masterDb->quote($sUserId) . " and md5(oxemail) = " . $masterDb->quote($sRecEmail));
-                $oInvUser = oxNew("oxuser");
+                $oInvUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
                 if ($oInvUser->load($sUserId)) {
                     $blSet = $oInvUser->setCreditPointsForInviter();
                 }
@@ -2164,7 +2164,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($sUserOxId) {
             if (!$this->load($sUserOxId)) {
                 /** @var oxUserException $oEx */
-                $oEx = oxNew('oxUserException');
+                $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\UserException::class);
                 $oEx->setMessage('ERROR_MESSAGE_USER_NOVALIDLOGIN');
                 throw $oEx;
             } elseif ($blOldHash && $this->getId()) {
@@ -2206,7 +2206,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $sSelect = "SELECT `oxid` FROM `oxuser` WHERE `oxrights` = 'malladmin' ";
         } else {
             /** @var oxUserException $oEx */
-            $oEx = oxNew('oxUserException');
+            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\UserException::class);
             $oEx->setMessage('ERROR_MESSAGE_USER_NOVALIDLOGIN');
             throw $oEx;
         }

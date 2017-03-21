@@ -98,7 +98,7 @@ class SystemRequirementsMain extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     public function getMissingTemplateBlocks()
     {
-        $oSysReq = oxNew('oxSysRequirements');
+        $oSysReq = oxNew(\OxidEsales\Eshop\Core\SystemRequirements::class);
 
         return $oSysReq->getMissingTemplateBlocks();
     }

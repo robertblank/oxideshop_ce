@@ -119,7 +119,7 @@ class DeliverySetPaymentAjax extends \OxidEsales\Eshop\Application\Controller\Ad
                     // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
                     $sID = $database->getOne("select oxid from oxobject2payment where oxpaymentid = " . $database->quote($sChosenSet) . "  and oxobjectid = " . $database->quote($soxId) . " and oxtype = 'oxdelset'");
                     if (!isset($sID) || !$sID) {
-                        $oObject = oxNew('oxBase');
+                        $oObject = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                         $oObject->init('oxobject2payment');
                         $oObject->oxobject2payment__oxpaymentid = new oxField($sChosenSet);
                         $oObject->oxobject2payment__oxobjectid = new oxField($soxId);

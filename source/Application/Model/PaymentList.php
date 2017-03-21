@@ -66,7 +66,7 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param string $sShipSetId user chosen delivery set
      * @param double $dPrice     basket products price
-     * @param oxuser $oUser      session user object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser      session user object
      *
      * @return string
      */
@@ -119,7 +119,7 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Returns user country id for for payment selection
      *
-     * @param oxuser $oUser oxuser object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser oxuser object
      *
      * @return string
      */
@@ -142,7 +142,7 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param string $sShipSetId user chosen delivery set
      * @param double $dPrice     basket product price excl. discount
-     * @param oxuser $oUser      session user object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser      session user object
      *
      * @return array
      */

@@ -25,7 +25,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 use Exception;
 use oxDb;
 use oxRegistry;
-use oxList;
+use \OxidEsales\Eshop\Core\Model\ListModel;
 use oxField;
 
 /**
@@ -81,7 +81,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      * @param integer $iNrofArticles nr of items per page
      * @param bool    $blReload      if TRUE forces to reload list
      *
-     * @return oxList
+     * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getArticles($iStart = null, $iNrofArticles = null, $blReload = false)
     {
@@ -90,7 +90,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             return $this->_oArticles;
         }
 
-        $this->_oArticles = oxNew('oxArticleList');
+        $this->_oArticles = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
 
         if ($iStart !== null && $iNrofArticles !== null) {
             $this->_oArticles->setSqlLimit($iStart, $iNrofArticles);
@@ -140,7 +140,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      */
     public function getFirstArticle()
     {
-        $oArtList = oxNew('oxArticleList');
+        $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $oArtList->setSqlLimit(0, 1);
         $oArtList->loadRecommArticles($this->getId(), $this->_sArticlesFilter);
         $oArtList->rewind();
@@ -254,7 +254,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      *
      * @param array $aArticleIds Object IDs
      *
-     * @return oxList
+     * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getRecommListsByIds($aArticleIds)
     {
@@ -263,7 +263,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
 
             $sIds = implode(",", oxDb::getDb()->quoteArray($aArticleIds));
 
-            $oRecommList = oxNew('oxlist');
+            $oRecommList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oRecommList->init('oxrecommlist');
 
             $iShopId = $this->getConfig()->getShopId();
@@ -302,7 +302,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      *     1. first show articles from our search
      *     2. do not shown articles as 1st, which are shown in other recomm lists as 1st
      *
-     * @param oxList $oRecommList recommendation list
+     * @param \OxidEsales\Eshop\Core\Model\ListModel $oRecommList recommendation list
      * @param array  $aIds        article ids
      */
     protected function _loadFirstArticles(\OxidEsales\Eshop\Core\Model\ListModel $oRecommList, $aIds)
@@ -320,7 +320,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             }
             $sArticlesFilter = "$sNegateSql ORDER BY $sArtView.oxid in ( $sIds ) desc";
             $oRecomm->setArticlesFilter($sArticlesFilter);
-            $oArtList = oxNew('oxArticleList');
+            $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
             $oArtList->setSqlLimit(0, 1);
             $oArtList->loadRecommArticles($oRecomm->getId(), $sArticlesFilter);
 
@@ -355,7 +355,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             $iNrofCatArticles = $this->getConfig()->getConfigParam('iNrofCatArticles');
             $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
 
-            $oRecommList = oxNew('oxlist');
+            $oRecommList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oRecommList->init('oxrecommlist');
             $sSelect = $this->_getSearchSelect($sSearchStr);
             $oRecommList->setSqlLimit($iNrofCatArticles * $iActPage, $iNrofCatArticles);
@@ -422,11 +422,11 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     /**
      * Collects user written reviews about an article.
      *
-     * @return oxList
+     * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getReviews()
     {
-        $oReview = oxNew('oxreview');
+        $oReview = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
         $oRevs = $oReview->loadList('oxrecommlist', $this->getId());
         //if no review found, return null
         if ($oRevs->count() < 1) {

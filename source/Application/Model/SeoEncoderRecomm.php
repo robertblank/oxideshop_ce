@@ -34,7 +34,7 @@ class SeoEncoderRecomm extends \OxidEsales\Eshop\Core\SeoEncoder
     /**
      * Returns SEO uri for tag.
      *
-     * @param oxRecommList $oRecomm recommendation list object
+     * @param \OxidEsales\Eshop\Application\Model\RecommendationList $oRecomm recommendation list object
      * @param int          $iLang   language
      *
      * @return string
@@ -65,7 +65,7 @@ class SeoEncoderRecomm extends \OxidEsales\Eshop\Core\SeoEncoder
     /**
      * Returns full url for passed tag
      *
-     * @param oxRecommList $oRecomm recommendation list object
+     * @param \OxidEsales\Eshop\Application\Model\RecommendationList $oRecomm recommendation list object
      * @param int          $iLang   language
      *
      * @return string
@@ -82,7 +82,7 @@ class SeoEncoderRecomm extends \OxidEsales\Eshop\Core\SeoEncoder
     /**
      * Returns tag SEO url for specified page
      *
-     * @param oxRecommList $oRecomm recommendation list object
+     * @param \OxidEsales\Eshop\Application\Model\RecommendationList $oRecomm recommendation list object
      * @param int          $iPage   page tu prepare number
      * @param int          $iLang   language
      * @param bool         $blFixed fixed url marker (default is false)

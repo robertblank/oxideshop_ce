@@ -51,7 +51,7 @@ class ShopDefaultCategoryAjax extends \OxidEsales\Eshop\Application\Controller\A
      */
     protected function _getQuery()
     {
-        $oCat = oxNew('oxCategory');
+        $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         $oCat->setLanguage(oxRegistry::getConfig()->getRequestParameter('editlanguage'));
 
         $sCategoriesTable = $oCat->getViewName();
@@ -65,7 +65,7 @@ class ShopDefaultCategoryAjax extends \OxidEsales\Eshop\Application\Controller\A
     public function unassignCat()
     {
         $sShopId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $oShop = oxNew('oxShop');
+        $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         if ($oShop->load($sShopId)) {
             $oShop->oxshops__oxdefcat = new oxField('');
             $oShop->save();
@@ -79,7 +79,7 @@ class ShopDefaultCategoryAjax extends \OxidEsales\Eshop\Application\Controller\A
     {
         $sChosenCat = oxRegistry::getConfig()->getRequestParameter('oxcatid');
         $sShopId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $oShop = oxNew('oxShop');
+        $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         if ($oShop->load($sShopId)) {
             $oShop->oxshops__oxdefcat = new oxField($sChosenCat);
             $oShop->save();

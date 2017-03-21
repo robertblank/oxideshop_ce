@@ -104,7 +104,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
         $this->_aThemeList = array();
         $sOutDir = $this->getConfig()->getViewsDir();
         foreach (glob($sOutDir . "*", GLOB_ONLYDIR) as $sDir) {
-            $oTheme = oxNew('oxTheme');
+            $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
             if ($oTheme->load(basename($sDir))) {
                 $this->_aThemeList[$sDir] = $oTheme;
             }
@@ -179,7 +179,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
         if (!$sParent) {
             return null;
         }
-        $oTheme = oxNew('oxTheme');
+        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
         if ($oTheme->load($sParent)) {
             return $oTheme;
         }

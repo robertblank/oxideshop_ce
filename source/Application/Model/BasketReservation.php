@@ -77,7 +77,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      */
     protected function _loadReservations($sBasketId)
     {
-        $oReservations = oxNew('oxuserbasket');
+        $oReservations = oxNew(\OxidEsales\Eshop\Application\Model\UserBasket::class);
         $aWhere = array('oxuserbaskets.oxuserid' => $sBasketId, 'oxuserbaskets.oxtitle' => 'reservations');
 
         // creating if it does not exist
@@ -158,7 +158,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     /**
      * compute difference of reserved amounts vs basket items
      *
-     * @param Basket $oBasket basket object
+     * @param \OxidEsales\Eshop\Application\Controller\BasketController $oBasket basket object
      *
      * @return array
      */
@@ -192,7 +192,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
         $oReserved = $this->getReservations();
         foreach ($aBasketDiff as $sId => $dAmount) {
             if ($dAmount != 0) {
-                $oArticle = oxNew('oxArticle');
+                $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                 if ($oArticle->load($sId)) {
                     $oArticle->reduceStock(-$dAmount, $blAllowNegativeStock);
                     $oReserved->addItemToBasket($sId, -$dAmount);
@@ -205,7 +205,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     /**
      * reserve given basket items, only when not in admin mode
      *
-     * @param oxBasket $oBasket basket object
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket basket object
      */
     public function reserveBasket(Basket $oBasket)
     {
@@ -230,7 +230,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
             $dAmount = $dReserved;
         }
 
-        $oArticle = oxNew('oxArticle');
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->load($sArticleId);
 
         $this->getReservations()->addItemToBasket($sArticleId, -$dAmount);
@@ -249,7 +249,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     {
         $dReserved = $this->getReservedAmount($sArticleId);
         if ($dReserved) {
-            $oArticle = oxNew('oxArticle');
+            $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             if ($oArticle->load($sArticleId)) {
                 $oArticle->reduceStock(-$dReserved, true);
                 $this->getReservations()->addItemToBasket($sArticleId, 0, null, true);
@@ -305,7 +305,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
             $oRs = $database->select("select oxartid, oxamount from oxuserbasketitems where oxbasketid in (" . implode(",", $aFinished) . ")", false);
             while (!$oRs->EOF) {
-                $oArticle = oxNew('oxArticle');
+                $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                 if ($oArticle->load($oRs->fields['oxartid'])) {
                     $oArticle->reduceStock(-$oRs->fields['oxamount'], true);
                 }

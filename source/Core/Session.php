@@ -23,7 +23,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use oxRegistry;
-use oxBasket;
+use \OxidEsales\Eshop\Application\Model\Basket;
 
 /**
  * Session manager.
@@ -527,7 +527,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns basket session object.
      *
-     * @return oxbasket
+     * @return \OxidEsales\Eshop\Application\Model\Basket
      */
     public function getBasket()
     {
@@ -536,10 +536,10 @@ class Session extends \OxidEsales\Eshop\Core\Base
 
             //init oxbasketitem class first
             //#1746
-            oxNew('oxBasketItem');
+            oxNew(\OxidEsales\Eshop\Application\Model\BasketItem::class);
 
             // init oxbasket through oxNew and not oxAutoload, Mantis-Bug #0004262
-            $oEmptyBasket = oxNew('oxBasket');
+            $oEmptyBasket = oxNew(\OxidEsales\Eshop\Application\Model\Basket::class);
 
             $oBasket = ($sBasket && ($oBasket = unserialize($sBasket))) ? $oBasket : null;
 
@@ -557,7 +557,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
     /**
      * Validate loaded from session basket content. Check for language change.
      *
-     * @param oxBasket $oBasket Basket object loaded from session.
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket Basket object loaded from session.
      *
      * @return null
      */
@@ -1015,7 +1015,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
     public function getBasketReservations()
     {
         if (!$this->_oBasketReservations) {
-            $this->_oBasketReservations = oxNew('oxBasketReservation');
+            $this->_oBasketReservations = oxNew(\OxidEsales\Eshop\Application\Model\BasketReservation::class);
         }
 
         return $this->_oBasketReservations;

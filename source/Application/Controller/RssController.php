@@ -68,7 +68,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     protected function _getRssFeed()
     {
         if (!$this->_oRss) {
-            $this->_oRss = oxNew('oxRssFeed');
+            $this->_oRss = oxNew(\OxidEsales\Eshop\Application\Model\RssFeed::class);
         }
 
         return $this->_oRss;
@@ -154,7 +154,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     public function catarts()
     {
         if ($this->getConfig()->getConfigParam('bl_rssCategories')) {
-            $oCat = oxNew('oxCategory');
+            $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             if ($oCat->load(oxRegistry::getConfig()->getRequestParameter('cat'))) {
                 $this->_getRssFeed()->loadCategoryArticles($oCat);
             }
@@ -193,7 +193,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     public function recommlists()
     {
         if ($this->getViewConfig()->getShowListmania() && $this->getConfig()->getConfigParam('bl_rssRecommLists')) {
-            $oArticle = oxNew('oxArticle');
+            $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             if ($oArticle->load(oxRegistry::getConfig()->getRequestParameter('anid'))) {
                 $this->_getRssFeed()->loadRecommLists($oArticle);
 
@@ -214,7 +214,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     public function recommlistarts()
     {
         if ($this->getConfig()->getConfigParam('bl_rssRecommListArts')) {
-            $oRecommList = oxNew('oxrecommlist');
+            $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
             if ($oRecommList->load(oxRegistry::getConfig()->getRequestParameter('recommid'))) {
                 $this->_getRssFeed()->loadRecommListArticles($oRecommList);
 

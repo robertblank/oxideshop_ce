@@ -115,7 +115,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
             oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY');
 
             return;
-        } elseif (!oxNew('oxMailValidator')->isValidEmail($aParams['oxuser__oxusername'])) {
+        } elseif (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams['oxuser__oxusername'])) {
             // #1052C - eMail validation added
             oxRegistry::get("oxUtilsView")->addErrorToDisplay('MESSAGE_INVALID_EMAIL');
 
@@ -124,7 +124,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
 
         $blSubscribe = oxRegistry::getConfig()->getRequestParameter("subscribeStatus");
 
-        $oUser = oxNew('oxuser');
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oUser->oxuser__oxusername = new oxField($aParams['oxuser__oxusername'], oxField::T_RAW);
 
         $blUserLoaded = false;
@@ -183,7 +183,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     public function addme()
     {
         // user exists ?
-        $oUser = oxNew('oxuser');
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         if ($oUser->load(oxRegistry::getConfig()->getRequestParameter('uid'))) {
             $sConfirmCode = md5($oUser->oxuser__oxusername->value . $oUser->oxuser__oxpasssalt->value);
             // is confirm code ok?
@@ -201,7 +201,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     public function removeme()
     {
         // existing user ?
-        $oUser = oxNew('oxuser');
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         if ($oUser->load(oxRegistry::getConfig()->getRequestParameter('uid'))) {
             $oUser->getNewsSubscription()->setOptInStatus(0);
 
@@ -230,7 +230,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
         if ($this->_oActionArticles === null) {
             $this->_oActionArticles = false;
             if ($this->getConfig()->getConfigParam('bl_perfLoadAktion')) {
-                $oArtList = oxNew('oxArticleList');
+                $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $oArtList->loadActionArticles('OXTOPSTART');
                 if ($oArtList->count()) {
                     $this->_oTopArticle = $oArtList->current();

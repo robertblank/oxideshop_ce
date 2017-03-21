@@ -47,7 +47,7 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     {
         parent::render();
 
-        $oModuleList = oxNew("oxModuleList");
+        $oModuleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
 
         $extendClass = $this->getConfig()->getModulesWithExtendedClass();
         $sanitizedExtendClass = [];
@@ -83,7 +83,7 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
                 $sanitizedKey = str_replace(self::BACKSLASH_REPLACEMENT, "\\", $key);
                 $aModules[$sanitizedKey] = $value;
             }
-            $oModuleInstaller = oxNew('oxModuleInstaller');
+            $oModuleInstaller = oxNew(\OxidEsales\Eshop\Core\Module\ModuleInstaller::class);
             $aModules = $oModuleInstaller->buildModuleChains($aModules);
         }
 
@@ -104,7 +104,7 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             return;
         }
 
-        $oModuleList = oxNew("oxModuleList");
+        $oModuleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
         $oModuleList->cleanup();
     }
 }

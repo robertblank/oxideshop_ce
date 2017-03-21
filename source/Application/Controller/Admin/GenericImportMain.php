@@ -117,7 +117,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
         }
 
         if ($navigationStep == 2) {
-            $noJsValidator = oxNew('oxNoJsValidator');
+            $noJsValidator = oxNew(\OxidEsales\Eshop\Core\NoJsValidator::class);
             //saving csv field terminator and encloser to config
             $terminator = $config->getRequestParameter('sGiCsvFieldTerminator');
             if ($terminator && !$noJsValidator->isValid($terminator)) {
@@ -261,7 +261,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
     {
         if ($iNavStep == 2) {
             if (!$this->_getUploadedCsvFilePath()) {
-                $oEx = oxNew("oxExceptionToDisplay");
+                $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage('GENIMPORT_ERRORUPLOADINGFILE');
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'genimport');
 
@@ -280,7 +280,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
             }
 
             if ($blIsEmpty) {
-                $oEx = oxNew("oxExceptionToDisplay");
+                $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage('GENIMPORT_ERRORASSIGNINGFIELDS');
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'genimport');
 
@@ -326,7 +326,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
     {
         foreach ($oErpImport->getStatistics() as $aValue) {
             if (!$aValue ['r']) {
-                $oEx = oxNew("oxExceptionToDisplay");
+                $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage($aValue ['m']);
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'genimport');
             }
@@ -372,7 +372,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
      */
     private function setErrorToView($invalidData)
     {
-        $error = oxNew('oxDisplayError');
+        $error = oxNew(\OxidEsales\Eshop\Core\DisplayError::class);
         $error->setFormatParameters(htmlspecialchars($invalidData));
         $error->setMessage("SHOP_CONFIG_ERROR_INVALID_VALUE");
         oxRegistry::get("oxUtilsView")->addErrorToDisplay($error);

@@ -120,6 +120,6 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
      */
     protected function _getSystemEventHandler()
     {
-        return oxNew('oxSystemEventHandler');
+        return oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
     }
 }

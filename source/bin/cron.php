@@ -27,7 +27,7 @@ require_once dirname(__FILE__) . "/../bootstrap.php";
 $myConfig = oxRegistry::getConfig();
 
 // executing maintenance tasks..
-oxNew("oxmaintenance")->execute();
+oxNew(\OxidEsales\Eshop\Application\Model\Maintenance::class)->execute();
 
 // closing page, writing cache and so on..
 $myConfig->pageClose();

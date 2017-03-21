@@ -45,7 +45,7 @@ class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     {
         $soxId = $this->getEditObjectId();
 
-        $oTheme = oxNew('oxTheme');
+        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
 
         if (!$soxId) {
             $soxId = $oTheme->getActiveThemeId();
@@ -89,7 +89,7 @@ class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     {
         $sTheme = $this->getEditObjectId();
         /** @var oxTheme $oTheme */
-        $oTheme = oxNew('oxtheme');
+        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
         if (!$oTheme->load($sTheme)) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
 

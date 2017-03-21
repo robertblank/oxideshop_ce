@@ -55,7 +55,7 @@ class PaymentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oPayment = oxNew("oxpayment");
+            $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
             $oPayment->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oPayment->getAvailableInLangs();
@@ -83,7 +83,7 @@ class PaymentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         }
 
         if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-            $oPaymentMainAjax = oxNew('payment_main_ajax');
+            $oPaymentMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\PaymentMainAjax::class);
             $this->_aViewData['oxajax'] = $oPaymentMainAjax->getColumns();
 
             return "popups/payment_main.tpl";
@@ -111,7 +111,7 @@ class PaymentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $aParams['oxpayments__oxchecked'] = 0;
         }
 
-        $oPayment = oxNew("oxpayment");
+        $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
 
         if ($soxId != "-1") {
             $oPayment->loadInLang($this->_iEditLang, $soxId);
@@ -159,7 +159,7 @@ class PaymentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $oObj = oxNew("oxpayment");
+        $oObj = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
 
         if ($soxId != "-1") {
             $oObj->loadInLang($this->_iEditLang, $soxId);
@@ -184,7 +184,7 @@ class PaymentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     public function delFields()
     {
-        $oPayment = oxNew("oxpayment");
+        $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
         if ($oPayment->loadInLang($this->_iEditLang, $this->getEditObjectId())) {
             $aDelFields = oxRegistry::getConfig()->getRequestParameter("aFields");
             $this->_aFieldArray = oxRegistry::getUtils()->assignValuesFromText($oPayment->oxpayments__oxvaldesc->value);
@@ -208,7 +208,7 @@ class PaymentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     public function addField()
     {
-        $oPayment = oxNew("oxpayment");
+        $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
         if ($oPayment->loadInLang($this->_iEditLang, $this->getEditObjectId())) {
             $this->_aFieldArray = oxRegistry::getUtils()->assignValuesFromText($oPayment->oxpayments__oxvaldesc->value);
 

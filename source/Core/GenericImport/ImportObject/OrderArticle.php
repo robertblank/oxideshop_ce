@@ -22,7 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
 
-use oxBase;
+use \OxidEsales\Eshop\Core\Model\BaseModel;
 
 /**
  * Import object for Order Articles.
@@ -38,7 +38,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\Imp
     /**
      * issued before saving an object. can modify aData for saving
      *
-     * @param oxBase $shopObject        oxBase child for object
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject        oxBase child for object
      * @param array  $data              Data for object
      * @param bool   $allowCustomShopId If true then AllowCustomShopId
      *

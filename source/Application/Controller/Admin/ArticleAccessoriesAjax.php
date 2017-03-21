@@ -138,7 +138,7 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     public function addArticleAcc()
     {
-        $oArticle = oxNew("oxArticle");
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $aChosenArt = $this->_getActionIds('oxarticles.oxid');
         $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
 
@@ -150,7 +150,7 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
 
         if ($oArticle->load($soxId) && $soxId && $soxId != "-1" && is_array($aChosenArt)) {
             foreach ($aChosenArt as $sChosenArt) {
-                $oNewGroup = oxNew("oxBase");
+                $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oNewGroup->init("oxaccessoire2article");
                 $oNewGroup->oxaccessoire2article__oxobjectid = new oxField($sChosenArt);
                 $oNewGroup->oxaccessoire2article__oxarticlenid = new oxField($oArticle->oxarticles__oxid->value);
@@ -165,7 +165,7 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
     /**
      * Method is used to bind to accessory addition to article action.
      *
-     * @param oxArticle $article
+     * @param \OxidEsales\Eshop\Application\Model\Article $article
      */
     protected function onArticleAccessoryRelationChange($article)
     {

@@ -181,7 +181,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function send()
     {
-        $oxEMail = oxNew('oxemail');
+        $oxEMail = oxNew(\OxidEsales\Eshop\Core\Email::class);
         $blSend = $oxEMail->sendNewsletterMail($this, $this->_oUser, $this->oxnewsletter__oxsubject->value);
 
         return $blSend;
@@ -198,10 +198,10 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $myConfig = $this->getConfig();
 
-        $oShop = oxNew('oxShop');
+        $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         $oShop->load($myConfig->getShopId());
 
-        $oView = oxNew('oxubase');
+        $oView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
         $oShop = $oView->addGlobalParams($oShop);
 
         $oView->addTplParam('myshop', $oShop);
@@ -229,7 +229,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _setUser($sUserid)
     {
         if (is_string($sUserid)) {
-            $oUser = oxNew('oxuser');
+            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             if ($oUser->load($sUserid)) {
                 $this->_oUser = $oUser;
             }
@@ -242,19 +242,19 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Add newsletter products (#559 only if we have user we can assign this info),
      * adds products which fit to the last order of assigned user.
      *
-     * @param oxview $oView            view object to store view data
+     * @param \OxidEsales\Eshop\Core\Controller\BaseController $oView            view object to store view data
      * @param bool   $blPerfLoadAktion perform option load actions
      */
     protected function _assignProducts($oView, $blPerfLoadAktion = false)
     {
         if ($blPerfLoadAktion) {
-            $oArtList = oxNew('oxArticleList');
+            $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
             $oArtList->loadActionArticles('OXNEWSLETTER');
             $oView->addTplParam('articlelist', $oArtList);
         }
 
         if ($this->_oUser->getId()) {
-            $oArticle = oxNew('oxArticle');
+            $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             $sArticleTable = $oArticle->getViewName();
 
             // add products which fit to the last order of this user

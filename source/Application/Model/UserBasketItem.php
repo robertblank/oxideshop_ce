@@ -100,13 +100,13 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if (!$this->oxuserbasketitems__oxartid->value) {
             //this exception may not be caught, anyhow this is a critical exception
-            $oEx = oxNew('oxArticleException');
+            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ArticleException::class);
             $oEx->setMessage('EXCEPTION_ARTICLE_NOPRODUCTID');
             throw $oEx;
         }
 
         if ($this->_oArticle === null) {
-            $this->_oArticle = oxNew('oxArticle');
+            $this->_oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
             // performance
             /* removed due to #4178

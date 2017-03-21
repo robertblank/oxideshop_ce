@@ -35,7 +35,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      * If third parameter is false, skips master image delete, only
      * all generated images will be deleted.
      *
-     * @param oxArticle $oObject               article object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oObject               article object
      * @param int       $iIndex                master picture index
      * @param bool      $blDeleteMasterPicture delete master picture, default is true
      *
@@ -98,7 +98,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
     /**
      * Deletes custom main icon, which name is specified in oxicon field.
      *
-     * @param oxArticle $oObject article object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oObject article object
      */
     public function deleteMainIcon($oObject)
     {
@@ -111,7 +111,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
     /**
      * Deletes custom thumbnail, which name is specified in oxthumb field.
      *
-     * @param oxArticle $oObject article object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oObject article object
      */
     public function deleteThumbnail($oObject)
     {
@@ -125,7 +125,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
     /**
      * Deletes custom zoom picture, which name is specified in oxzoom field.
      *
-     * @param oxArticle $oObject article object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oObject article object
      * @param int       $iIndex  zoom picture index
      *
      * @return null
@@ -133,7 +133,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
     public function deleteZoomPicture($oObject, $iIndex)
     {
         // checking if oxzoom field exists
-        $oDbHandler = oxNew("oxDbMetaDataHandler");
+        $oDbHandler = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
         $iZoomPicCount = (int) $this->getConfig()->getConfigParam('iZoomPicCount');
 
         if ($iIndex > $iZoomPicCount || !$oDbHandler->fieldExists("oxzoom" . $iIndex, "oxarticles")) {

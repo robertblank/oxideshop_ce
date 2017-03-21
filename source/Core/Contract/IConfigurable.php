@@ -22,7 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Core\Contract;
 
-use oxConfig;
+use \OxidEsales\Eshop\Core\Config;
 
 /**
  * The interface methods should be implemented by classes which need a configuration object
@@ -34,7 +34,7 @@ interface IConfigurable
     /**
      * Sets configuration object
      *
-     * @param OxConfig $oConfig Configraution object
+     * @param \OxidEsales\Eshop\Core\Config $oConfig Configraution object
      *
      * @abstract
      *
@@ -47,7 +47,7 @@ interface IConfigurable
      *
      * @abstract
      *
-     * @return OxConfig
+     * @return \OxidEsales\Eshop\Core\Config
      */
     public function getConfig();
 }

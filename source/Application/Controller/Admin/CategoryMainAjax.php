@@ -154,7 +154,7 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
             if (is_array($aArticles)) {
                 $sO2CView = $this->_getViewName('oxobject2category');
 
-                $oNew = oxNew('oxobject2category');
+                $oNew = oxNew(\OxidEsales\Eshop\Application\Model\Object2Category::class);
                 $myUtilsObject = oxRegistry::getUtilsObject();
                 $oActShop = $myConfig->getActiveShop();
 

@@ -1028,7 +1028,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     protected function _simpleRedirect($sUrl, $sHeaderCode)
     {
-        $oHeader = oxNew("oxHeader");
+        $oHeader = oxNew(\OxidEsales\Eshop\Core\Header::class);
         $oHeader->setHeader($sHeaderCode);
         $oHeader->setHeader("Location: $sUrl");
         $oHeader->setHeader("Connection: close");
@@ -1200,7 +1200,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
                 }
                 //V FS#2616
                 if ($dVat != null && $oObject->priceUnit == 'abs') {
-                    $oPrice = oxNew('oxPrice');
+                    $oPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
                     $oPrice->setPrice($oObject->price, $dVat);
                     $aName[0] .= oxRegistry::getLang()->formatCurrency($dPrice * $oCur->rate, $oCur);
                 } else {
@@ -1462,7 +1462,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
 
         $sReturn = "Page not found.";
         try {
-            $oView = oxNew('oxUBase');
+            $oView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
             $oView->init();
             $oView->render();
             $oView->setClassName('oxUBase');

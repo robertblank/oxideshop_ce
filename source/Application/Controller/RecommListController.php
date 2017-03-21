@@ -134,7 +134,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
 
             if ($myConfig->getConfigParam('bl_rssRecommListArts')) {
                 /** @var oxRssFeed $oRss */
-                $oRss = oxNew('oxrssfeed');
+                $oRss = oxNew(\OxidEsales\Eshop\Application\Model\RssFeed::class);
                 $this->addRssFeed(
                     $oRss->getRecommListArticlesTitle($oActiveRecommList),
                     $oRss->getRecommListArticlesUrl($this->_oActiveRecommList),
@@ -143,7 +143,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
             }
         } else {
             if (($oList = $this->getRecommLists()) && $oList->count()) {
-                $oRecommList = oxNew('oxrecommlist');
+                $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
                 $this->_iAllArtCnt = $oRecommList->getSearchRecommListCount($this->getRecommSearch());
             }
         }
@@ -226,7 +226,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
             }
 
             if ($dRating !== null && $dRating >= 1 && $dRating <= 5) {
-                $oRating = oxNew('oxrating');
+                $oRating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
                 if ($oRating->allowRating($oUser->getId(), 'oxrecommlist', $oRecommList->getId())) {
                     $oRating->oxratings__oxuserid = new oxField($oUser->getId());
                     $oRating->oxratings__oxtype = new oxField('oxrecommlist');
@@ -238,7 +238,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
             }
 
             if (($sReviewText = trim(( string ) oxRegistry::getConfig()->getRequestParameter('rvw_txt', true)))) {
-                $oReview = oxNew('oxreview');
+                $oReview = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
                 $oReview->oxreviews__oxobjectid = new oxField($oRecommList->getId());
                 $oReview->oxreviews__oxtype = new oxField('oxrecommlist');
                 $oReview->oxreviews__oxtext = new oxField($sReviewText, oxField::T_RAW);
@@ -354,7 +354,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
         if ($this->_blRate === null) {
             $this->_blRate = false;
             if ($this->isReviewActive() && ($oActiveRecommList = $this->getActiveRecommList())) {
-                $oRating = oxNew('oxrating');
+                $oRating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
                 $sUserVariable = oxRegistry::getSession()->getVariable('usr');
                 $this->_blRate = $oRating->allowRating($sUserVariable, 'oxrecommlist', $oActiveRecommList->getId());
             }
@@ -408,7 +408,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
             $this->_oSearchRecommLists = array();
             if (!$this->getActiveRecommList()) {
                 // list of found oxrecommlists
-                $oRecommList = oxNew('oxrecommlist');
+                $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
                 $oList = $oRecommList->getSearchRecommLists($this->getRecommSearch());
                 if ($oList && $oList->count()) {
                     $this->_oSearchRecommLists = $oList;
@@ -445,7 +445,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
     {
         $oLang = oxRegistry::getLang();
 
-        $aPath[0] = oxNew("oxCategory");
+        $aPath[0] = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         $aPath[0]->setLink(false);
         $aPath[0]->oxcategories__oxtitle = new oxField($oLang->translateString('RECOMMLIST'));
 
@@ -454,7 +454,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
             $sUrl = $shopHomeURL . "cl=recommlist&amp;searchrecomm=" . rawurlencode($sSearchParam);
             $sTitle = $oLang->translateString('RECOMMLIST_SEARCH') . ' "' . $sSearchParam . '"';
 
-            $aPath[1] = oxNew("oxCategory");
+            $aPath[1] = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             $aPath[1]->setLink($sUrl);
             $aPath[1]->oxcategories__oxtitle = new oxField($sTitle);
         }

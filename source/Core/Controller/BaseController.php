@@ -22,12 +22,12 @@
 
 namespace OxidEsales\EshopCommunity\Core\Controller;
 
-use oxCategory;
+use \OxidEsales\Eshop\Application\Model\Category;
 use oxRegistry;
-use oxShop;
+use \OxidEsales\Eshop\Application\Model\Shop;
 use oxSystemComponentException;
 use oxView;
-use oxViewConfig;
+use \OxidEsales\Eshop\Core\ViewConfig;
 
 /**
  * Base view class. Collects and passes data to template engine, sets some global
@@ -178,7 +178,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     /**
      * oxViewConfig instance
      *
-     * @var oxViewConfig
+     * @var \OxidEsales\Eshop\Core\ViewConfig
      */
     protected $_oViewConf = null;
 
@@ -263,9 +263,9 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      * <b>version</b>,
      * <b>urlsign</b>
      *
-     * @param oxShop $oShop current shop object
+     * @param \OxidEsales\Eshop\Application\Model\Shop $oShop current shop object
      *
-     * @return oxViewConfig $oShop current shop object
+     * @return \OxidEsales\Eshop\Core\ViewConfig $oShop current shop object
      */
     public function addGlobalParams($oShop = null)
     {
@@ -321,7 +321,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     public function getViewConfig()
     {
         if ($this->_oViewConf === null) {
-            $this->_oViewConf = oxNew('oxViewConfig');
+            $this->_oViewConf = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
         }
 
         return $this->_oViewConf;
@@ -551,7 +551,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
                 // was not executed on any level ?
                 if (!$this->_blIsComponent) {
                     /** @var oxSystemComponentException $oEx */
-                    $oEx = oxNew('oxSystemComponentException');
+                    $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
                     $oEx->setMessage('ERROR_MESSAGE_SYSTEMCOMPONENT_FUNCTIONNOTFOUND');
                     $oEx->setComponent($sFunction);
                     throw $oEx;
@@ -589,7 +589,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
                 //If redirect tries to use a not existing class throw an exception.
                 //we'll be redirected to start page directly.
                 /** @var oxSystemComponentException $exception */
-                $exception = oxNew('oxSystemComponentException');
+                $exception = oxNew(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
                 $exception->setMessage('ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND');
                 $exception->setComponent($sClassName);
                 throw $exception;
@@ -796,7 +796,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      * not set by component - will create category object and will try to
      * load by id passed by request
      *
-     * @return oxCategory
+     * @return \OxidEsales\Eshop\Application\Model\Category
      */
     public function getActCategory()
     {
@@ -805,7 +805,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
         // and we still need some object to mount navigation info
         if ($this->_oClickCat === null) {
             $this->_oClickCat = false;
-            $oCategory = oxNew('oxCategory');
+            $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             if ($oCategory->load($this->getCategoryId())) {
                 $this->_oClickCat = $oCategory;
             }
@@ -817,7 +817,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     /**
      * Active category setter
      *
-     * @param oxCategory $oCategory active category
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCategory active category
      */
     public function setActCategory($oCategory)
     {

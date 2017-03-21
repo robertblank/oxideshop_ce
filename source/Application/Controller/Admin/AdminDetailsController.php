@@ -80,7 +80,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
     /**
      * Returns string which must be edited by editor.
      *
-     * @param oxbase $oObject object whifh field will be used for editing
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $oObject object whifh field will be used for editing
      * @param string $sField  name of editable field
      *
      * @return string
@@ -205,7 +205,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
     {
         // caching category tree, to load it once, not many times
         if (!isset($this->oCatTree) || $blForceNonCache) {
-            $this->oCatTree = oxNew('oxCategoryList');
+            $this->oCatTree = oxNew(\OxidEsales\Eshop\Application\Model\CategoryList::class);
             $this->oCatTree->setShopID($iTreeShopId);
 
             // setting language
@@ -223,7 +223,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
         }
 
         // add first fake category for not assigned articles
-        $oRoot = oxNew('oxCategory');
+        $oRoot = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         $oRoot->oxcategories__oxtitle = new oxField('--');
 
         $oCatTree->assign(array_merge(array('' => $oRoot), $oCatTree->getArray()));

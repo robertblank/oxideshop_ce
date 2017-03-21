@@ -439,7 +439,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
             $aError = $aFiles['myfile']['error'];
             $sErrorsDescription = '';
 
-            $oEx = oxNew("oxExceptionToDisplay");
+            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             // process all files
             while (list($sKey, $sValue) = each($aFiles['myfile']['name'])) {
                 $sSource = $aSource[$sKey];

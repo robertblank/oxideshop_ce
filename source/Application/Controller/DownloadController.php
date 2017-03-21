@@ -52,10 +52,10 @@ class DownloadController extends \OxidEsales\Eshop\Application\Controller\Fronte
         $sFileOrderId = oxRegistry::getConfig()->getRequestParameter('sorderfileid');
 
         if ($sFileOrderId) {
-            $oArticleFile = oxNew('oxFile');
+            $oArticleFile = oxNew(\OxidEsales\Eshop\Application\Model\File::class);
             try {
                 /** @var oxOrderFile $oOrderFile */
-                $oOrderFile = oxNew('oxOrderFile');
+                $oOrderFile = oxNew(\OxidEsales\Eshop\Application\Model\OrderFile::class);
                 if ($oOrderFile->load($sFileOrderId)) {
                     $sFileId = $oOrderFile->getFileId();
                     $blLoadedAndExists = $oArticleFile->load($sFileId) && $oArticleFile->exist();

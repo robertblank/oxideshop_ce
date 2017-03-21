@@ -152,7 +152,7 @@ class SelectListMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
             try {
                 $database = oxDb::getDb();
                 foreach ($aAddArticle as $sAdd) {
-                    $oNewGroup = oxNew("oxBase");
+                    $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                     $oNewGroup->init("oxobject2selectlist");
                     $oNewGroup->oxobject2selectlist__oxobjectid = new oxField($sAdd);
                     $oNewGroup->oxobject2selectlist__oxselnid = new oxField($soxId);

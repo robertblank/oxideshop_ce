@@ -76,7 +76,7 @@ class VoucherSerieMain extends \OxidEsales\Eshop\Application\Controller\Admin\Dy
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oVoucherSerie = oxNew("oxvoucherserie");
+            $oVoucherSerie = oxNew(\OxidEsales\Eshop\Application\Model\VoucherSerie::class);
             $oVoucherSerie->load($soxId);
             $this->_aViewData["edit"] = $oVoucherSerie;
 
@@ -103,7 +103,7 @@ class VoucherSerieMain extends \OxidEsales\Eshop\Application\Controller\Admin\Dy
         $aSerieParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
         // Voucher Serie Processing
-        $oVoucherSerie = oxNew("oxvoucherserie");
+        $oVoucherSerie = oxNew(\OxidEsales\Eshop\Application\Model\VoucherSerie::class);
         // if serie already exist use it
         if ($soxId != "-1") {
             $oVoucherSerie->load($soxId);
@@ -153,7 +153,7 @@ class VoucherSerieMain extends \OxidEsales\Eshop\Application\Controller\Admin\Dy
     protected function _getVoucherSerie()
     {
         if ($this->_oVoucherSerie == null) {
-            $oVoucherSerie = oxNew("oxvoucherserie");
+            $oVoucherSerie = oxNew(\OxidEsales\Eshop\Application\Model\VoucherSerie::class);
             $sId = oxRegistry::getConfig()->getRequestParameter("voucherid");
             if ($oVoucherSerie->load($sId ? $sId : oxRegistry::getSession()->getVariable("voucherid"))) {
                 $this->_oVoucherSerie = $oVoucherSerie;

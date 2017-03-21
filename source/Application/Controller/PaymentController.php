@@ -22,7 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxBasket;
+use \OxidEsales\Eshop\Application\Model\Basket;
 use oxRegistry;
 
 /**
@@ -223,7 +223,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         // no shipping method there !!
         if ($this->getConfig()->getConfigParam('blOtherCountryOrder')) {
-            $oPayment = oxNew('oxpayment');
+            $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
             if ($oPayment->load('oxempty')) {
                 $this->_oEmptyPayment = $oPayment;
             } else {
@@ -327,7 +327,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
         $oBasket = $oSession->getBasket();
         $oBasket->setPayment(null);
-        $oPayment = oxNew('oxpayment');
+        $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
         $oPayment->load($sPaymentId);
 
         // getting basket price for payment calculation
@@ -425,7 +425,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * Calculate payment cost for each payment. Sould be removed later
      *
      * @param array    &$aPaymentList payments array
-     * @param oxBasket $oBasket       basket object
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket       basket object
      */
     protected function _setValues(& $aPaymentList, $oBasket = null)
     {
@@ -525,7 +525,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     protected function _assignDebitNoteParams()
     {
         // #701A
-        $oUserPayment = oxNew('oxuserpayment');
+        $oUserPayment = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
         //such info available ?
         if ($oUserPayment->getPaymentByPaymentType($this->getUser(), 'oxiddebitnote')) {
             $sUserPaymentField = 'oxuserpayments__oxvalue';
@@ -561,7 +561,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
             } else {
                 // #1010A.
                 if ($oUser = $this->getUser()) {
-                    $oOrder = oxNew('oxorder');
+                    $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
                     if (($sLastPaymentId = $oOrder->getLastUserPaymentType($oUser->getId()))) {
                         $sCheckedId = $sLastPaymentId;
                     }

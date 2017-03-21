@@ -47,7 +47,7 @@ class VoucherSerieGroups extends \OxidEsales\Eshop\Application\Controller\Admin\
         $soxId = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oVoucherSerie = oxNew("oxvoucherserie");
+            $oVoucherSerie = oxNew(\OxidEsales\Eshop\Application\Model\VoucherSerie::class);
             $oVoucherSerie->load($soxId);
             $oVoucherSerie->setUserGroups();
             $this->_aViewData["edit"] = $oVoucherSerie;
@@ -58,7 +58,7 @@ class VoucherSerieGroups extends \OxidEsales\Eshop\Application\Controller\Admin\
             }
         }
         if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-            $oVoucherSerieGroupsAjax = oxNew('voucherserie_groups_ajax');
+            $oVoucherSerieGroupsAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieGroupsAjax::class);
             $this->_aViewData['oxajax'] = $oVoucherSerieGroupsAjax->getColumns();
 
             return "popups/voucherserie_groups.tpl";

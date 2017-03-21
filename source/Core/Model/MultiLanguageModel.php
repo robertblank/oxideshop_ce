@@ -507,7 +507,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $coreTableName = $coreTableName ? $coreTableName : $this->getCoreTableName();
 
-        return oxNew('oxDbMetaDataHandler')->getAllMultiTables($coreTableName);
+        return oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class)->getAllMultiTables($coreTableName);
     }
 
     /**

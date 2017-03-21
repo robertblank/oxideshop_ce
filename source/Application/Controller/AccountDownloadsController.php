@@ -22,7 +22,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxArticleList;
-use oxOrderFileList;
+use \OxidEsales\Eshop\Application\Model\OrderFileList;
 use oxRegistry;
 
 /**
@@ -45,7 +45,7 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
     protected $_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
 
     /**
-     * @var oxOrderFileList
+     * @var \OxidEsales\Eshop\Application\Model\OrderFileList
      */
     protected $_oOrderFilesList = null;
 
@@ -85,7 +85,7 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
             return $this->_oOrderFilesList;
         }
 
-        $oOrderFileList = oxNew('oxOrderFileList');
+        $oOrderFileList = oxNew(\OxidEsales\Eshop\Application\Model\OrderFileList::class);
         $oOrderFileList->loadUserFiles($this->getUser()->getId());
 
         $this->_oOrderFilesList = $this->_prepareForTemplate($oOrderFileList);
@@ -96,7 +96,7 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
     /**
      * Returns prepared orders files list
      *
-     * @param oxorderfilelist $oOrderFileList - list or orderfiles
+     * @param \OxidEsales\Eshop\Application\Model\OrderFileList $oOrderFileList - list or orderfiles
      *
      * @return array
      */

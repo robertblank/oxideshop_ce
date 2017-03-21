@@ -118,7 +118,7 @@ class AccountOrderController extends \OxidEsales\Eshop\Application\Controller\Ac
     /**
      * Template variable getter. Returns ordered articles
      *
-     * @return oxarticlelist | false
+     * @return \OxidEsales\Eshop\Application\Model\ArticleList | false
      */
     public function getOrderArticleList()
     {
@@ -127,7 +127,7 @@ class AccountOrderController extends \OxidEsales\Eshop\Application\Controller\Ac
             $this->_aArticlesList = false;
             $oOrdersList = $this->getOrderList();
             if ($oOrdersList && $oOrdersList->count()) {
-                $this->_aArticlesList = oxNew('oxArticleList');
+                $this->_aArticlesList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $this->_aArticlesList->loadOrderArticles($oOrdersList);
             }
         }

@@ -63,7 +63,7 @@ class ServersManager
      *
      * @param string $sServerId
      *
-     * @return oxApplicationServer
+     * @return \OxidEsales\Eshop\Core\ApplicationServer
      */
     public function getServer($sServerId)
     {
@@ -73,7 +73,7 @@ class ServersManager
     /**
      * Saves given server information to config.
      *
-     * @param oxApplicationServer $oServer
+     * @param \OxidEsales\Eshop\Core\ApplicationServer $oServer
      */
     public function saveServer($oServer)
     {
@@ -120,12 +120,12 @@ class ServersManager
      * @param string $sServerId
      * @param array  $aData
      *
-     * @return oxApplicationServer
+     * @return \OxidEsales\Eshop\Core\ApplicationServer
      */
     protected function _createServer($sServerId, $aData = array())
     {
-        /** @var oxApplicationServer $oAppServer */
-        $oAppServer = oxNew('oxApplicationServer');
+        /** @var \OxidEsales\Eshop\Core\ApplicationServer $oAppServer */
+        $oAppServer = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
 
         $oAppServer->setId($sServerId);
         $oAppServer->setTimestamp($this->_getServerParameter($aData, 'timestamp'));

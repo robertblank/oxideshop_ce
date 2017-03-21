@@ -22,7 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxManufacturer;
+use \OxidEsales\Eshop\Application\Model\Manufacturer;
 use oxRegistry;
 use oxUBase;
 
@@ -146,7 +146,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
     /**
      * Loads and returns article list of active Manufacturer.
      *
-     * @param oxManufacturer $oManufacturer Manufacturer object
+     * @param \OxidEsales\Eshop\Application\Model\Manufacturer $oManufacturer Manufacturer object
      *
      * @return array
      */
@@ -158,7 +158,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
         $iNrofCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
         $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
 
-        $oArtList = oxNew('oxArticleList');
+        $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $oArtList->setSqlLimit($iNrofCatArticles * $this->_getRequestPageNr(), $iNrofCatArticles);
         $oArtList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
 

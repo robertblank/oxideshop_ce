@@ -46,7 +46,7 @@ class CountryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oCountry = oxNew("oxcountry");
+            $oCountry = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
             $oCountry->loadInLang($this->_iEditLang, $soxId);
 
             if ($oCountry->isForeignCountry()) {
@@ -95,7 +95,7 @@ class CountryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $aParams['oxcountry__oxactive'] = 0;
         }
 
-        $oCountry = oxNew("oxcountry");
+        $oCountry = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
 
         if ($soxId != "-1") {
             $oCountry->loadInLang($this->_iEditLang, $soxId);
@@ -126,7 +126,7 @@ class CountryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $aParams['oxcountry__oxactive'] = 0;
         }
 
-        $oCountry = oxNew("oxcountry");
+        $oCountry = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
 
         if ($soxId != "-1") {
             $oCountry->loadInLang($this->_iEditLang, $soxId);

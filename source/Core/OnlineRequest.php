@@ -99,7 +99,7 @@ class OnlineRequest
         $sBaseShop = $oConfig->getBaseShopId();
         $sClusterId = $oConfig->getShopConfVar('sClusterId', $sBaseShop);
         if (!$sClusterId) {
-            $oUUIDGenerator = oxNew('oxUniversallyUniqueIdGenerator');
+            $oUUIDGenerator = oxNew(\OxidEsales\Eshop\Core\UniversallyUniqueIdGenerator::class);
             $sClusterId = $oUUIDGenerator->generate();
             $oConfig->saveShopConfVar("str", 'sClusterId', $sClusterId, $sBaseShop);
         }

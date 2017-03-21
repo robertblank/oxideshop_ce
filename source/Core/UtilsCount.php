@@ -146,7 +146,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      */
     public function setCatArticleCount($aCache, $sCatId, $sActIdent)
     {
-        $oArticle = oxNew('oxArticle');
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $sTable = $oArticle->getViewName();
         $sO2CView = getViewName('oxobject2category');
         $oDb = oxDb::getDb();
@@ -177,7 +177,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      */
     public function setPriceCatArticleCount($aCache, $sCatId, $sActIdent, $dPriceFrom, $dPriceTo)
     {
-        $oArticle = oxNew('oxArticle');
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $sTable = $oArticle->getViewName();
 
         $sSelect = "select count({$sTable}.oxid) from {$sTable} where oxvarminprice >= 0 ";
@@ -208,7 +208,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
             return 0;
         }
 
-        $oArticle = oxNew('oxArticle');
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $sTable = $oArticle->getViewName();
 
         // select each vendor articles count
@@ -280,7 +280,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
             return 0;
         }
 
-        $oArticle = oxNew('oxArticle');
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $sArtTable = $oArticle->getViewName();
         $sManTable = getViewName('oxmanufacturers');
 

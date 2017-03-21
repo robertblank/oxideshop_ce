@@ -55,7 +55,7 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
             $sTheme = $this->_sTheme = $this->getConfig()->getConfigParam('sTheme');
         }
 
-        $oTheme = oxNew('oxTheme');
+        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
         if ($oTheme->load($sTheme)) {
             $this->_aViewData["oTheme"] = $oTheme;
 

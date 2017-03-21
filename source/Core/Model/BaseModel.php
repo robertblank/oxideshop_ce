@@ -34,7 +34,7 @@ DEFINE('ACTION_UPDATE_STOCK', 4);
 use Exception;
 use oxObjectException;
 use oxRegistry;
-use oxField;
+use \OxidEsales\Eshop\Core\Field;
 use oxDb;
 
 class BaseModel extends \OxidEsales\Eshop\Core\Base
@@ -1301,7 +1301,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * returns quoted field value for using in update statement
      *
      * @param string  $fieldName name of field
-     * @param oxField $field     field object
+     * @param \OxidEsales\Eshop\Core\Field $field     field object
      *
      * @return string
      */
@@ -1386,7 +1386,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         }
 
         if (!$this->getId()) {
-            $exception = oxNew('oxObjectException');
+            $exception = oxNew(\OxidEsales\Eshop\Core\Exception\ObjectException::class);
             $exception->setMessage('EXCEPTION_OBJECT_OXIDNOTSET');
             $exception->setObject($this);
             throw $exception;

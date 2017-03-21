@@ -119,7 +119,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
                 foreach ($oValue as $sId) {
                     //var_dump($sVarId, $oAttribute->oxattribute__oxid->value);
                     $sVarId = substr($sVarId, 6);
-                    $oNewAssign = oxNew("oxBase");
+                    $oNewAssign = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                     $oNewAssign->init("oxobject2attribute");
                     $sNewId = oxRegistry::getUtilsObject()->generateUID();
                     if ($oNewAssign->load($sId)) {
@@ -129,7 +129,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
                     }
                 }
             } else {
-                $oNewAssign = oxNew("oxi18n");
+                $oNewAssign = oxNew(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class);
                 $oNewAssign->setEnableMultilang(false);
                 $oNewAssign->init("oxobject2attribute");
                 $oNewAssign->oxobject2attribute__oxobjectid = new oxField($sVarId);
@@ -169,7 +169,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         $myLang = oxRegistry::getLang();
         $aConfLanguages = $myLang->getLanguageIds();
-        $oAttr = oxNew('oxI18n');
+        $oAttr = oxNew(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class);
         $oAttr->setEnableMultilang(false);
         $oAttr->init('oxattribute');
         foreach ($aConfLanguages as $sKey => $sLang) {

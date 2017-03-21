@@ -142,7 +142,7 @@ class DiscountCategoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     protected function addCategoryToDiscount($discountId, $categoryId)
     {
-        $object2Discount = oxNew("oxBase");
+        $object2Discount = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $object2Discount->init('oxobject2discount');
         $object2Discount->oxobject2discount__oxdiscountid = new oxField($discountId);
         $object2Discount->oxobject2discount__oxobjectid = new oxField($categoryId);

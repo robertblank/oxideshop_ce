@@ -167,7 +167,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
         $this->_aBasketItems = array();
 
         // loading basket items
-        $oArticle = oxNew('oxArticle');
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $sViewName = $oArticle->getViewName();
 
         $sSelect = "select oxuserbasketitems.* from oxuserbasketitems left join $sViewName on oxuserbasketitems.oxartid = $sViewName.oxid ";
@@ -178,7 +178,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         $sSelect .= " order by oxartnum, oxsellist, oxpersparam ";
 
-        $oItems = oxNew('oxlist');
+        $oItems = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oItems->init('oxuserbasketitem');
         $oItems->selectstring($sSelect);
 
@@ -201,7 +201,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _createItem($sProductId, $aSelList = null, $aPersParams = null)
     {
-        $oNewItem = oxNew('oxuserbasketitem');
+        $oNewItem = oxNew(\OxidEsales\Eshop\Application\Model\UserBasketItem::class);
         $oNewItem->oxuserbasketitems__oxartid = new oxField($sProductId, oxField::T_RAW);
         $oNewItem->oxuserbasketitems__oxbasketid = new oxField($this->getId(), oxField::T_RAW);
         if ($aPersParams && count($aPersParams)) {
@@ -209,7 +209,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         if (!$aSelList) {
-            $oArticle = oxNew('oxArticle');
+            $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             $oArticle->load($sProductId);
             $aSelectLists = $oArticle->getSelectLists();
             if (($iSelCnt = count($aSelectLists))) {

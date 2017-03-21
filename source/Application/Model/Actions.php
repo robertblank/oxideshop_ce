@@ -63,7 +63,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $sQ = "select max(oxsort) from oxactions2article where oxactionid = " . $oDb->quote($this->getId()) . " and oxshopid = '" . $this->getShopId() . "'";
         $iSort = ((int) $oDb->getOne($sQ)) + 1;
 
-        $oNewGroup = oxNew('oxBase');
+        $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $oNewGroup->init('oxactions2article');
         $oNewGroup->oxactions2article__oxshopid = new oxField($this->getShopId());
         $oNewGroup->oxactions2article__oxactionid = new oxField($this->getId());
@@ -216,7 +216,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $sArtId = $this->fetchBannerArticleId();
 
         if ($sArtId) {
-            $oArticle = oxNew('oxArticle');
+            $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
             if ($this->isAdmin()) {
                 $oArticle->setLanguage(oxRegistry::getLang()->getEditLanguage());

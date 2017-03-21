@@ -24,7 +24,7 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
 
 use oxRegistry;
 use Exception;
-use oxException;
+use \OxidEsales\Eshop\Core\Exception\StandardException;
 
 /**
  * Exception handler, deals with all high level exceptions (caught in oxShopControl)
@@ -116,7 +116,7 @@ class ExceptionHandler
     /**
      * Deal with uncaught oxException exceptions.
      *
-     * @param oxException $oEx Exception to handle
+     * @param \OxidEsales\Eshop\Core\Exception\StandardException $oEx Exception to handle
      *
      * @return null
      */

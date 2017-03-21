@@ -229,7 +229,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * Returns base basket price for payment cost calculations. Price depends on
      * payment setup (payment administration)
      *
-     * @param oxBasket $oBasket oxBasket object
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket oxBasket object
      *
      * @return double
      */
@@ -294,7 +294,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Returns price object for current payment applied on basket
      *
-     * @param oxUserBasket $oBasket session basket
+     * @param \OxidEsales\Eshop\Application\Model\UserBasket $oBasket session basket
      */
     public function calculate($oBasket)
     {
@@ -305,7 +305,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             $dPrice = 0;
         }
         // calculating total price
-        $oPrice = oxNew('oxPrice');
+        $oPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
         $oPrice->setNettoMode($this->_blPaymentVatOnTop);
 
         $oPrice->setPrice($dPrice);
@@ -413,7 +413,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @param array  $aDynValue    dynamical value (in this case oxidcreditcard and oxiddebitnote are checked only)
      * @param string $sShopId      id of current shop
-     * @param oxUser $oUser        the current user
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser        the current user
      * @param double $dBasketPrice the current basket price (oBasket->dPrice)
      * @param string $sShipSetId   the current ship set
      *

@@ -150,7 +150,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     /**
      * Returns array of product categories
      *
-     * @param oxarticle $oArticle Article object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle Article object
      *
      * @return array
      */
@@ -175,7 +175,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
         $oRs = $oDb->select($sQ);
         if ($oRs != false && $oRs->count() > 0) {
             while (!$oRs->EOF) {
-                $oCat = oxNew('oxCategory');
+                $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
                 if ($oCat->loadInLang($iLang, current($oRs->fields))) {
                     if ($sMainCatId == $oCat->getId()) {
                         $sSuffix = oxRegistry::getLang()->translateString('(main category)', $this->getEditLang());
@@ -195,14 +195,14 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     /**
      * Returns array containing product vendor object
      *
-     * @param oxArticle $oArticle Article object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle Article object
      *
      * @return array
      */
     protected function _getVendorList($oArticle)
     {
         if ($oArticle->oxarticles__oxvendorid->value) {
-            $oVendor = oxNew('oxvendor');
+            $oVendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
             if ($oVendor->loadInLang($this->getEditLang(), $oArticle->oxarticles__oxvendorid->value)) {
                 return array($oVendor);
             }
@@ -212,14 +212,14 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     /**
      * Returns array containing product manufacturer object
      *
-     * @param oxarticle $oArticle Article object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle Article object
      *
      * @return array
      */
     protected function _getManufacturerList($oArticle)
     {
         if ($oArticle->oxarticles__oxmanufacturerid->value) {
-            $oManufacturer = oxNew('oxmanufacturer');
+            $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
             if ($oManufacturer->loadInLang($this->getEditLang(), $oArticle->oxarticles__oxmanufacturerid->value)) {
                 return array($oManufacturer);
             }
@@ -229,11 +229,11 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     /**
      * Returns active category object, used for seo url getter
      *
-     * @return oxcategory | null
+     * @return \OxidEsales\Eshop\Application\Model\Category | null
      */
     public function getActCategory()
     {
-        $oCat = oxNew('oxCategory');
+        $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
 
         return ($oCat->load($this->getActCatId())) ? $oCat : null;
     }
@@ -241,11 +241,11 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     /**
      * Returns active vendor object if available
      *
-     * @return oxvendor | null
+     * @return \OxidEsales\Eshop\Application\Model\Vendor | null
      */
     public function getActVendor()
     {
-        $oVendor = oxNew('oxvendor');
+        $oVendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
 
         return ($this->getActCatType() == 'oxvendor' && $oVendor->load($this->getActCatId())) ? $oVendor : null;
     }
@@ -253,11 +253,11 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     /**
      * Returns active manufacturer object if available
      *
-     * @return oxmanufacturer | null
+     * @return \OxidEsales\Eshop\Application\Model\Manufacturer | null
      */
     public function getActManufacturer()
     {
-        $oManufacturer = oxNew('oxmanufacturer');
+        $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
         $blLoaded = $this->getActCatType() == 'oxmanufacturer' && $oManufacturer->load($this->getActCatId());
 
         return ($blLoaded) ? $oManufacturer : null;
@@ -337,7 +337,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      */
     public function getEntryUri()
     {
-        $product = oxNew('oxArticle');
+        $product = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
         if ($product->load($this->getEditObjectId())) {
             $seoEncoder = $this->_getEncoder();

@@ -210,7 +210,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     protected function _getViewSelect($sTable, $iLang)
     {
-        $oMetaData = oxNew('oxDbMetaDataHandler');
+        $oMetaData = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
         $aFields = $oMetaData->getSinglelangFields($sTable, $iLang);
         foreach ($aFields as $sCoreField => $sField) {
             if ($sCoreField !== $sField) {
@@ -232,7 +232,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         $aFields = array();
 
-        $oMetaData = oxNew('oxDbMetaDataHandler');
+        $oMetaData = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
         $aTables = array_merge(array($sTable), $oMetaData->getAllMultiTables($sTable));
         foreach ($aTables as $sTableKey => $sTableName) {
             $aTableFields = $oMetaData->getFields($sTableName);
@@ -256,7 +256,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     protected function _getViewJoinAll($sTable)
     {
         $sJoin = ' ';
-        $oMetaData = oxNew('oxDbMetaDataHandler');
+        $oMetaData = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
         $aTables = $oMetaData->getAllMultiTables($sTable);
         if (count($aTables)) {
             foreach ($aTables as $sTableKey => $sTableName) {
@@ -301,7 +301,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $oLang = oxRegistry::getLang();
         $aAllShopLanguages = $oLang->getAllShopLanguageIds();
 
-        $oViewsValidator = oxNew('oxShopViewValidator');
+        $oViewsValidator = oxNew(\OxidEsales\Eshop\Application\Model\ShopViewValidator::class);
 
         $oViewsValidator->setShopId($this->getId());
         $oViewsValidator->setLanguages($aLanguages);

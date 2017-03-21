@@ -109,7 +109,7 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
         }
 
         $oUtils = oxRegistry::getUtils();
-        if (!oxNew('oxMailValidator')->isValidEmail($aParams["rec_email"]) || !oxNew('oxMailValidator')->isValidEmail($aParams["send_email"])) {
+        if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams["rec_email"]) || !oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams["send_email"])) {
             $oUtilsView->addErrorToDisplay('SUGGEST_INVALIDMAIL');
 
             return;
@@ -142,7 +142,7 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
         }
 
         // sending suggest email
-        $oEmail = oxNew('oxemail');
+        $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
         $oProduct = $this->getProduct();
         if ($oProduct && $oEmail->sendSuggestMail($oParams, $oProduct)) {
             return 'details?anid=' . $oProduct->getId() . $sReturn;
@@ -162,7 +162,7 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
             $this->_oProduct = false;
 
             if ($sProductId = $this->getConfig()->getRequestParameter('anid')) {
-                $oProduct = oxNew('oxArticle');
+                $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                 $oProduct->load($sProductId);
                 $this->_oProduct = $oProduct;
             }
@@ -221,7 +221,7 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
         if ($this->_oRecommList === null) {
             $this->_oRecommList = false;
             if ($oProduct = $this->getProduct()) {
-                $oRecommList = oxNew('oxrecommlist');
+                $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
                 $this->_oRecommList = $oRecommList->getRecommListsByIds(array($oProduct->getId()));
             }
         }

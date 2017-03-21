@@ -81,7 +81,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Current delivery price object which keeps price info
      *
-     * @var oxPrice
+     * @var \OxidEsales\Eshop\Core\Price
      */
     protected $_oPrice = null;
 
@@ -211,7 +211,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Returns amount (total net price/weight/volume/Amount) on which delivery price is applied
      *
-     * @param oxBasketItem $oBasketItem basket item object
+     * @param \OxidEsales\Eshop\Application\Model\BasketItem $oBasketItem basket item object
      *
      * @return double
      */
@@ -271,7 +271,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Delivery price setter
      *
-     * @param oxPrice $oPrice delivery price to set
+     * @param \OxidEsales\Eshop\Core\Price $oPrice delivery price to set
      */
     public function setDeliveryPrice($oPrice)
     {
@@ -283,13 +283,13 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @param double $dVat delivery vat
      *
-     * @return oxPrice
+     * @return \OxidEsales\Eshop\Core\Price
      */
     public function getDeliveryPrice($dVat = null)
     {
         if ($this->_oPrice === null) {
             // loading oxPrice object for final price calculation
-            $oPrice = oxNew('oxPrice');
+            $oPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
             $oPrice->setNettoMode($this->_blDelVatOnTop);
             $oPrice->setVat($dVat);
 
@@ -329,7 +329,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Checks if delivery fits for current basket
      *
-     * @param oxBasket $oBasket shop basket
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket shop basket
      *
      * @return bool
      */
@@ -370,7 +370,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
                     if (isset(self::$_aProductList[$sProductId])) {
                         $oProduct = self::$_aProductList[$sProductId];
                     } else {
-                        $oProduct = oxNew('oxArticle');
+                        $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                         $oProduct->setSkipAssign(true);
 
                         if (!$oProduct->load($sProductId)) {
@@ -441,7 +441,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Update total count of product items are covered by current delivery.
      *
-     * @param oxBasketItem $content
+     * @param \OxidEsales\Eshop\Application\Model\BasketItem $content
      */
     protected function updateItemCount($content)
     {

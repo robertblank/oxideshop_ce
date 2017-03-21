@@ -227,7 +227,7 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
      * This method is called from oxuser::update. Currently it updates user
      * information kept in db
      *
-     * @param oxuser $oUser subscription user object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser subscription user object
      *
      * @return bool
      */

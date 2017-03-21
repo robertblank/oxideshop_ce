@@ -48,7 +48,7 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $sOxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($sOxId) && $sOxId != "-1") {
             // load object
-            $oDiscount = oxNew("oxdiscount");
+            $oDiscount = oxNew(\OxidEsales\Eshop\Application\Model\Discount::class);
             $oDiscount->loadInLang($this->_iEditLang, $sOxId);
 
             $oOtherLang = $oDiscount->getAvailableInLangs();
@@ -81,7 +81,7 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         if (($iAoc = oxRegistry::getConfig()->getRequestParameter("aoc"))) {
             if ($iAoc == "1") {
-                $oDiscountMainAjax = oxNew('discount_main_ajax');
+                $oDiscountMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DiscountMainAjax::class);
                 $this->_aViewData['oxajax'] = $oDiscountMainAjax->getColumns();
 
                 return "popups/discount_main.tpl";
@@ -89,7 +89,7 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
                 // generating category tree for artikel choose select list
                 $this->_createCategoryTree("artcattree");
 
-                $oDiscountItemAjax = oxNew('discount_item_ajax');
+                $oDiscountItemAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DiscountItemAjax::class);
                 $this->_aViewData['oxajax'] = $oDiscountItemAjax->getColumns();
 
                 return "popups/discount_item.tpl";
@@ -133,7 +133,7 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $sOxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $oDiscount = oxNew("oxDiscount");
+        $oDiscount = oxNew(\OxidEsales\Eshop\Application\Model\Discount::class);
         if ($sOxId != "-1") {
             $oDiscount->load($sOxId);
         } else {
@@ -158,7 +158,7 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         try {
             $oDiscount->save();
         } catch (\oxInputException $exception) {
-            $newException = oxNew("oxExceptionToDisplay");
+            $newException = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             $newException->setMessage($exception->getMessage());
             $this->addTplParam('discount_title', $aParams['oxdiscount__oxtitle']);
 
@@ -188,7 +188,7 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $sOxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $oAttr = oxNew("oxdiscount");
+        $oAttr = oxNew(\OxidEsales\Eshop\Application\Model\Discount::class);
         if ($sOxId != "-1") {
             $oAttr->load($sOxId);
         } else {
@@ -223,7 +223,7 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     public function getNextOxsort()
     {
         $shopId = oxRegistry::getConfig()->getShopId();
-        $nextSort = oxNew("oxdiscount")->getNextOxsort($shopId);
+        $nextSort = oxNew(\OxidEsales\Eshop\Application\Model\Discount::class)->getNextOxsort($shopId);
 
         return $nextSort;
     }

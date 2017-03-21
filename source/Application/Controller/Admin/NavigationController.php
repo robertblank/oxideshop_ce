@@ -98,11 +98,11 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
         }
 
         $blisMallAdmin = oxRegistry::getSession()->getVariable('malladmin');
-        $oShoplist = oxNew('oxShopList');
+        $oShoplist = oxNew(\OxidEsales\Eshop\Application\Model\ShopList::class);
         if (!$blisMallAdmin) {
             // we only allow to see our shop
             $iShopId = oxRegistry::getSession()->getVariable("actshop");
-            $oShop = oxNew('oxShop');
+            $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
             $oShop->load($iShopId);
             $oShoplist->add($oShop);
         } else {
@@ -135,7 +135,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
         $mySession = $this->getSession();
         $myConfig = $this->getConfig();
 
-        $oUser = oxNew("oxUser");
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oUser->logout();
 
         // kill session

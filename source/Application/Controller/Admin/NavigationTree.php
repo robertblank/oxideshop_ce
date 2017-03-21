@@ -497,7 +497,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
 
         // including module menu files
         $path = getShopBasePath();
-        $modulelist = oxNew('oxmodulelist');
+        $modulelist = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
         $activeModuleInfo = $modulelist->getActiveModuleInfo();
         if (is_array($activeModuleInfo)) {
             foreach ($activeModuleInfo as $modulePath) {
@@ -844,7 +844,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
 
             return $fullAdminDir . "/dynscreen_local.xml";
         }
-        $adminView = oxNew('oxadminview');
+        $adminView = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\AdminController::class);
         $this->_sDynIncludeUrl = $adminView->getServiceUrl($lang);
 
         return $this->_sDynIncludeUrl . "menue/dynscreen.xml";

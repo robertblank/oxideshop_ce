@@ -23,7 +23,7 @@
 namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
 use oxRegistry;
-use oxArticle;
+use \OxidEsales\Eshop\Application\Model\Article;
 
 /**
  * Article box widget
@@ -49,7 +49,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     /**
      * Current article
      *
-     * @var oxArticle|null
+     * @var \OxidEsales\Eshop\Application\Model\Article|null
      */
     protected $_oArticle = null;
 
@@ -95,7 +95,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     /**
      * Sets box product
      *
-     * @param oxArticle $oArticle Box product
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle Box product
      */
     public function setProduct($oArticle)
     {
@@ -105,7 +105,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     /**
      * Get product article
      *
-     * @return oxArticle
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     public function getProduct()
     {
@@ -260,7 +260,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      * Appends dyn params to url.
      *
      * @param string    $sAddDynParams Dyn params
-     * @param oxArticle $oArticle      Article
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle      Article
      *
      * @return bool
      */
@@ -285,12 +285,12 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      *
      * @param string $sArticleId Article id
      *
-     * @return oxArticle
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     protected function _getArticleById($sArticleId)
     {
-        /** @var oxArticle $oArticle */
-        $oArticle = oxNew('oxArticle');
+        /** @var \OxidEsales\Eshop\Application\Model\Article $oArticle */
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->load($sArticleId);
         $iLinkType = $this->getViewParameter('iLinkType');
 

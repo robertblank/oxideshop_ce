@@ -57,7 +57,7 @@ class LinksController extends \OxidEsales\Eshop\Application\Controller\FrontendC
         if ($this->_oLinksList === null) {
             $this->_oLinksList = false;
             // Load links
-            $oLinksList = oxNew("oxlist");
+            $oLinksList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oLinksList->init("oxlinks");
             $oLinksList->getList();
             $this->_oLinksList = $oLinksList;

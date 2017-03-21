@@ -64,7 +64,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $oArticle = $this->getArticle();
         // variant handling
         if ($oArticle->oxarticles__oxparentid->value) {
-            $oParentArticle = oxNew('oxArticle');
+            $oParentArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             $oParentArticle->load($oArticle->oxarticles__oxparentid->value);
             $oArticle->oxarticles__oxisdownloadable = new oxField($oParentArticle->oxarticles__oxisdownloadable->value);
             $this->_aViewData["oxparentid"] = $oArticle->oxarticles__oxparentid->value;
@@ -89,7 +89,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $aArticleFiles = oxRegistry::getConfig()->getRequestParameter('article_files');
         if (count($aArticleFiles) > 0) {
             foreach ($aArticleFiles as $sArticleFileId => $aArticleFileUpdate) {
-                $oArticleFile = oxNew('oxFile');
+                $oArticleFile = oxNew(\OxidEsales\Eshop\Application\Model\File::class);
                 $oArticleFile->load($sArticleFileId);
                 $aArticleFileUpdate = $this->_processOptions($aArticleFileUpdate);
                 $oArticleFile->assign($aArticleFileUpdate);
@@ -117,7 +117,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         }
         $sProductId = $this->getEditObjectId();
 
-        $oProduct = oxNew('oxArticle');
+        $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oProduct->load($sProductId);
 
         return $this->_oArticle = $oProduct;
@@ -133,7 +133,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $myConfig = $this->getConfig();
 
         if ($myConfig->isDemoShop()) {
-            $oEx = oxNew("oxExceptionToDisplay");
+            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             $oEx->setMessage('ARTICLE_EXTEND_UPLOADISDISABLED');
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false);
 
@@ -147,7 +147,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $aNewFile = $this->getConfig()->getUploadedFile("newArticleFile");
 
         //uploading and processing supplied file
-        $oArticleFile = oxNew("oxFile");
+        $oArticleFile = oxNew(\OxidEsales\Eshop\Application\Model\File::class);
         $oArticleFile->assign($aParams);
 
         if (!$aNewFile['name'] && !$oArticleFile->oxfiles__oxfilename->value) {
@@ -182,7 +182,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $myConfig = $this->getConfig();
 
         if ($myConfig->isDemoShop()) {
-            $oEx = oxNew("oxExceptionToDisplay");
+            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             $oEx->setMessage('ARTICLE_EXTEND_UPLOADISDISABLED');
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false);
 
@@ -191,7 +191,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         $sArticleId = $this->getEditObjectId();
         $sArticleFileId = oxRegistry::getConfig()->getRequestParameter('fileid');
-        $oArticleFile = oxNew('oxFile');
+        $oArticleFile = oxNew(\OxidEsales\Eshop\Application\Model\File::class);
         $oArticleFile->load($sArticleFileId);
         if ($oArticleFile->hasValidDownloads()) {
             return oxRegistry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_DELETING_VALID_FILE');

@@ -131,7 +131,7 @@ class MoreDetailsController extends \OxidEsales\Eshop\Application\Controller\Art
     public function getProduct()
     {
         if ($this->_oProduct === null) {
-            $oArticle = oxNew('oxArticle');
+            $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             $oArticle->load(oxRegistry::getConfig()->getRequestParameter('anid'));
             $this->_oProduct = $oArticle;
         }

@@ -36,7 +36,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     /**
      * Active shop object. Can only be accessed when it is assigned
      *
-     * @var oxshop
+     * @var \OxidEsales\Eshop\Application\Model\Shop
      */
     protected $_oShop = null;
 
@@ -222,7 +222,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         if ($this->_sHelpPageLink === null) {
             $this->_sHelpPageLink = "";
             $aContentIdents = $this->_getHelpContentIdents();
-            $oContent = oxNew("oxContent");
+            $oContent = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
             foreach ($aContentIdents as $sIdent) {
                 if ($oContent->loadByIdent($sIdent, true)) {
                     $this->_sHelpPageLink = $oContent->getLink();
@@ -351,7 +351,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      * Sets shop object and view data to view config. This is needed mostly for
      * old templates
      *
-     * @param oxshop $oShop     shop object
+     * @param \OxidEsales\Eshop\Application\Model\Shop $oShop     shop object
      * @param array  $aViewData view data array
      */
     public function setViewShop($oShop, $aViewData)
@@ -1149,7 +1149,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     {
         if ($this->_oCountryList === null) {
             // passing country list
-            $this->_oCountryList = oxNew('oxcountrylist');
+            $this->_oCountryList = oxNew(\OxidEsales\Eshop\Application\Model\CountryList::class);
             $this->_oCountryList->loadActiveCountries();
         }
 
@@ -1172,7 +1172,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         if (!$sFile || ($sFile[0] != '/')) {
             $sFile = '/' . $sFile;
         }
-        $oModule = oxNew("oxmodule");
+        $oModule = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
         $sModulePath = $oModule->getModulePath($sModule);
         $sFile = $this->getConfig()->getModulesDir() . $sModulePath . $sFile;
         if (file_exists($sFile) || is_dir($sFile)) {
@@ -1308,7 +1308,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getActiveTheme()
     {
         if ($this->_sActiveTheme === null) {
-            $oTheme = oxNew('oxTheme');
+            $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
             $this->_sActiveTheme = $oTheme->getActiveThemeId();
         }
 

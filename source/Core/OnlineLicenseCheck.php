@@ -22,9 +22,9 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxOnlineLicenseCheckCaller;
-use oxUserCounter;
-use oxServersManager;
+use \OxidEsales\Eshop\Core\OnlineLicenseCheckCaller;
+use \OxidEsales\Eshop\Core\UserCounter;
+use \OxidEsales\Eshop\Core\ServersManager;
 use oxRegistry;
 use oxOnlineLicenseCheck;
 use stdClass;
@@ -82,19 +82,19 @@ class OnlineLicenseCheck
      */
     protected $_blIsException = false;
 
-    /** @var oxOnlineLicenseCheckCaller */
+    /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheckCaller */
     protected $_oCaller = null;
 
-    /** @var oxUserCounter */
+    /** @var \OxidEsales\Eshop\Core\UserCounter */
     protected $_oUserCounter = null;
 
-    /** @var oxServersManager */
+    /** @var \OxidEsales\Eshop\Core\ServersManager */
     protected $_oServersManager = null;
 
     /**
      * Sets servers manager.
      *
-     * @param oxServersManager $oServersManager
+     * @param \OxidEsales\Eshop\Core\ServersManager $oServersManager
      */
     public function setServersManager($oServersManager)
     {
@@ -104,7 +104,7 @@ class OnlineLicenseCheck
     /**
      * Gets servers manager.
      *
-     * @return oxServersManager
+     * @return \OxidEsales\Eshop\Core\ServersManager
      */
     public function getServersManager()
     {
@@ -114,7 +114,7 @@ class OnlineLicenseCheck
     /**
      * Sets user counter.
      *
-     * @param oxUserCounter $oUserCounter
+     * @param \OxidEsales\Eshop\Core\UserCounter $oUserCounter
      */
     public function setUserCounter($oUserCounter)
     {
@@ -124,7 +124,7 @@ class OnlineLicenseCheck
     /**
      * Gets user counter.
      *
-     * @return oxUserCounter
+     * @return \OxidEsales\Eshop\Core\UserCounter
      */
     public function getUserCounter()
     {
@@ -135,7 +135,7 @@ class OnlineLicenseCheck
     /**
      * Sets dependencies.
      *
-     * @param oxOnlineLicenseCheckCaller $oCaller
+     * @param \OxidEsales\Eshop\Core\OnlineLicenseCheckCaller $oCaller
      */
     public function __construct($oCaller)
     {
@@ -235,7 +235,7 @@ class OnlineLicenseCheck
     /**
      * Gets caller.
      *
-     * @return oxOnlineLicenseCheckCaller
+     * @return \OxidEsales\Eshop\Core\OnlineLicenseCheckCaller
      */
     protected function _getCaller()
     {
@@ -245,7 +245,7 @@ class OnlineLicenseCheck
     /**
      * Performs a check of the response code and message.
      *
-     * @param oxOnlineLicenseCheckResponse $oResponse
+     * @param \OxidEsales\Eshop\Core\OnlineLicenseCheckResponse $oResponse
      *
      * @throws oxException
      *
@@ -286,7 +286,7 @@ class OnlineLicenseCheck
         $oConfig = oxRegistry::getConfig();
 
         /** @var oxOnlineLicenseCheckRequest $oRequest */
-        $oRequest = oxNew('oxOnlineLicenseCheckRequest');
+        $oRequest = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class);
 
         $oRequest->revision = $oConfig->getRevision();
 
@@ -368,7 +368,7 @@ class OnlineLicenseCheck
     /**
      * Gets user counter.
      *
-     * @return oxUserCounter
+     * @return \OxidEsales\Eshop\Core\UserCounter
      */
     protected function _getUserCounter()
     {

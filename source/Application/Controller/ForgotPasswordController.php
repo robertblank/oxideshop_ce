@@ -80,7 +80,7 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
     {
         $sEmail = oxRegistry::getConfig()->getRequestParameter('lgn_usr');
         $this->_sForgotEmail = $sEmail;
-        $oEmail = oxNew('oxemail');
+        $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
 
         // problems sending passwd reminder ?
         $iSuccess = false;
@@ -105,7 +105,7 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
         $sNewPass = oxRegistry::getConfig()->getRequestParameter('password_new', true);
         $sConfPass = oxRegistry::getConfig()->getRequestParameter('password_new_confirm', true);
 
-        $oUser = oxNew('oxuser');
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
 
         /** @var oxInputValidator $oInputValidator */
         $oInputValidator = oxRegistry::get('oxInputValidator');
@@ -174,7 +174,7 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
     public function isExpiredLink()
     {
         if (($sKey = $this->getUpdateId())) {
-            $blExpired = oxNew('oxuser')->isExpiredUpdateId($sKey);
+            $blExpired = oxNew(\OxidEsales\Eshop\Application\Model\User::class)->isExpiredUpdateId($sKey);
         }
 
         return $blExpired;

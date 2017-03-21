@@ -23,7 +23,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxArticle;
 use oxArticleList;
-use oxCategory;
+use \OxidEsales\Eshop\Application\Model\Category;
 use oxField;
 use oxRegistry;
 
@@ -195,7 +195,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
         $activeCategory = $this->getActiveCategory();
         if ($activeCategory && $config->getConfigParam('bl_rssCategories')) {
-            $rss = oxNew('oxrssfeed');
+            $rss = oxNew(\OxidEsales\Eshop\Application\Model\RssFeed::class);
             $this->addRssFeed(
                 $rss->getCategoryArticlesTitle($activeCategory),
                 $rss->getCategoryArticlesUrl($activeCategory),
@@ -223,7 +223,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * In case of 'more categories' page is viewed, sets 'more categories' template,
      * sets empty category as active category and returns it.
      *
-     * @return oxCategory
+     * @return \OxidEsales\Eshop\Application\Model\Category
      */
     protected function getCategoryToRender()
     {
@@ -235,7 +235,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         if ('oxmore' == $config->getRequestParameter('cnid')) {
             // overriding some standard value and parameters
             $this->_sThisTemplate = $this->_sThisMoreTemplate;
-            $category = oxNew('oxCategory');
+            $category = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             $category->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
             $this->setActiveCategory($category);
         } elseif (($category = $this->getActiveCategory())) {
@@ -358,7 +358,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     /**
      * Loads and returns article list of active category.
      *
-     * @param oxCategory $category category object
+     * @param \OxidEsales\Eshop\Application\Model\Category $category category object
      *
      * @return oxArticleList
      */
@@ -370,7 +370,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         $numberOfCategoryArticles = $numberOfCategoryArticles ? $numberOfCategoryArticles : 1;
 
         // load only articles which we show on screen
-        $articleList = oxNew('oxArticleList');
+        $articleList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $articleList->setSqlLimit($numberOfCategoryArticles * $this->_getRequestPageNr(), $numberOfCategoryArticles);
         $articleList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
 
@@ -902,7 +902,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
         if (($categoryTree = $this->getCategoryTree()) && ($categoryPaths = $categoryTree->getPath())) {
             foreach ($categoryPaths as $category) {
-                /** @var oxCategory $category */
+                /** @var \OxidEsales\Eshop\Application\Model\Category $category */
                 $categoryPath = array();
 
                 $categoryPath['link'] = $category->getLink();
@@ -996,7 +996,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         if ($this->_aBargainArticleList === null) {
             $this->_aBargainArticleList = array();
             if ($this->getConfig()->getConfigParam('bl_perfLoadAktion') && $this->_isActCategory()) {
-                $articleList = oxNew('oxArticleList');
+                $articleList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $articleList->loadActionArticles('OXBARGAIN');
                 if ($articleList->count()) {
                     $this->_aBargainArticleList = $articleList;
@@ -1010,13 +1010,13 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     /**
      * Template variable getter. Returns active search
      *
-     * @return oxCategory
+     * @return \OxidEsales\Eshop\Application\Model\Category
      */
     public function getActiveCategory()
     {
         if ($this->_oActCategory === null) {
             $this->_oActCategory = false;
-            $category = oxNew('oxCategory');
+            $category = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             if ($category->load($this->getCategoryId())) {
                 $this->_oActCategory = $category;
             }

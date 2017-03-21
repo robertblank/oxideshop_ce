@@ -56,7 +56,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
     {
         $sModuleId = $this->_sModuleId = $this->getEditObjectId();
 
-        $oModule = oxNew('oxModule');
+        $oModule = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
 
         if ($sModuleId && $oModule->load($sModuleId)) {
             try {

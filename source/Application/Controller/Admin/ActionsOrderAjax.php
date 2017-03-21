@@ -78,7 +78,7 @@ class ActionsOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         $sQuotedSelectionId = oxDb::getDb()->quote($sSelId);
         $sSelect = "select * from oxobject2selectlist where oxobjectid= {$sQuotedSelectionId} order by oxsort";
 
-        $oList = oxNew("oxlist");
+        $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oList->init("oxbase", "oxobject2selectlist");
         $oList->selectString($sSelect);
 

@@ -57,7 +57,7 @@ class ContentSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      */
     public function getEntryUri()
     {
-        $oContent = oxNew('oxcontent');
+        $oContent = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
         if ($oContent->load($this->getEditObjectId())) {
             return $this->_getEncoder()->getContentUri($oContent, $this->getEditLang());
         }

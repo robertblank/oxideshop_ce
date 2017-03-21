@@ -49,7 +49,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
         $this->getConfig()->setConfigParam('bl_perfLoadPrice', true);
 
-        $oArticle = oxNew('oxArticle');
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->enablePriceLoad();
 
         $this->_aViewData['edit'] = $oArticle;
@@ -60,7 +60,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
         // new variant ?
         if (isset($sVoxId) && $sVoxId == "-1" && isset($sOxParentId) && $sOxParentId && $sOxParentId != "-1") {
-            $oParentArticle = oxNew("oxArticle");
+            $oParentArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             $oParentArticle->load($sOxParentId);
             $this->_aViewData["parentarticle"] = $oParentArticle;
             $this->_aViewData["oxparentid"] = $sOxParentId;
@@ -81,7 +81,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
             // variant handling
             if ($oArticle->oxarticles__oxparentid->value) {
-                $oParentArticle = oxNew("oxArticle");
+                $oParentArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                 $oParentArticle->load($oArticle->oxarticles__oxparentid->value);
                 $this->_aViewData["parentarticle"] = $oParentArticle;
                 $this->_aViewData["oxparentid"] = $oArticle->oxarticles__oxparentid->value;
@@ -122,7 +122,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     /**
      * Returns string which must be edited by editor
      *
-     * @param oxbase $oObject object whifh field will be used for editing
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $oObject object whifh field will be used for editing
      * @param string $sField  name of editable field
      *
      * @return string
@@ -166,7 +166,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             unset($aParams['oxarticles__oxparentid']);
         }
 
-        $oArticle = oxNew("oxArticle");
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->setLanguage($this->_iEditLang);
 
         if ($soxId != "-1") {
@@ -269,7 +269,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     public function addToCategory($sCatID, $sOXID)
     {
-        $base = oxNew("oxBase");
+        $base = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $base->init("oxobject2category");
         $base->oxobject2category__oxtime = new oxField(0);
         $base->oxobject2category__oxobjectid = new oxField($sOXID);
@@ -294,7 +294,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $sOldId = $sOldId ? $sOldId : $this->getEditObjectId();
         $sNewId = $sNewId ? $sNewId : oxRegistry::getUtilsObject()->generateUID();
 
-        $oArticle = oxNew('oxBase');
+        $oArticle = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $oArticle->init('oxarticles');
         if ($oArticle->load($sOldId)) {
             if ($myConfig->getConfigParam('blDisableDublArtOnCopy')) {
@@ -422,7 +422,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         if ($oRs !== false && $oRs->count() > 0) {
             while (!$oRs->EOF) {
                 // #1055A
-                $oAttr = oxNew("oxBase");
+                $oAttr = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oAttr->init("oxobject2attribute");
                 $oAttr->load($oRs->fields[0]);
                 $oAttr->setId($myUtilsObject->generateUID());
@@ -448,7 +448,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $oRs = $oDb->select($sQ);
         if ($oRs !== false && $oRs->count() > 0) {
             while (!$oRs->EOF) {
-                $oFile = oxNew("oxfile");
+                $oFile = oxNew(\OxidEsales\Eshop\Application\Model\File::class);
                 $oFile->setId($myUtilsObject->generateUID());
                 $oFile->oxfiles__oxartid = new oxField($sNewId);
                 $oFile->oxfiles__oxfilename = new oxField($oRs->fields['OXFILENAME']);
@@ -545,7 +545,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     protected function _copyStaffelpreis($sOldId, $sNewId)
     {
         $sShopId = $this->getConfig()->getShopId();
-        $oPriceList = oxNew("oxlist");
+        $oPriceList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oPriceList->init("oxbase", "oxprice2article");
         $sQ = "select * from oxprice2article where oxartid = '{$sOldId}' and oxshopid = '{$sShopId}' " .
               "and (oxamount > 0 or oxamountto > 0) order by oxamount ";
@@ -567,7 +567,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected function _copyArtExtends($sOldId, $sNewId)
     {
-        $oExt = oxNew("oxBase");
+        $oExt = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $oExt->init("oxartextends");
         $oExt->load($sOldId);
         $oExt->setId($sNewId);
@@ -662,7 +662,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     public function getCategoryList()
     {
-        $oCatTree = oxNew("oxCategoryList");
+        $oCatTree = oxNew(\OxidEsales\Eshop\Application\Model\CategoryList::class);
         $oCatTree->loadList();
 
         return $oCatTree;
@@ -675,7 +675,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     public function getVendorList()
     {
-        $oVendorlist = oxNew("oxvendorlist");
+        $oVendorlist = oxNew(\OxidEsales\Eshop\Application\Model\VendorList::class);
         $oVendorlist->loadVendorList();
 
         return $oVendorlist;
@@ -688,7 +688,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     public function getManufacturerList()
     {
-        $oManufacturerList = oxNew("oxmanufacturerlist");
+        $oManufacturerList = oxNew(\OxidEsales\Eshop\Application\Model\ManufacturerList::class);
         $oManufacturerList->loadManufacturerList();
 
         return $oManufacturerList;
@@ -697,10 +697,10 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     /**
      * Loads language for article.
      *
-     * @param oxArticle $oArticle
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle
      * @param string    $sOxId
      *
-     * @return oxArticle
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     protected function updateArticle($oArticle, $sOxId)
     {
@@ -728,9 +728,9 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     }
 
     /**
-     * @param oxBase $base
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $base
      *
-     * @return oxBase $base
+     * @return \OxidEsales\Eshop\Core\Model\BaseModel $base
      */
     protected function updateBase($base)
     {
@@ -741,9 +741,9 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      * Customize article data for rendering.
      * Intended to be used by modules.
      *
-     * @param Article $article
+     * @param \OxidEsales\Eshop\Application\Controller\Admin\ArticleController $article
      *
-     * @return Article
+     * @return \OxidEsales\Eshop\Application\Controller\Admin\ArticleController
      */
     protected function customizeArticleInformation($article)
     {
@@ -754,10 +754,10 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      * Save non standard article information if needed.
      * Intended to be used by modules.
      *
-     * @param Article $article
+     * @param \OxidEsales\Eshop\Application\Controller\Admin\ArticleController $article
      * @param array   $parameters
      *
-     * @return Article
+     * @return \OxidEsales\Eshop\Application\Controller\Admin\ArticleController
      */
     protected function saveAdditionalArticleData($article, $parameters)
     {

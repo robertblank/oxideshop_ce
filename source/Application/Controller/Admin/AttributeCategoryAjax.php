@@ -125,7 +125,7 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
         $aAddCategory = $this->_getActionIds('oxcategories.oxid');
         $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
 
-        $oAttribute = oxNew("oxattribute");
+        $oAttribute = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);
         // adding
         if (oxRegistry::getConfig()->getRequestParameter('all')) {
             $sCatTable = $this->_getViewName('oxcategories');
@@ -137,7 +137,7 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
             try {
                 $database = oxDb::getDb();
                 foreach ($aAddCategory as $sAdd) {
-                    $oNewGroup = oxNew("oxBase");
+                    $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                     $oNewGroup->init("oxcategory2attribute");
                     $sOxSortField = 'oxcategory2attribute__oxsort';
                     $sObjectIdField = 'oxcategory2attribute__oxobjectid';

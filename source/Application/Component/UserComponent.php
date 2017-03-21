@@ -26,7 +26,7 @@ use oxDb;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Form\UpdatableFieldsConstructor;
 use oxRegistry;
-use oxUser;
+use \OxidEsales\Eshop\Application\Model\User;
 use Exception;
 use oxField;
 use OxidEsales\Eshop\Core\Contract\AbstractUpdatableFields;
@@ -211,8 +211,8 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         // trying to login user
         try {
-            /** @var oxUser $oUser */
-            $oUser = oxNew('oxuser');
+            /** @var \OxidEsales\Eshop\Application\Model\User $oUser */
+            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             $oUser->login($sUser, $sPassword, $sCookie);
             $this->setLoginStatus(USER_LOGIN_SUCCESS);
         } catch (\OxidEsales\Eshop\Core\Exception\UserException $oEx) {
@@ -241,7 +241,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * user - sets error code according problem, and returns "user" to redirect
      * to user info screen.
      *
-     * @param oxuser $oUser user object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser user object
      *
      * @return string
      */
@@ -331,7 +331,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     public function logout()
     {
         $myConfig = $this->getConfig();
-        $oUser = oxNew('oxuser');
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
 
         if ($oUser->logout()) {
             $this->setLoginStatus(USER_LOGOUT);
@@ -441,8 +441,8 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $database = oxDb::getDb();
         $database->startTransaction();
         try {
-            /** @var oxUser $oUser */
-            $oUser = oxNew('oxuser');
+            /** @var \OxidEsales\Eshop\Application\Model\User $oUser */
+            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             $oUser->checkValues($sUser, $sPassword, $sPassword2, $aInvAdress, $aDelAdress);
 
             $iActState = $blActiveLogin ? 0 : 1;
@@ -530,7 +530,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         // send register eMail
         //TODO: move into user
         if ((int) oxRegistry::getConfig()->getRequestParameter('option') == 3) {
-            $oxEMail = oxNew('oxemail');
+            $oxEMail = oxNew(\OxidEsales\Eshop\Core\Email::class);
             if ($blActiveLogin) {
                 $oxEMail->sendRegisterConfirmEmail($oUser);
             } else {
@@ -552,9 +552,9 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     /**
      * If any additional configurations required right before user creation
      *
-     * @param oxUser $user
+     * @param \OxidEsales\Eshop\Application\Model\User $user
      *
-     * @return oxUser The user we gave in.
+     * @return \OxidEsales\Eshop\Application\Model\User The user we gave in.
      */
     protected function configureUserBeforeCreation($user)
     {

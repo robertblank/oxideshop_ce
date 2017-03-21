@@ -29,7 +29,7 @@ use oxArticleInputException;
 use oxArticleException;
 use oxField;
 use stdClass;
-use oxPrice;
+use \OxidEsales\Eshop\Core\Price;
 use oxDb;
 use oxVoucherException;
 
@@ -71,7 +71,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Total basket price
      *
-     * @var oxPrice
+     * @var \OxidEsales\Eshop\Core\Price
      */
     protected $_oPrice = null;
 
@@ -141,14 +141,14 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Sum price of articles applicable to discounts
      *
-     * @var oxPrice
+     * @var \OxidEsales\Eshop\Core\Price
      */
     protected $_oDiscountProductsPriceList = null;
 
     /**
      * Sum price of articles not applicable to discounts
      *
-     * @var oxPrice
+     * @var \OxidEsales\Eshop\Core\Price
      */
     protected $_oNotDiscountedProductsPriceList = null;
 
@@ -183,21 +183,21 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Ref. to session user
      *
-     * @var oxuser
+     * @var \OxidEsales\Eshop\Application\Model\User
      */
     protected $_oUser = null;
 
     /**
      * Total basket products discount oxprice object (does not include voucher discount)
      *
-     * @var oxprice
+     * @var \OxidEsales\Eshop\Core\Price
      */
     protected $_oTotalDiscount = null;
 
     /**
      * Basket voucher discount oxprice object
      *
-     * @var oxprice
+     * @var \OxidEsales\Eshop\Core\Price
      */
     protected $_oVoucherDiscount = null;
 
@@ -479,7 +479,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
             }
         } else {
             //inserting new
-            $oBasketItem = oxNew('oxBasketItem');
+            $oBasketItem = oxNew(\OxidEsales\Eshop\Application\Model\BasketItem::class);
             try {
                 $oBasketItem->setStockCheckStatus($this->getStockCheckMode());
                 $oBasketItem->init($sProductID, $dAmount, $aSel, $aPersParam, $blBundle);
@@ -527,7 +527,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Adds order article to basket (method normally used while recalculating order)
      *
-     * @param oxorderarticle $oOrderArticle order article to store in basket
+     * @param \OxidEsales\Eshop\Application\Model\OrderArticle $oOrderArticle order article to store in basket
      *
      * @return oxbasketitem
      */
@@ -539,7 +539,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
             $sItemId = $oOrderArticle->getId();
 
             //inserting new
-            $this->_aBasketContents[$sItemId] = oxNew('oxBasketItem');
+            $this->_aBasketContents[$sItemId] = oxNew(\OxidEsales\Eshop\Application\Model\BasketItem::class);
             $this->_aBasketContents[$sItemId]->initFromOrderArticle($oOrderArticle);
             $this->_aBasketContents[$sItemId]->setWrapping($oOrderArticle->oxorderarticles__oxwrapid->value);
             $this->_aBasketContents[$sItemId]->setBundle($oOrderArticle->isBundle());
@@ -801,9 +801,9 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         $this->_dItemsCnt = 0; // count of item units
         $this->_dWeight = 0; // basket weight
 
-        $this->_oProductsPriceList = oxNew('oxpricelist');
-        $this->_oDiscountProductsPriceList = oxNew('oxpricelist');
-        $this->_oNotDiscountedProductsPriceList = oxNew('oxpricelist');
+        $this->_oProductsPriceList = oxNew(\OxidEsales\Eshop\Core\PriceList::class);
+        $this->_oDiscountProductsPriceList = oxNew(\OxidEsales\Eshop\Core\PriceList::class);
+        $this->_oNotDiscountedProductsPriceList = oxNew(\OxidEsales\Eshop\Core\PriceList::class);
 
         $oDiscountList = oxRegistry::get("oxDiscountList");
 
@@ -844,7 +844,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
                 }
             } elseif ($oBasketItem->isBundle()) {
                 // if bundles price is set to zero
-                $oPrice = oxNew("oxprice");
+                $oPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
                 $oBasketItem->setPrice($oPrice);
             }
         }
@@ -896,7 +896,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Iterates through basket items and calculates its delivery costs
      *
-     * @return oxPrice
+     * @return \OxidEsales\Eshop\Core\Price
      */
     protected function _calcDeliveryCost()
     {
@@ -904,7 +904,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
             return $this->_oDeliveryPrice;
         }
         $myConfig = $this->getConfig();
-        $oDeliveryPrice = oxNew('oxprice');
+        $oDeliveryPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
 
         if ($this->getConfig()->getConfigParam('blDeliveryVatOnTop')) {
             $oDeliveryPrice->setNettoPriceMode();
@@ -948,7 +948,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Basket user getter
      *
-     * @return oxuser
+     * @return \OxidEsales\Eshop\Application\Model\User
      */
     public function getBasketUser()
     {
@@ -962,7 +962,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Basket user setter
      *
-     * @param oxuser $oUser Basket user
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser Basket user
      */
     public function setBasketUser($oUser)
     {
@@ -1022,7 +1022,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         // 1. add products price
         $dPrice = $this->_dBruttoSum;
 
-        $oTotalPrice = oxNew('oxPrice');
+        $oTotalPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
         $oTotalPrice->setBruttoPriceMode();
         $oTotalPrice->setPrice($dPrice);
 
@@ -1065,7 +1065,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     public function setVoucherDiscount($dDiscount)
     {
-        $this->_oVoucherDiscount = oxNew('oxPrice');
+        $this->_oVoucherDiscount = oxNew(\OxidEsales\Eshop\Core\Price::class);
         $this->_oVoucherDiscount->setBruttoPriceMode();
         $this->_oVoucherDiscount->add($dDiscount);
     }
@@ -1085,7 +1085,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
             if (count($this->_aVouchers)) {
                 $oLang = oxRegistry::getLang();
                 foreach ($this->_aVouchers as $sVoucherId => $oStdVoucher) {
-                    $oVoucher = oxNew('oxvoucher');
+                    $oVoucher = oxNew(\OxidEsales\Eshop\Application\Model\Voucher::class);
                     try { // checking
                         $oVoucher->load($oStdVoucher->sVoucherId);
 
@@ -1180,11 +1180,11 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns prepared oxPrice object depending on view mode
      *
-     * @return oxPrice
+     * @return \OxidEsales\Eshop\Core\Price
      */
     protected function _getPriceObject()
     {
-        $oPrice = oxNew('oxPrice');
+        $oPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
 
         if ($this->isCalculationModeNetto()) {
             $oPrice->setNettoPriceMode();
@@ -1210,7 +1210,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         if ($this->_oTotalDiscount !== null && isset($this->_isForOrderRecalculation) && $this->_isForOrderRecalculation) {
             //if total discount was set on order recalculation
             $oTotalPrice = $this->getTotalDiscount();
-            $oDiscount = oxNew('oxDiscount');
+            $oDiscount = oxNew(\OxidEsales\Eshop\Application\Model\Discount::class);
             $oDiscount->oxdiscount__oxaddsum = new oxField($oTotalPrice->getPrice());
             $oDiscount->oxdiscount__oxaddsumtype = new oxField('abs');
             $aDiscounts[] = $oDiscount;
@@ -1290,7 +1290,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     protected function _calcBasketWrapping()
     {
-        $oWrappingPrices = oxNew('oxPriceList');
+        $oWrappingPrices = oxNew(\OxidEsales\Eshop\Core\PriceList::class);
 
         /** @var \oxBasketItem $oBasketItem */
         foreach ($this->_aBasketContents as $oBasketItem) {
@@ -1303,7 +1303,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         }
 
         if ($oWrappingPrices->getCount()) {
-            $oWrappingCost = oxNew('oxPrice');
+            $oWrappingCost = oxNew(\OxidEsales\Eshop\Core\Price::class);
             $oWrappingCost = $oWrappingPrices->calculateToPrice();
         }
 
@@ -1320,7 +1320,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     protected function _calcBasketGiftCard()
     {
-        $oGiftCardPrice = oxNew('oxPrice');
+        $oGiftCardPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
 
         if ($this->getConfig()->getConfigParam('blWrappingVatOnTop')) {
             $oGiftCardPrice->setNettoPriceMode();
@@ -1352,11 +1352,11 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     protected function _calcPaymentCost()
     {
         // resetting values
-        $oPaymentPrice = oxNew('oxPrice');
+        $oPaymentPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
 
         // payment
         if (($this->_sPaymentId = $this->getPaymentId())) {
-            $oPayment = oxNew('oxPayment');
+            $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
             $oPayment->load($this->_sPaymentId);
 
             $oPayment->calculate($this);
@@ -1571,7 +1571,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
 
         try { // trying to load voucher and apply it
 
-            $oVoucher = oxNew('oxvoucher');
+            $oVoucher = oxNew(\OxidEsales\Eshop\Application\Model\Voucher::class);
 
             if (!$this->_blSkipVouchersAvailabilityChecking) {
                 $oVoucher->getVoucherByNr($sVoucherId, $this->_aVouchers, true);
@@ -1601,7 +1601,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     {
         // removing if it exists
         if (isset($this->_aVouchers[$sVoucherId])) {
-            $oVoucher = oxNew('oxVoucher');
+            $oVoucher = oxNew(\OxidEsales\Eshop\Application\Model\Voucher::class);
             $oVoucher->load($sVoucherId);
 
             $oVoucher->unMarkAsReserved();
@@ -1741,7 +1741,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
             if ($sCountryId = $myConfig->getGlobalParameter('delcountryid')) {
                 $sDeliveryCountry = $sCountryId;
             } elseif ($sAddressId = oxRegistry::getSession()->getVariable('deladrid')) {
-                $oDeliveryAddress = oxNew('oxAddress');
+                $oDeliveryAddress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
                 if ($oDeliveryAddress->load($sAddressId)) {
                     $sDeliveryCountry = $oDeliveryAddress->oxaddress__oxcountryid->value;
                 }
@@ -1906,7 +1906,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     public function getProductsPrice()
     {
         if (is_null($this->_oProductsPriceList)) {
-            $this->_oProductsPriceList = oxNew('oxPriceList');
+            $this->_oProductsPriceList = oxNew(\OxidEsales\Eshop\Core\PriceList::class);
         }
 
         return $this->_oProductsPriceList;
@@ -1915,12 +1915,12 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns basket price object
      *
-     * @return oxPrice
+     * @return \OxidEsales\Eshop\Core\Price
      */
     public function getPrice()
     {
         if (is_null($this->_oPrice)) {
-            $this->setPrice(oxNew('oxPrice'));
+            $this->setPrice(oxNew(\OxidEsales\Eshop\Core\Price::class));
         }
 
         return $this->_oPrice;
@@ -1929,7 +1929,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Set basket total sum price object
      *
-     * @param oxPrice $oPrice Price object
+     * @param \OxidEsales\Eshop\Core\Price $oPrice Price object
      */
     public function setPrice($oPrice)
     {
@@ -2109,7 +2109,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     {
         $oCard = null;
         if ($sCardId = $this->getCardId()) {
-            $oCard = oxNew('oxWrapping');
+            $oCard = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class);
             $oCard->load($sCardId);
             $oCard->setWrappingVat($this->getAdditionalServicesVatPercent());
         }
@@ -2120,7 +2120,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns total basket discount oxPrice object
      *
-     * @return oxPrice
+     * @return \OxidEsales\Eshop\Core\Price
      */
     public function getTotalDiscount()
     {
@@ -2144,7 +2144,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns basket voucher discount oxPrice object
      *
-     * @return oxPrice
+     * @return \OxidEsales\Eshop\Core\Price
      */
     public function getVoucherDiscount()
     {
@@ -2212,7 +2212,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Formatted Products net price getter
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return string
      */
@@ -2224,7 +2224,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Formatted Products price getter
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return string
      */
@@ -2236,7 +2236,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns VAT of delivery costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return double
      */
@@ -2248,7 +2248,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted VAT of delivery costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return string | bool
      */
@@ -2267,7 +2267,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted netto price of delivery costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return string
      */
@@ -2289,7 +2289,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns VAT of payment costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return double
      */
@@ -2301,7 +2301,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted VAT of payment costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return string
      */
@@ -2320,7 +2320,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted netto price of payment costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return string
      */
@@ -2340,7 +2340,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns payment costs brutto value
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return double | bool
      */
@@ -2355,7 +2355,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns payment costs
      *
-     * @return oxPrice
+     * @return \OxidEsales\Eshop\Core\Price
      */
     public function getPaymentCost()
     {
@@ -2365,7 +2365,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns if exists formatted payment costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return string | bool
      */
@@ -2396,7 +2396,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted voucher discount
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return string | bool
      */
@@ -2415,7 +2415,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns VAT of wrapping costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return double
      */
@@ -2428,7 +2428,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns VAT of gift card costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return double
      */
@@ -2440,7 +2440,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted VAT of wrapping costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return string | bool
      */
@@ -2461,7 +2461,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted netto price of wrapping costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return string
      */
@@ -2482,7 +2482,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns if exists formatted wrapping costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return string | bool
      */
@@ -2510,7 +2510,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted VAT of gift card costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return string | bool
      */
@@ -2531,7 +2531,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted netto price of gift card costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return string
      */
@@ -2552,7 +2552,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns if exists formatted gift card costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return string | bool
      */
@@ -2570,7 +2570,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Gets gift card cost.
      *
-     * @return oxPrice
+     * @return \OxidEsales\Eshop\Core\Price
      */
     public function getGiftCardCost()
     {
@@ -2580,7 +2580,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted basket total price
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return string
      */
@@ -2592,7 +2592,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns if exists formatted delivery costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return string | bool
      */
@@ -2610,7 +2610,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns if exists delivery costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return string | bool
      */
@@ -2626,7 +2626,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns delivery costs
      *
-     * @return oxPrice
+     * @return \OxidEsales\Eshop\Core\Price
      */
     public function getDeliveryCost()
     {
@@ -2640,7 +2640,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     public function setTotalDiscount($dDiscount)
     {
-        $this->_oTotalDiscount = oxNew('oxPrice');
+        $this->_oTotalDiscount = oxNew(\OxidEsales\Eshop\Core\Price::class);
         $this->_oTotalDiscount->setBruttoPriceMode();
         $this->_oTotalDiscount->add($dDiscount);
     }
@@ -2805,7 +2805,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
 
             // product main category
             if (!$oCat) {
-                $oProduct = oxNew("oxArticle");
+                $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                 if ($oProduct->load($sProductId)) {
                     $oCat = $oProduct->getCategory();
                 }
@@ -2893,7 +2893,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns pricelist object of not discounted products
      *
-     * @return oxprice in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @return \OxidEsales\Eshop\Core\Price in v4.8/5.1 on 2013-10-14; for formatting use \OxidEsales\Eshop\Core\Price smarty plugin
      */
     public function getNotDiscountProductsPrice()
     {

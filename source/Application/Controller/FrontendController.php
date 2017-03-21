@@ -23,22 +23,22 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxActionList;
 use oxAddress;
-use oxArticle;
-use oxCategory;
-use oxCategoryList;
-use oxContent;
+use \OxidEsales\Eshop\Application\Model\Article;
+use \OxidEsales\Eshop\Application\Model\Category;
+use \OxidEsales\Eshop\Application\Model\CategoryList;
+use \OxidEsales\Eshop\Application\Model\Content;
 use oxDb;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
 use OxidEsales\Eshop\Core\Str;
-use oxManufacturer;
-use oxManufacturerList;
+use \OxidEsales\Eshop\Application\Model\Manufacturer;
+use \OxidEsales\Eshop\Application\Model\ManufacturerList;
 use oxPrice;
 use oxRecommList;
 use oxRegistry;
-use oxShop;
-use oxVendor;
-use oxViewConfig;
+use \OxidEsales\Eshop\Application\Model\Shop;
+use \OxidEsales\Eshop\Application\Model\Vendor;
+use \OxidEsales\Eshop\Core\ViewConfig;
 use stdClass;
 
 // view indexing state for search engines:
@@ -105,21 +105,21 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Active articles category object.
      *
-     * @var oxCategory
+     * @var \OxidEsales\Eshop\Application\Model\Category
      */
     protected $_oActCategory = null;
 
     /**
      * Active Manufacturer object.
      *
-     * @var oxManufacturer
+     * @var \OxidEsales\Eshop\Application\Model\Manufacturer
      */
     protected $_oActManufacturer = null;
 
     /**
      * Active vendor object.
      *
-     * @var oxVendor
+     * @var \OxidEsales\Eshop\Application\Model\Vendor
      */
     protected $_oActVendor = null;
 
@@ -290,7 +290,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     protected $_sContentId = null;
 
-    /** @return oxContent Default content. */
+    /** @return \OxidEsales\Eshop\Application\Model\Content Default content. */
     protected $_oContent = null;
 
     /** @var string View id. */
@@ -326,7 +326,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     protected $_aUserComponentNames = array();
 
-    /** @var oxArticle Current view product object. */
+    /** @var \OxidEsales\Eshop\Application\Model\Article Current view product object. */
     protected $_oProduct = null;
 
     /** @var int Number of current list page. */
@@ -335,10 +335,10 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /** @var array A list of articles. */
     protected $_aArticleList = null;
 
-    /** @var oxManufacturerList Manufacturer list object. */
+    /** @var \OxidEsales\Eshop\Application\Model\ManufacturerList Manufacturer list object. */
     protected $_oManufacturerTree = null;
 
-    /** @var oxCategoryList Category tree object. */
+    /** @var \OxidEsales\Eshop\Application\Model\CategoryList Category tree object. */
     protected $_oCategoryTree = null;
 
     /** @var array Top 5 article list. */
@@ -359,7 +359,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /** @return array Url parameters which block redirection. */
     protected $_aBlockRedirectParams = array('fnc', 'stoken', 'force_sid', 'force_admin_sid');
 
-    /** @var oxVendor Root vendor object. */
+    /** @var \OxidEsales\Eshop\Application\Model\Vendor Root vendor object. */
     protected $_oRootVendor = null;
 
     /** @var string Vendor id. */
@@ -368,7 +368,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /** @var array Manufacturer list for search. */
     protected $_aManufacturerlist = null;
 
-    /** @var oxManufacturer Root manufacturer object. */
+    /** @var \OxidEsales\Eshop\Application\Model\Manufacturer Root manufacturer object. */
     protected $_oRootManufacturer = null;
 
     /** @var string Manufacturer id. */
@@ -664,7 +664,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Active category setter
      *
-     * @param oxCategory $category active category
+     * @param \OxidEsales\Eshop\Application\Model\Category $category active category
      */
     public function setActiveCategory($category)
     {
@@ -674,7 +674,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Returns active category
      *
-     * @return oxCategory|null
+     * @return \OxidEsales\Eshop\Application\Model\Category|null
      */
     public function getActiveCategory()
     {
@@ -910,7 +910,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $sortOrder &&
             Registry::getUtils()->isValidAlpha($sortOrder) &&
             in_array(Str::getStr()->strtolower($sortOrder), $sortDirections) &&
-            in_array($sortBy, oxNew('oxArticle')->getFieldNames())
+            in_array($sortBy, oxNew(\OxidEsales\Eshop\Application\Model\Article::class)->getFieldNames())
         ) {
             return array('sortby' => $sortBy, 'sortdir' => $sortOrder);
         }
@@ -1032,7 +1032,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     protected function _getMetaFromContent($metaIdent)
     {
         if ($metaIdent) {
-            $content = oxNew('oxContent');
+            $content = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
             if ($content->loadByIdent($metaIdent) &&
                 $content->oxcontents__oxactive->value
             ) {
@@ -1798,7 +1798,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if ($this->_oActiveRecommList === null) {
             $this->_oActiveRecommList = false;
             if ($recommendationListId = $this->getConfig()->getRequestParameter('recommid')) {
-                $this->_oActiveRecommList = oxNew('oxrecommlist');
+                $this->_oActiveRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
                 $this->_oActiveRecommList->load($recommendationListId);
             }
         }
@@ -1887,9 +1887,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Sets and caches default parameters for shop object and returns it.
      *
-     * @param oxShop $shop current shop object
+     * @param \OxidEsales\Eshop\Application\Model\Shop $shop current shop object
      *
-     * @return oxViewConfig Current shop object
+     * @return \OxidEsales\Eshop\Core\ViewConfig Current shop object
      */
     public function addGlobalParams($shop = null)
     {
@@ -2103,7 +2103,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Returns current view product object (if it is loaded)
      *
-     * @return oxArticle
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     public function getViewProduct()
     {
@@ -2113,7 +2113,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Sets view product
      *
-     * @param oxArticle $product view product object
+     * @param \OxidEsales\Eshop\Application\Model\Article $product view product object
      */
     public function setViewProduct($product)
     {
@@ -2150,7 +2150,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * not set by component - will create vendor object and will try to
      * load by id passed by request
      *
-     * @return oxVendor
+     * @return \OxidEsales\Eshop\Application\Model\Vendor
      */
     public function getActVendor()
     {
@@ -2161,7 +2161,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $this->_oActVendor = false;
             $vendorId = $this->getConfig()->getRequestParameter('cnid');
             $vendorId = $vendorId ? str_replace('v_', '', $vendorId) : $vendorId;
-            $vendor = oxNew('oxVendor');
+            $vendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
             if ($vendor->load($vendorId)) {
                 $this->_oActVendor = $vendor;
             }
@@ -2175,7 +2175,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * not set by component - will create Manufacturer object and will try to
      * load by id passed by request
      *
-     * @return oxManufacturer
+     * @return \OxidEsales\Eshop\Application\Model\Manufacturer
      */
     public function getActManufacturer()
     {
@@ -2185,7 +2185,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if ($this->_oActManufacturer === null) {
             $this->_oActManufacturer = false;
             $manufacturerId = $this->getConfig()->getRequestParameter('mnid');
-            $manufacturer = oxNew('oxManufacturer');
+            $manufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
             if ($manufacturer->load($manufacturerId)) {
                 $this->_oActManufacturer = $manufacturer;
             }
@@ -2197,7 +2197,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Active vendor setter
      *
-     * @param oxVendor $vendor active vendor
+     * @param \OxidEsales\Eshop\Application\Model\Vendor $vendor active vendor
      */
     public function setActVendor($vendor)
     {
@@ -2207,7 +2207,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Active Manufacturer setter
      *
-     * @param oxManufacturer $manufacturer active Manufacturer
+     * @param \OxidEsales\Eshop\Application\Model\Manufacturer $manufacturer active Manufacturer
      */
     public function setActManufacturer($manufacturer)
     {
@@ -2233,7 +2233,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Returns category tree (if it is loaded)
      *
-     * @return oxCategoryList
+     * @return \OxidEsales\Eshop\Application\Model\CategoryList
      */
     public function getCategoryTree()
     {
@@ -2243,7 +2243,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Category list setter
      *
-     * @param oxCategoryList $categoryTree category tree
+     * @param \OxidEsales\Eshop\Application\Model\CategoryList $categoryTree category tree
      */
     public function setCategoryTree($categoryTree)
     {
@@ -2253,7 +2253,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Returns Manufacturer tree (if it is loaded0
      *
-     * @return oxManufacturerList
+     * @return \OxidEsales\Eshop\Application\Model\ManufacturerList
      */
     public function getManufacturerTree()
     {
@@ -2263,7 +2263,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Manufacturer tree setter
      *
-     * @param oxManufacturerList $manufacturerTree Manufacturer tree
+     * @param \OxidEsales\Eshop\Application\Model\ManufacturerList $manufacturerTree Manufacturer tree
      */
     public function setManufacturerTree($manufacturerTree)
     {
@@ -2419,7 +2419,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Sets root vendor
      *
-     * @param oxVendor $vendor vendor object
+     * @param \OxidEsales\Eshop\Application\Model\Vendor $vendor vendor object
      */
     public function setRootVendor($vendor)
     {
@@ -2429,7 +2429,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Template variable getter. Returns root vendor
      *
-     * @return oxVendor
+     * @return \OxidEsales\Eshop\Application\Model\Vendor
      */
     public function getRootVendor()
     {
@@ -2439,7 +2439,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Sets root Manufacturer
      *
-     * @param oxManufacturer $manufacturer manufacturer object
+     * @param \OxidEsales\Eshop\Application\Model\Manufacturer $manufacturer manufacturer object
      */
     public function setRootManufacturer($manufacturer)
     {
@@ -2449,7 +2449,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Template variable getter. Returns root Manufacturer
      *
-     * @return oxManufacturer
+     * @return \OxidEsales\Eshop\Application\Model\Manufacturer
      */
     public function getRootManufacturer()
     {
@@ -2515,12 +2515,12 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @param string $ident content identifier
      *
-     * @return oxContent
+     * @return \OxidEsales\Eshop\Application\Model\Content
      */
     public function getContentByIdent($ident)
     {
         if (!isset($this->_aContents[$ident])) {
-            $this->_aContents[$ident] = oxNew('oxContent');
+            $this->_aContents[$ident] = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
             $this->_aContents[$ident]->loadByIdent($ident);
         }
 
@@ -2619,7 +2619,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if (isset($this->_oPromoFinishedList)) {
             return $this->_oPromoFinishedList;
         }
-        $this->_oPromoFinishedList = oxNew('oxActionList');
+        $this->_oPromoFinishedList = oxNew(\OxidEsales\Eshop\Application\Model\ActionList::class);
         $this->_oPromoFinishedList->loadFinishedByCount(2);
 
         return $this->_oPromoFinishedList;
@@ -2635,7 +2635,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if (isset($this->_oPromoCurrentList)) {
             return $this->_oPromoCurrentList;
         }
-        $this->_oPromoCurrentList = oxNew('oxActionList');
+        $this->_oPromoCurrentList = oxNew(\OxidEsales\Eshop\Application\Model\ActionList::class);
         $this->_oPromoCurrentList->loadCurrent();
 
         return $this->_oPromoCurrentList;
@@ -2651,7 +2651,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if (isset($this->_oPromoFutureList)) {
             return $this->_oPromoFutureList;
         }
-        $this->_oPromoFutureList = oxNew('oxActionList');
+        $this->_oPromoFutureList = oxNew(\OxidEsales\Eshop\Application\Model\ActionList::class);
         $this->_oPromoFutureList->loadFutureByCount(2);
 
         return $this->_oPromoFutureList;
@@ -2668,7 +2668,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             return $this->_blShowPromotions;
         }
         $this->_blShowPromotions = false;
-        if (oxNew('oxActionList')->areAnyActivePromotions()) {
+        if (oxNew(\OxidEsales\Eshop\Application\Model\ActionList::class)->areAnyActivePromotions()) {
             $this->_blShowPromotions = (count($this->getPromoFinishedList()) + count($this->getPromoCurrentList()) +
                                         count($this->getPromoFutureList())) > 0;
         }
@@ -2900,10 +2900,10 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         $user = $this->getUser();
 
         if ($user === false) {
-            $user = oxNew('oxUser');
+            $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         }
 
-        $country = oxNew('oxCountry');
+        $country = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
         $country->load($user->getActiveCountry());
         $countryBillsNotVat = $country->oxcountry__oxvatstatus->value !== null && $country->oxcountry__oxvatstatus->value == 0;
 
@@ -2950,7 +2950,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $wishId = $this->getConfig()->getRequestParameter('wishid');
             $userId = ($wishId) ? $wishId : oxRegistry::getSession()->getVariable('wishid');
             if ($userId) {
-                $wishUser = oxNew('oxUser');
+                $wishUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
                 if ($wishUser->load($userId)) {
                     return $wishUser;
                 }

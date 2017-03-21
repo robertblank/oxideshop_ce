@@ -63,7 +63,7 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function reset()
     {
-        $oArticleFile = oxNew('oxFile');
+        $oArticleFile = oxNew(\OxidEsales\Eshop\Application\Model\File::class);
         $oArticleFile->load($this->oxorderfiles__oxfileid->value);
         if (file_exists($oArticleFile->getStoreLocation())) {
             $this->oxorderfiles__oxdownloadcount = new oxField(0);
@@ -136,7 +136,7 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getFileSize()
     {
-        $oFile = oxNew("oxfile");
+        $oFile = oxNew(\OxidEsales\Eshop\Application\Model\File::class);
         $oFile->load($this->oxorderfiles__oxfileid->value);
 
         return $oFile->getSize();

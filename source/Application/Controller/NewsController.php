@@ -81,7 +81,7 @@ class NewsController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
             $iPerPage = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
             $iPerPage = $iPerPage ? $iPerPage : 10;
 
-            $oActNews = oxNew('oxnewslist');
+            $oActNews = oxNew(\OxidEsales\Eshop\Application\Model\NewsList::class);
 
             if ($iCnt = $oActNews->getCount()) {
                 $this->_iCntPages = ceil($iCnt / $iPerPage);

@@ -40,7 +40,7 @@ class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * oxArticle object
      *
-     * @var oxArticle
+     * @var \OxidEsales\Eshop\Application\Model\Article
      */
     protected $_oArticle = null;
 
@@ -56,7 +56,7 @@ class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      *  Article getter
      *
-     * @return oxArticle $_oArticle
+     * @return \OxidEsales\Eshop\Application\Model\Article $_oArticle
      */
     public function getArticle()
     {
@@ -66,7 +66,7 @@ class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Article setter
      *
-     * @param oxArticle $oArticle Article
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle Article
      */
     public function setArticle($oArticle)
     {
@@ -76,7 +76,7 @@ class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Load category list data
      *
-     * @param oxArticle $article Article
+     * @param \OxidEsales\Eshop\Application\Model\Article $article Article
      */
     public function load($article)
     {

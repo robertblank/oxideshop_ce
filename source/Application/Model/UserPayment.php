@@ -86,7 +86,7 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
         //due to compatibility with templates
         if ($sName == 'oxpayments__oxdesc') {
             if ($this->_oPayment === null) {
-                $this->_oPayment = oxNew('oxpayment');
+                $this->_oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
                 $this->_oPayment->load($this->oxuserpayments__oxpaymentsid->value);
             }
 
@@ -224,7 +224,7 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Get user payment by payment id
      *
-     * @param oxUser $oUser        user object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser        user object
      * @param string $sPaymentType payment type
      *
      * @return bool

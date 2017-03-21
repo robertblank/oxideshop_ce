@@ -58,7 +58,7 @@ class ShopRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfig
      */
     public function getContentList()
     {
-        $oContentList = oxNew("oxcontentlist");
+        $oContentList = oxNew(\OxidEsales\Eshop\Application\Model\ContentList::class);
         $sTable = getViewName("oxcontents", $this->_iEditLang);
         $oContentList->selectString(
             "SELECT * FROM {$sTable} WHERE OXACTIVE = 1 AND OXTYPE = 0

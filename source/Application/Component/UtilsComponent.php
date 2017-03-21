@@ -185,7 +185,7 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $oParentView = $this->getParent();
 
         // add content for main menu
-        $oContentList = oxNew('oxcontentlist');
+        $oContentList = oxNew(\OxidEsales\Eshop\Application\Model\ContentList::class);
         $oContentList->loadMainMenulist();
         $oParentView->setMenueList($oContentList);
 

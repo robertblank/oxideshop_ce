@@ -106,7 +106,7 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
      * @param array  $parameters Parameters array
      * @param array  $viewsChain Array of views keys that should be initialized as well
      *
-     * @return oxView Current active view
+     * @return \OxidEsales\Eshop\Core\Controller\BaseController Current active view
      */
     protected function _initializeViewObject($class, $function, $parameters = null, $viewsChain = null)
     {

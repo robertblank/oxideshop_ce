@@ -343,7 +343,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getCompareItemsCnt()
     {
-        $compare = oxNew("Compare");
+        $compare = oxNew(\OxidEsales\Eshop\Application\Controller\CompareController::class);
 
         return $compare->getCompareItemsCnt();
     }

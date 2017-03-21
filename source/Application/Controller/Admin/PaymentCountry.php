@@ -52,7 +52,7 @@ class PaymentCountry extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oPayment = oxNew("oxpayment");
+            $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
             $oPayment->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oPayment->getAvailableInLangs();
@@ -77,7 +77,7 @@ class PaymentCountry extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         }
 
         if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-            $oPaymentCountryAjax = oxNew('payment_country_ajax');
+            $oPaymentCountryAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\PaymentCountryAjax::class);
             $this->_aViewData['oxajax'] = $oPaymentCountryAjax->getColumns();
 
             return "popups/payment_country.tpl";
@@ -95,7 +95,7 @@ class PaymentCountry extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $aChosenCntr = oxRegistry::getConfig()->getRequestParameter("allcountries");
         if (isset($sOxId) && $sOxId != "-1" && is_array($aChosenCntr)) {
             foreach ($aChosenCntr as $sChosenCntr) {
-                $oObject2Payment = oxNew('oxBase');
+                $oObject2Payment = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Payment->init('oxobject2payment');
                 $oObject2Payment->oxobject2payment__oxpaymentid = new oxField($sOxId);
                 $oObject2Payment->oxobject2payment__oxobjectid = new oxField($sChosenCntr);
@@ -114,7 +114,7 @@ class PaymentCountry extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $aChosenCntr = oxRegistry::getConfig()->getRequestParameter("countries");
         if (isset($sOxId) && $sOxId != "-1" && is_array($aChosenCntr)) {
             foreach ($aChosenCntr as $sChosenCntr) {
-                $oObject2Payment = oxNew('oxBase');
+                $oObject2Payment = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Payment->init('oxobject2payment');
                 $oObject2Payment->delete($sChosenCntr);
             }

@@ -23,7 +23,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use oxRegistry;
-use oxPrice;
+use \OxidEsales\Eshop\Core\Price;
 
 /**
  * Price calculation class. Responsible for simple price calculations. Basically contains Brutto, Netto prices and VAT values.
@@ -76,7 +76,7 @@ class Price
      *
      * @param double $dPrice given price
      *
-     * @return oxPrice
+     * @return \OxidEsales\Eshop\Core\Price
      */
     public function __construct($dPrice = null)
     {
@@ -265,7 +265,7 @@ class Price
     /**
      * Adds another oxPrice object and recalculates current method.
      *
-     * @param oxPrice $oPrice object
+     * @param \OxidEsales\Eshop\Core\Price $oPrice object
      */
     public function addPrice(\OxidEsales\Eshop\Core\Price $oPrice)
     {
@@ -330,7 +330,7 @@ class Price
      *   1 - when this price is larger than $oPrice.
      *  -1 - when this price is smaller than $oPrice.
      *
-     * @param oxPrice $oPrice price object
+     * @param \OxidEsales\Eshop\Core\Price $oPrice price object
      *
      * @return null
      */

@@ -54,12 +54,12 @@ class NewsletterSelection extends \OxidEsales\Eshop\Application\Controller\Admin
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oNewsletter = oxNew("oxnewsletter");
+            $oNewsletter = oxNew(\OxidEsales\Eshop\Application\Model\Newsletter::class);
             if ($oNewsletter->load($soxId)) {
                 $this->_aViewData["edit"] = $oNewsletter;
 
                 if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-                    $oNewsletterSelectionAjax = oxNew('newsletter_selection_ajax');
+                    $oNewsletterSelectionAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\NewsletterSelectionAjax::class);
                     $this->_aViewData['oxajax'] = $oNewsletterSelectionAjax->getColumns();
 
                     return "popups/newsletter_selection.tpl";
@@ -81,7 +81,7 @@ class NewsletterSelection extends \OxidEsales\Eshop\Application\Controller\Admin
             $this->_iUserCount = 0;
 
             // load object
-            $oNewsletter = oxNew("oxnewsletter");
+            $oNewsletter = oxNew(\OxidEsales\Eshop\Application\Model\Newsletter::class);
             if ($oNewsletter->load($this->getEditObjectId())) {
                 // get nr. of users in these groups
                 // we do not use lists here as we dont need this overhead right now
@@ -130,7 +130,7 @@ class NewsletterSelection extends \OxidEsales\Eshop\Application\Controller\Admin
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
         $aParams['oxnewsletter__oxshopid'] = $this->getConfig()->getShopId();
 
-        $oNewsletter = oxNew("oxNewsLetter");
+        $oNewsletter = oxNew(\OxidEsales\Eshop\Application\Model\Newsletter::class);
         if ($soxId != "-1") {
             $oNewsletter->load($soxId);
         } else {

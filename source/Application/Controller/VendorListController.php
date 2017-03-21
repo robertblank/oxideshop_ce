@@ -24,7 +24,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 use oxUBase;
-use oxVendorList;
+use \OxidEsales\Eshop\Application\Model\VendorList;
 
 /**
  * List of articles for a selected vendor.
@@ -155,7 +155,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
         $iNrOfCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
         $iNrOfCatArticles = $iNrOfCatArticles ? $iNrOfCatArticles : 1;
 
-        $oArtList = oxNew('oxArticleList');
+        $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $oArtList->setSqlLimit($iNrOfCatArticles * $this->_getRequestPageNr(), $iNrOfCatArticles);
         $oArtList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
 
@@ -450,13 +450,13 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
     /**
      * Returns vendor tree
      *
-     * @return oxVendorList
+     * @return \OxidEsales\Eshop\Application\Model\VendorList
      */
     public function getVendorTree()
     {
         if ($this->_getVendorId() && $this->_oVendorTree === null) {
-            /** @var oxVendorList $oVendorTree */
-            $oVendorTree = oxNew('oxVendorList');
+            /** @var \OxidEsales\Eshop\Application\Model\VendorList $oVendorTree */
+            $oVendorTree = oxNew(\OxidEsales\Eshop\Application\Model\VendorList::class);
             $oVendorTree->buildVendorTree(
                 'vendorlist',
                 $this->getActVendor()->getId(),
@@ -471,7 +471,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
     /**
      * Vendor tree setter
      *
-     * @param oxVendorList $oVendorTree vendor tree
+     * @param \OxidEsales\Eshop\Application\Model\VendorList $oVendorTree vendor tree
      */
     public function setVendorTree($oVendorTree)
     {

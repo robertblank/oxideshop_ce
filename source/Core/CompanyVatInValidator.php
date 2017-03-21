@@ -22,10 +22,10 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxCountry;
-use oxCompanyVatIn;
+use \OxidEsales\Eshop\Application\Model\Country;
+use \OxidEsales\Eshop\Application\Model\CompanyVatIn;
 use oxICountryAware;
-use oxCompanyVatInChecker;
+use \OxidEsales\Eshop\Core\CompanyVatInChecker;
 
 /**
  * Company VAT identification number validator. Executes added validators on given VATIN.
@@ -34,7 +34,7 @@ class CompanyVatInValidator
 {
 
     /**
-     * @var oxCountry
+     * @var \OxidEsales\Eshop\Application\Model\Country
      */
     private $_oCountry = null;
 
@@ -55,7 +55,7 @@ class CompanyVatInValidator
     /**
      * Country setter
      *
-     * @param oxCountry $country
+     * @param \OxidEsales\Eshop\Application\Model\Country $country
      */
     public function setCountry(\OxidEsales\Eshop\Application\Model\Country $country)
     {
@@ -65,7 +65,7 @@ class CompanyVatInValidator
     /**
      * Country getter
      *
-     * @return oxCountry
+     * @return \OxidEsales\Eshop\Application\Model\Country
      */
     public function getCountry()
     {
@@ -95,7 +95,7 @@ class CompanyVatInValidator
     /**
      * Constructor
      *
-     * @param oxCountry $country
+     * @param \OxidEsales\Eshop\Application\Model\Country $country
      */
     public function __construct(\OxidEsales\Eshop\Application\Model\Country $country)
     {
@@ -105,7 +105,7 @@ class CompanyVatInValidator
     /**
      * Adds validator
      *
-     * @param oxCompanyVatInChecker $validator
+     * @param \OxidEsales\Eshop\Core\CompanyVatInChecker $validator
      */
     public function addChecker(\OxidEsales\Eshop\Core\CompanyVatInChecker $validator)
     {
@@ -125,7 +125,7 @@ class CompanyVatInValidator
     /**
      * Validate company VAT identification number.
      *
-     * @param oxCompanyVatIn $companyVatNumber
+     * @param \OxidEsales\Eshop\Application\Model\CompanyVatIn $companyVatNumber
      *
      * @return bool
      */

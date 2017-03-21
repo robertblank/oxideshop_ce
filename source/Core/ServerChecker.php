@@ -23,7 +23,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use oxRegistry;
-use oxApplicationServer;
+use \OxidEsales\Eshop\Core\ApplicationServer;
 
 /**
  * Checks if server node is valid, information is not outdated.
@@ -59,7 +59,7 @@ class ServerChecker
     /**
      * Checks if server node is valid.
      *
-     * @param oxApplicationServer $oServer
+     * @param \OxidEsales\Eshop\Core\ApplicationServer $oServer
      *
      * @return bool
      */
@@ -71,7 +71,7 @@ class ServerChecker
     /**
      * Check is server information out dated.
      *
-     * @param oxApplicationServer $oServer
+     * @param \OxidEsales\Eshop\Core\ApplicationServer $oServer
      *
      * @return bool
      */

@@ -233,7 +233,7 @@ class FileChecker
      */
     public function init()
     {
-        $this->_oCurlHandler = oxNew("oxCurl");
+        $this->_oCurlHandler = oxNew(\OxidEsales\Eshop\Core\Curl::class);
 
         if (!$this->checkSystemRequirements()) {
             $this->_blError = true;

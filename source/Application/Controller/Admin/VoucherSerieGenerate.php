@@ -103,7 +103,7 @@ class VoucherSerieGenerate extends \OxidEsales\Eshop\Application\Controller\Admi
             $blRandomNr = ( bool ) oxRegistry::getSession()->getVariable("randomVoucherNr");
             $sVoucherNr = $blRandomNr ? oxRegistry::getUtilsObject()->generateUID() : oxRegistry::getSession()->getVariable("voucherNr");
 
-            $oNewVoucher = oxNew("oxvoucher");
+            $oNewVoucher = oxNew(\OxidEsales\Eshop\Application\Model\Voucher::class);
             $oNewVoucher->oxvouchers__oxvoucherserieid = new oxField($oVoucherSerie->getId());
             $oNewVoucher->oxvouchers__oxvouchernr = new oxField($sVoucherNr);
             $oNewVoucher->save();

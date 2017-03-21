@@ -1149,7 +1149,7 @@ class SystemRequirements
      */
     protected function fetchBlockRecords()
     {
-        $activeThemeId = oxNew('oxTheme')->getActiveThemeId();
+        $activeThemeId = oxNew(\OxidEsales\Eshop\Core\Theme::class)->getActiveThemeId();
         $config = $this->getConfig();
         $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
 

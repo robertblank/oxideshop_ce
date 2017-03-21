@@ -124,7 +124,7 @@ class ActionList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Returns part of user group filter query
      *
-     * @param oxUser $oUser user object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser user object
      *
      * @return string
      */

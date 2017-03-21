@@ -108,7 +108,7 @@ class NewsletterSelectionAjax extends \OxidEsales\Eshop\Application\Controller\A
         }
         if ($soxId && $soxId != "-1" && is_array($aAddGroups)) {
             foreach ($aAddGroups as $sAddgroup) {
-                $oNewGroup = oxNew("oxobject2group");
+                $oNewGroup = oxNew(\OxidEsales\Eshop\Application\Model\Object2Group::class);
                 $oNewGroup->oxobject2group__oxobjectid = new oxField($soxId);
                 $oNewGroup->oxobject2group__oxgroupsid = new oxField($sAddgroup);
                 $oNewGroup->save();

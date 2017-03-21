@@ -65,7 +65,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
 
         // preventing deleting main language with base id = 0
         if ($iBaseId == 0) {
-            $oEx = oxNew("oxExceptionToDisplay");
+            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             $oEx->setMessage('LANGUAGE_DELETINGMAINLANG_WARNING');
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
 
@@ -183,7 +183,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
             oxDb::getDb()->startTransaction();
 
             try {
-                $oDbMeta = oxNew("oxDbMetaDataHandler");
+                $oDbMeta = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
                 $oDbMeta->resetLanguage($iLangId);
 
                 oxDb::getDb()->commitTransaction();
@@ -192,7 +192,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
                 oxDb::getDb()->rollbackTransaction();
 
                 //show warning
-                $oEx = oxNew("oxExceptionToDisplay");
+                $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage('LANGUAGE_ERROR_RESETING_MULTILANG_FIELDS');
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
             }

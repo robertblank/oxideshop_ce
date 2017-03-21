@@ -25,7 +25,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use Exception;
 use oxConnectionException;
 use oxDb;
-use oxException;
+use \OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
@@ -372,7 +372,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     {
         // TODO: refactor shop bootstrap and parse url params as soon as possible
         if (isSearchEngineUrl()) {
-            oxNew('oxSeoDecoder')->processSeoCall();
+            oxNew(\OxidEsales\Eshop\Core\SeoDecoder::class)->processSeoCall();
         }
     }
 
@@ -433,7 +433,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $this->_loadVarsFromFile();
 
             //application initialization
-            $this->_oStart = oxNew('oxStart');
+            $this->_oStart = oxNew(\OxidEsales\Eshop\Application\Controller\OxidStartController::class);
             $this->_oStart->appInit();
         } catch (\OxidEsales\Eshop\Core\Exception\DatabaseConnectionException $oEx) {
             $this->_handleDbConnectionException($oEx);
@@ -1975,7 +1975,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
             return $this->_oActShop;
         }
 
-        $this->_oActShop = oxNew('oxShop');
+        $this->_oActShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         $this->_oActShop->load($this->getShopId());
 
         return $this->_oActShop;
@@ -1992,7 +1992,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $actView = end($this->_aActiveViews);
         }
         if (!isset($actView) || $actView == null) {
-            $actView = oxNew('oxubase');
+            $actView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
             $this->_aActiveViews[] = $actView;
         }
 
@@ -2215,7 +2215,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Shows exception message if debug mode is enabled, redirects otherwise.
      *
-     * @param oxException $ex message to show on exit
+     * @param \OxidEsales\Eshop\Core\Exception\StandardException $ex message to show on exit
      *
      */
     protected function _handleDbConnectionException($ex)
@@ -2245,7 +2245,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Redirect to start page and display the error
      *
-     * @param oxException $ex message to show on exit
+     * @param \OxidEsales\Eshop\Core\Exception\StandardException $ex message to show on exit
      */
     protected function _handleCookieException($ex)
     {

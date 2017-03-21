@@ -48,7 +48,7 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         parent::render();
 
         // malladmin stuff
-        $oAuthUser = oxNew('oxuser');
+        $oAuthUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oAuthUser->loadAdminUser();
         $blisMallAdmin = $oAuthUser->oxuser__oxrights->value == "malladmin";
 
@@ -74,7 +74,7 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oUser = oxNew("oxuser");
+            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             $oUser->load($soxId);
             $this->_aViewData["edit"] = $oUser;
 
@@ -91,7 +91,7 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         }
 
         // passing country list
-        $oCountryList = oxNew("oxCountryList");
+        $oCountryList = oxNew(\OxidEsales\Eshop\Application\Model\CountryList::class);
         $oCountryList->loadActiveCountries($oLang->getObjectTplLanguage());
 
         $this->_aViewData["countrylist"] = $oCountryList;
@@ -106,7 +106,7 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
             $this->_aViewData['readonly'] = true;
         }
         if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-            $oUserMainAjax = oxNew('user_main_ajax');
+            $oUserMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\UserMainAjax::class);
             $this->_aViewData['oxajax'] = $oUserMainAjax->getColumns();
 
             return "popups/user_main.tpl";
@@ -134,7 +134,7 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
                 $aParams['oxuser__oxactive'] = 0;
             }
 
-            $oUser = oxNew("oxuser");
+            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             if ($soxId != "-1") {
                 $oUser->load($soxId);
             } else {
@@ -189,9 +189,9 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
     /**
      * Additional actions on user creation.
      *
-     * @param oxUser $user
+     * @param \OxidEsales\Eshop\Application\Model\User $user
      *
-     * @return oxUser
+     * @return \OxidEsales\Eshop\Application\Model\User
      */
     protected function onUserCreation($user)
     {

@@ -48,7 +48,7 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oAction = oxNew("oxActions");
+            $oAction = oxNew(\OxidEsales\Eshop\Application\Model\Actions::class);
             $oAction->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oAction->getAvailableInLangs();
@@ -78,7 +78,7 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             // generating category tree for select list
             $this->_createCategoryTree("artcattree", $soxId);
 
-            $oActionsMainAjax = oxNew('actions_main_ajax');
+            $oActionsMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMainAjax::class);
             $this->_aViewData['oxajax'] = $oActionsMainAjax->getColumns();
 
             return "popups/actions_main.tpl";
@@ -140,7 +140,7 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $soxId = $this->getEditObjectId();
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        $oPromotion = oxNew("oxActions");
+        $oPromotion = oxNew(\OxidEsales\Eshop\Application\Model\Actions::class);
         if ($soxId != "-1") {
             $oPromotion->load($soxId);
         } else {

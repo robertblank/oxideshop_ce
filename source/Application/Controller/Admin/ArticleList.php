@@ -127,7 +127,7 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
     {
         $aSkipFields = array("oxblfixedprice", "oxvarselect", "oxamitemid",
                             "oxamtaskid", "oxpixiexport", "oxpixiexported");
-        $oArticle = oxNew("oxArticle");
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
         return array_diff($oArticle->getFieldNames(), $aSkipFields);
     }
@@ -143,7 +143,7 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
     public function getCategoryList($sType, $sValue)
     {
         /** @var oxCategoryList $oCatTree parent category tree */
-        $oCatTree = oxNew("oxCategoryList");
+        $oCatTree = oxNew(\OxidEsales\Eshop\Application\Model\CategoryList::class);
         $oCatTree->loadList();
         if ($sType === 'cat') {
             foreach ($oCatTree as $oCategory) {
@@ -167,7 +167,7 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      */
     public function getManufacturerList($sType, $sValue)
     {
-        $oMnfTree = oxNew("oxManufacturerList");
+        $oMnfTree = oxNew(\OxidEsales\Eshop\Application\Model\ManufacturerList::class);
         $oMnfTree->loadManufacturerList();
         if ($sType === 'mnf') {
             foreach ($oMnfTree as $oManufacturer) {
@@ -191,7 +191,7 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      */
     public function getVendorList($sType, $sValue)
     {
-        $oVndTree = oxNew("oxVendorList");
+        $oVndTree = oxNew(\OxidEsales\Eshop\Application\Model\VendorList::class);
         $oVndTree->loadVendorList();
         if ($sType === 'vnd') {
             foreach ($oVndTree as $oVendor) {
@@ -273,7 +273,7 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
     public function deleteEntry()
     {
         $sOxId = $this->getEditObjectId();
-        $oArticle = oxNew("oxArticle");
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         if ($sOxId && $oArticle->load($sOxId)) {
             parent::deleteEntry();
         }

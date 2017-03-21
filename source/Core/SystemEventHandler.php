@@ -29,7 +29,7 @@ use oxOnlineServerEmailBuilder;
 use oxSimpleXml;
 use oxOnlineLicenseCheckCaller;
 use oxOnlineModuleVersionNotifierCaller;
-use oxOnlineModuleVersionNotifier;
+use \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier;
 use oxModuleList;
 use oxUtilsDate;
 use oxServersManager;
@@ -47,7 +47,7 @@ class SystemEventHandler
 {
 
     /**
-     * @Var oxOnlineModuleVersionNotifier
+     * @Var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier
      */
     private $_oOnlineModuleVersionNotifier = null;
 
@@ -59,7 +59,7 @@ class SystemEventHandler
     /**
      * OLC dependency setter
      *
-     * @param oxOnlineLicenseCheck $oOnlineLicenseCheck
+     * @param \OxidEsales\Eshop\Core\OnlineLicenseCheck $oOnlineLicenseCheck
      */
     public function setOnlineLicenseCheck(OnlineLicenseCheck $oOnlineLicenseCheck)
     {
@@ -69,30 +69,30 @@ class SystemEventHandler
     /**
      * OLC dependency getter
      *
-     * @return oxOnlineLicenseCheck
+     * @return \OxidEsales\Eshop\Core\OnlineLicenseCheck
      */
     public function getOnlineLicenseCheck()
     {
         if (!$this->_oOnlineLicenseCheck) {
             /** @var oxCurl $oCurl */
-            $oCurl = oxNew('oxCurl');
+            $oCurl = oxNew(\OxidEsales\Eshop\Core\Curl::class);
 
             /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
-            $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
+            $oEmailBuilder = oxNew(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class);
 
             /** @var oxSimpleXml $oSimpleXml */
-            $oSimpleXml = oxNew('oxSimpleXml');
+            $oSimpleXml = oxNew(\OxidEsales\Eshop\Core\SimpleXml::class);
 
             /** @var oxOnlineLicenseCheckCaller $oLicenseCaller */
             $oLicenseCaller = oxNew('oxOnlineLicenseCheckCaller', $oCurl, $oEmailBuilder, $oSimpleXml);
 
             /** @var oxUserCounter $oUserCounter */
-            $oUserCounter = oxNew('oxUserCounter');
+            $oUserCounter = oxNew(\OxidEsales\Eshop\Core\UserCounter::class);
 
             /** @var oxServersManager $oServerManager */
-            $oServerManager = oxNew('oxServersManager');
+            $oServerManager = oxNew(\OxidEsales\Eshop\Core\ServersManager::class);
 
-            /** @var oxOnlineLicenseCheck $oOLC */
+            /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheck $oOLC */
             $oOLC = oxNew("oxOnlineLicenseCheck", $oLicenseCaller);
             $oOLC->setServersManager($oServerManager);
             $oOLC->setUserCounter($oUserCounter);
@@ -106,7 +106,7 @@ class SystemEventHandler
     /**
      * oxOnlineModuleVersionNotifier dependency setter
      *
-     * @param oxOnlineModuleVersionNotifier $oOnlineModuleVersionNotifier
+     * @param \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier $oOnlineModuleVersionNotifier
      */
     public function setOnlineModuleVersionNotifier(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifier $oOnlineModuleVersionNotifier)
     {
@@ -116,28 +116,28 @@ class SystemEventHandler
     /**
      * oxOnlineModuleVersionNotifier dependency getter
      *
-     * @return oxOnlineModuleVersionNotifier
+     * @return \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier
      */
     public function getOnlineModuleVersionNotifier()
     {
         if (!$this->_oOnlineModuleVersionNotifier) {
             /** @var oxCurl $oCurl */
-            $oCurl = oxNew('oxCurl');
+            $oCurl = oxNew(\OxidEsales\Eshop\Core\Curl::class);
 
             /** @var  oxOnlineServerEmailBuilder $oMailBuilder */
-            $oMailBuilder = oxNew('oxOnlineServerEmailBuilder');
+            $oMailBuilder = oxNew(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class);
 
             /** @var oxSimpleXml $oSimpleXml */
-            $oSimpleXml = oxNew('oxSimpleXml');
+            $oSimpleXml = oxNew(\OxidEsales\Eshop\Core\SimpleXml::class);
 
             /** @var oxOnlineModuleVersionNotifierCaller $oOnlineModuleVersionNotifierCaller */
             $oOnlineModuleVersionNotifierCaller = oxNew("oxOnlineModuleVersionNotifierCaller", $oCurl, $oMailBuilder, $oSimpleXml);
 
             /** @var oxModuleList $oModuleList */
-            $oModuleList = oxNew('oxModuleList');
+            $oModuleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
             $oModuleList->getModulesFromDir(oxRegistry::getConfig()->getModulesDir());
 
-            /** @var oxOnlineModuleVersionNotifier $oOnlineModuleVersionNotifier */
+            /** @var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier $oOnlineModuleVersionNotifier */
             $oOnlineModuleVersionNotifier = oxNew("oxOnlineModuleVersionNotifier", $oOnlineModuleVersionNotifierCaller, $oModuleList);
 
             $this->setOnlineModuleVersionNotifier($oOnlineModuleVersionNotifier);
@@ -292,13 +292,13 @@ class SystemEventHandler
     protected function _getServerProcessor()
     {
         /** @var oxServersManager $oServerNodesManager */
-        $oServerNodesManager = oxNew('oxServersManager');
+        $oServerNodesManager = oxNew(\OxidEsales\Eshop\Core\ServersManager::class);
 
         /** @var oxServerChecker $oServerNodeChecker */
-        $oServerNodeChecker = oxNew('oxServerChecker');
+        $oServerNodeChecker = oxNew(\OxidEsales\Eshop\Core\ServerChecker::class);
 
         /** @var oxUtilsServer $oUtilsServer */
-        $oUtilsServer = oxNew('oxUtilsServer');
+        $oUtilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
 
         /** @var oxUtilsDate $oUtilsDate */
         $oUtilsDate = oxRegistry::get('oxUtilsDate');

@@ -285,7 +285,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
         if ($this->_oArtList === null) {
             if (($aItems = $this->getCompareItems())) {
                 // counts how many pages
-                $oList = oxNew('oxArticleList');
+                $oList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $oList->loadIds(array_keys($aItems));
 
                 // cut page articles
@@ -317,7 +317,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
                         $aProductIds[] = $oArticle->getParentId();
                     }
                 }
-                $oAttributeList = oxNew('oxAttributeList');
+                $oAttributeList = oxNew(\OxidEsales\Eshop\Application\Model\AttributeList::class);
                 $this->_oAttributeList = $oAttributeList->loadAttributesByIds($aProductIds);
             }
         }

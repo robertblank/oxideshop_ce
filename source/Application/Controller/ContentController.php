@@ -287,7 +287,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
             $sLoadId = oxRegistry::getConfig()->getRequestParameter('oxloadid');
 
             $this->_sContentId = false;
-            $oContent = oxNew('oxContent');
+            $oContent = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
             $blRes = false;
 
             if ($sLoadId) {
@@ -457,7 +457,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getNotMappedToRDFaPayments()
     {
-        $oPayments = oxNew("oxPaymentList");
+        $oPayments = oxNew(\OxidEsales\Eshop\Application\Model\PaymentList::class);
         $oPayments->loadNonRDFaPaymentList();
 
         return $oPayments;
@@ -472,7 +472,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getNotMappedToRDFaDeliverySets()
     {
-        $oDelSets = oxNew("oxDeliverySetList");
+        $oDelSets = oxNew(\OxidEsales\Eshop\Application\Model\DeliverySetList::class);
         $oDelSets->loadNonRDFaDeliverySetList();
 
         return $oDelSets;
@@ -489,7 +489,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $oDeliveryChargeSpecs = $this->getDeliveryList();
         foreach ($oDeliveryChargeSpecs as $oDeliveryChargeSpec) {
             if ($oDeliveryChargeSpec->oxdelivery__oxaddsumtype->value == "abs") {
-                $oDelSets = oxNew("oxdeliverysetlist");
+                $oDelSets = oxNew(\OxidEsales\Eshop\Application\Model\DeliverySetList::class);
                 $oDelSets->loadRDFaDeliverySetList($oDeliveryChargeSpec->getId());
                 $oDeliveryChargeSpec->deliverysetmethods = $oDelSets;
                 $aDeliveryChargeSpecs[] = $oDeliveryChargeSpec;
@@ -507,7 +507,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getDeliveryList()
     {
         if ($this->_oDelList === null) {
-            $this->_oDelList = oxNew('oxDeliveryList');
+            $this->_oDelList = oxNew(\OxidEsales\Eshop\Application\Model\DeliveryList::class);
             $this->_oDelList->getList();
         }
 

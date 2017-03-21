@@ -85,7 +85,7 @@ class CategoryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
         $iLang = $oLang->getTplLanguage();
 
         // parent category tree
-        $oCatTree = oxNew("oxCategoryList");
+        $oCatTree = oxNew(\OxidEsales\Eshop\Application\Model\CategoryList::class);
         $oCatTree->loadList();
 
         // add Root as fake category

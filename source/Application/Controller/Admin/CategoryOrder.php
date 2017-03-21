@@ -42,7 +42,7 @@ class CategoryOrder extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     {
         parent::render();
 
-        $this->_aViewData['edit'] = $oCategory = oxNew('oxCategory');
+        $this->_aViewData['edit'] = $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
 
         // resetting
         oxRegistry::getSession()->setVariable('neworder_sess', null);
@@ -59,7 +59,7 @@ class CategoryOrder extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             }
         }
         if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-            $oCategoryOrderAjax = oxNew('category_order_ajax');
+            $oCategoryOrderAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\CategoryOrderAjax::class);
             $this->_aViewData['oxajax'] = $oCategoryOrderAjax->getColumns();
 
             return "popups/category_order.tpl";

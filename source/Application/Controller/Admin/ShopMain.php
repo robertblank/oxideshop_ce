@@ -24,7 +24,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
-use oxException;
+use \OxidEsales\Eshop\Core\Exception\StandardException;
 
 /**
  * Admin article main shop manager.
@@ -68,7 +68,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
 
         if (isset($shopId) && $shopId != self::NEW_SHOP_ID) {
             // load object
-            $shop = oxNew("oxshop");
+            $shop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
             $subjLang = oxRegistry::getConfig()->getRequestParameter("subjlang");
             if (!isset($subjLang)) {
                 $subjLang = $this->_iEditLang;
@@ -120,7 +120,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $subjLang = oxRegistry::getConfig()->getRequestParameter("subjlang");
         $shopLanguageId = ($subjLang && $subjLang > 0) ? $subjLang : 0;
 
-        $shop = oxNew("oxshop");
+        $shop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         if ($shopId != self::NEW_SHOP_ID) {
             $shop->loadInLang($shopLanguageId, $shopId);
         } else {
@@ -178,7 +178,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
     /**
      * Copies base shop config variables to current
      *
-     * @param oxshop $shop new shop object
+     * @param \OxidEsales\Eshop\Application\Model\Shop $shop new shop object
      */
     protected function _copyConfigVars($shop)
     {
@@ -233,7 +233,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
     /**
      * Check user rights and change userId if need.
      *
-     * @param oxUser $user
+     * @param \OxidEsales\Eshop\Application\Model\User $user
      * @param string $shopId
      * @param bool   $updateViewData If needs to update view data when shop Id changes.
      *
@@ -247,7 +247,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
     /**
      * Load Shop parent and set result to _aViewData.
      *
-     * @param oxShop $shop
+     * @param \OxidEsales\Eshop\Application\Model\Shop $shop
      */
     protected function checkParent($shop)
     {
@@ -270,7 +270,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
     /**
      * Check for exception type and set it to _aViewData.
      *
-     * @param oxException $exception
+     * @param \OxidEsales\Eshop\Core\Exception\StandardException $exception
      */
     protected function checkExceptionType($exception)
     {
@@ -280,7 +280,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
      * Check if Shop can be created.
      *
      * @param string $shopId
-     * @param oxShop $shop
+     * @param \OxidEsales\Eshop\Application\Model\Shop $shop
      *
      * @return bool
      */
@@ -292,8 +292,8 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
     /**
      * Update shop information in DB and oxConfig.
      *
-     * @param oxConfig $config
-     * @param oxShop   $shop
+     * @param \OxidEsales\Eshop\Core\Config $config
+     * @param \OxidEsales\Eshop\Application\Model\Shop   $shop
      * @param string   $shopId
      */
     protected function updateShopInformation($config, $shop, $shopId)

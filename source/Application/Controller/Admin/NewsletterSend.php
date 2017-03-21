@@ -57,7 +57,7 @@ class NewsletterSend extends \OxidEsales\Eshop\Application\Controller\Admin\News
 
         $iStart = (int) oxRegistry::getConfig()->getRequestParameter("iStart");
 
-        $oNewsletter = oxNew("oxNewsLetter");
+        $oNewsletter = oxNew(\OxidEsales\Eshop\Application\Model\Newsletter::class);
         $oNewsletter->load($this->getEditObjectId());
         $oNewsletterGroups = $oNewsletter->getGroups();
 
@@ -113,7 +113,7 @@ class NewsletterSend extends \OxidEsales\Eshop\Application\Controller\Admin\News
                     // #559
                     if (!isset($sUserId) || !$sUserId) {
                         // there is no user object so we fake one
-                        $oUser = oxNew("oxuser");
+                        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
                         $oUser->oxuser__oxusername = new oxField($oRs->fields['oxemail']);
                         $oUser->oxuser__oxsal = new oxField($oRs->fields['oxsal']);
                         $oUser->oxuser__oxfname = new oxField($oRs->fields['oxfname']);
@@ -125,7 +125,7 @@ class NewsletterSend extends \OxidEsales\Eshop\Application\Controller\Admin\News
 
                     if ($oNewsletter->send($iSendCnt)) {
                         // add user history
-                        $oRemark = oxNew("oxremark");
+                        $oRemark = oxNew(\OxidEsales\Eshop\Application\Model\Remark::class);
                         $oRemark->oxremark__oxtext = new oxField($oNewsletter->getPlainText());
                         $oRemark->oxremark__oxparentid = new oxField($sUserId);
                         $oRemark->oxremark__oxshopid = new oxField($sShopId);

@@ -152,7 +152,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         if (!$this->_oEditShop) {
             $this->_oEditShop = $this->getConfig()->getActiveShop();
             if ($this->_oEditShop->getId() != $sShopId) {
-                $oEditShop = oxNew('oxShop');
+                $oEditShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
                 if ($oEditShop->load($sShopId)) {
                     $this->_oEditShop = $oEditShop;
                 }
@@ -563,7 +563,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     public function getNavigation()
     {
         if (self::$_oNaviTree == null) {
-            self::$_oNaviTree = oxNew('oxnavigationtree');
+            self::$_oNaviTree = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class);
         }
 
         return self::$_oNaviTree;

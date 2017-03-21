@@ -46,7 +46,7 @@ class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oManufacturer = oxNew("oxmanufacturer");
+            $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
             $oManufacturer->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oManufacturer->getAvailableInLangs();
@@ -78,7 +78,7 @@ class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
         }
 
         if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-            $oManufacturerMainAjax = oxNew('manufacturer_main_ajax');
+            $oManufacturerMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ManufacturerMainAjax::class);
             $this->_aViewData['oxajax'] = $oManufacturerMainAjax->getColumns();
 
             return "popups/manufacturer_main.tpl";
@@ -103,7 +103,7 @@ class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
             $aParams['oxmanufacturers__oxactive'] = 0;
         }
 
-        $oManufacturer = oxNew("oxmanufacturer");
+        $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
 
         if ($soxId != "-1") {
             $oManufacturer->loadInLang($this->_iEditLang, $soxId);
@@ -141,7 +141,7 @@ class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
             $aParams['oxmanufacturers__oxactive'] = 0;
         }
 
-        $oManufacturer = oxNew("oxmanufacturer");
+        $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
 
         if ($soxId != "-1") {
             $oManufacturer->loadInLang($this->_iEditLang, $soxId);

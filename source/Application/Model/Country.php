@@ -88,7 +88,7 @@ class Country extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $sCountryId = $this->getId();
         $sViewName = getViewName("oxstates", $this->getLanguage());
         $sQ = "select * from {$sViewName} where `oxcountryid` = '$sCountryId' order by `oxtitle`  ";
-        $this->_aStates = oxNew("oxlist");
+        $this->_aStates = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $this->_aStates->init("oxstate");
         $this->_aStates->selectString($sQ);
 
