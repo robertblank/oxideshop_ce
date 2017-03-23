@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\EshopTestModule\Application\Model;
+namespace OxidEsales\EshopCommunityTests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Model;
 
 class TestModuleOnePrice extends TestModuleOnePrice_parent {
 
