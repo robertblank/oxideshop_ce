@@ -60,6 +60,20 @@ class FunctionalityInAdminTest extends AdminTestCase
     }
 
     /**
+     * Delays because some test might need time before automatic shut down.
+     * Fails a test with the given message.
+     *
+     * @param string $message
+     *
+     * @throws PHPUnit_Framework_AssertionFailedError
+     */
+    public static function fail($message = '')
+    {
+        sleep(3);
+        static::fail($message);
+    }
+
+    /**
      * Testing downloadable product in admin ant frontend
      *
      * @group adminFunctionality
@@ -801,7 +815,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->frame("basefrm");
         $this->frame("dynexport_main");
         $this->checkForErrors();
-        $this->click("save");
+        $this->clickAndWaitFrame("save", "dynexport_do");
         $this->frame("dynexport_do");
         $this->waitForElement("link=here");
         $this->click("link=here");
@@ -838,8 +852,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->frame("basefrm");
         $this->frame("dynexport_main");
         $this->checkForErrors();
-        $this->click("save");
-        $this->frame("dynexport_do");
+        $this->clickAndWaitFrame("save", "dynexport_do");
         $this->waitForElement("link=here");
         $this->click("link=here");
         $aWindows = $this->getAllWindowNames();
