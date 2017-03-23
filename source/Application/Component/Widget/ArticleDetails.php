@@ -931,7 +931,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
 
         $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
 
-        // if category parameter is not found, use category from product
+        // if category parameter is not found, //use \OxidEsales\Eshop\Application\Controller\Admin\CategoryController from product
         $sCatId = $this->getViewParameter("cnid");
 
         if (!$sCatId && $oProduct->getCategory()) {

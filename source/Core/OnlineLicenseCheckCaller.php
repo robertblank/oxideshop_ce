@@ -26,7 +26,7 @@ use \OxidEsales\Eshop\Core\OnlineLicenseCheckRequest;
 use oxRegistry;
 use oxUtilsXml;
 use oxException;
-use oxOnlineLicenseCheckResponse ;
+//use \OxidEsales\Eshop\Core\OnlineLicenseCheckResponse ;
 
 /**
  * Class makes call to given URL address and sends request parameter.

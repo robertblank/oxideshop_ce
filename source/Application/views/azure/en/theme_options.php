@@ -57,7 +57,7 @@ $aLang = array(
 'SHOP_THEME_bl_showGiftWrapping'                => 'Use gift wrapping',   //SHOP_CONFIG_SHOWGIFTWRAPPING
 'SHOP_THEME_bl_showVouchers'                    => 'Use vouchers',        //SHOP_CONFIG_SHOWVOUCHERS
 'SHOP_THEME_bl_showWishlist'                    => 'Use gift registry',   //SHOP_CONFIG_SHOWWISHLIST
-'SHOP_THEME_bl_showCompareList'                 => 'Use compare list',    //SHOP_CONFIG_SHOWCOMPARELIST
+'SHOP_THEME_bl_showCompareList'                 => '//Use \OxidEsales\Eshop\Application\Controller\CompareController list',    //SHOP_CONFIG_SHOWCOMPARELIST
 'SHOP_THEME_bl_showListmania'                   => 'Use listmania',       //SHOP_CONFIG_SHOWLISTMANIA
 'SHOP_THEME_blShowBirthdayFields'               => 'Display input fields for date of birth when users enter their personal data',//SHOP_CONFIG_SHOWBIRTHDAYFIELDS
 

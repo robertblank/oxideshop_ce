@@ -131,7 +131,7 @@
      * Cleaning a reservation basically means returning the reserved
      * stock to the articles.
      *
-     * Keeping this number too low may cause article stock being returned too
+     * Keeping this number too low may ca//use \OxidEsales\Eshop\Application\Controller\Admin\ArticleController stock being returned too
      * slowly, while too high value may have spiking impact on the performance.
      */
     $this->iBasketReservationCleanPerRequest = 200;

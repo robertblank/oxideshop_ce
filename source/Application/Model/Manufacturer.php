@@ -370,7 +370,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     }
 
     /**
-     * Returns false, becouse manufacturer has not thumbnail
+     * Returns false, beco//use \OxidEsales\Eshop\Application\Controller\Admin\ManufacturerController has not thumbnail
      *
      * @return false
      */

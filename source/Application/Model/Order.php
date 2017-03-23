@@ -836,7 +836,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         // add all the products we have on basket to the order
         foreach ($aArticleList as $oContent) {
             //$oContent->oProduct = $oContent->getArticle();
-            // #M773 Do not use article lazy loading on order save
+            // #M773 Do not //use \OxidEsales\Eshop\Application\Controller\Admin\ArticleController lazy loading on order save
             $oProduct = $oContent->getArticle(true, null, true);
 
             // copy only if object is oxarticle type
@@ -1058,7 +1058,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
                     $oUserBasket = $oUser->getBasket('wishlist');
                 } else {
                     $aWhere = array('oxuserbaskets.oxuserid' => $sWishId, 'oxuserbaskets.oxtitle' => 'wishlist');
-                    $oUserBasket = oxNew('oxuserbasket');
+                    $oUserBasket = oxNew(\OxidEsales\Eshop\Application\Model\UserBasket::class);
                     $oUserBasket->assignRecord($oUserBasket->buildSelectString($aWhere));
                 }
 
@@ -2060,7 +2060,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sDeliveryAddress = $oUser->getEncodedDeliveryAddress();
 
         /** @var oxRequiredAddressFields $oRequiredAddressFields */
-        $oRequiredAddressFields = oxNew('oxRequiredAddressFields');
+        $oRequiredAddressFields = oxNew(\OxidEsales\Eshop\Application\Model\RequiredAddressFields::class);
 
         /** @var oxRequiredFieldsValidator $oFieldsValidator */
         $oFieldsValidator = oxNew(\OxidEsales\Eshop\Application\Model\RequiredFieldsValidator::class);

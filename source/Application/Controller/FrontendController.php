@@ -2293,7 +2293,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
                 $config = $this->getConfig();
                 if ($config->getConfigParam('bl_perfLoadAktion')) {
                     // top 5 articles
-                    $artList = oxNew('oxArticleList');
+                    $artList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                     $artList->loadTop5Articles($count);
                     if ($artList->count()) {
                         $this->_aTop5ArticleList = $artList;
@@ -2317,7 +2317,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             if ($this->_aBargainArticleList === null) {
                 $this->_aBargainArticleList = array();
                 if ($this->getConfig()->getConfigParam('bl_perfLoadAktion')) {
-                    $articleList = oxNew('oxArticleList');
+                    $articleList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                     $articleList->loadActionArticles('OXBARGAIN');
                     if ($articleList->count()) {
                         $this->_aBargainArticleList = $articleList;
@@ -2333,7 +2333,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * Template variable getter. Returns if order price is lower than
      * minimum order price setup (config param "iMinOrderPrice")
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; use oxBasket method
+     * @deprecated in v4.8/5.1 on 2013-10-14; //use \OxidEsales\Eshop\Application\Model\Basket method
      *
      * @return bool
      */
@@ -2349,7 +2349,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Template variable getter. Returns formatted min order price value
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; use oxBasket method
+     * @deprecated in v4.8/5.1 on 2013-10-14; //use \OxidEsales\Eshop\Application\Model\Basket method
      *
      * @return string
      */

@@ -2369,7 +2369,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Originally we need to update the oxstock for possible article parent in case parent is not buyable
      * Plus you may want to extend this function to update some extended information.
      * Call oxArticle::onChange($sAction, $sOXID) with ID parameter when changes are executed over SQL.
-     * (or use module class instead of oxArticle if such exists)
+     * (or //use \OxidEsales\Eshop\Application\Controller\Admin\ModuleController class instead of oxArticle if such exists)
      *
      * @param string $action          Action constant
      * @param string $articleId       Article ID

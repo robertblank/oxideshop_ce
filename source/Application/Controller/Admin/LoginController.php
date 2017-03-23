@@ -183,7 +183,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     }
 
     /**
-     * Users are always authorized to use login page.
+     * Users are always authorized to //use \OxidEsales\Eshop\Application\Controller\Admin\LoginController page.
      * Rewrites authorization method.
      *
      * @return boolean

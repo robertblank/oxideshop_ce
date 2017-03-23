@@ -961,7 +961,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if (!isset($this->_aBaskets[$sName])) {
             /** @var oxUserBasket $oBasket */
-            $oBasket = oxNew('oxuserbasket');
+            $oBasket = oxNew(\OxidEsales\Eshop\Application\Model\UserBasket::class);
             $aWhere = array('oxuserbaskets.oxuserid' => $this->getId(), 'oxuserbaskets.oxtitle' => $sName);
 
             // creating if it does not exist

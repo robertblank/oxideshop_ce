@@ -329,7 +329,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Returns formatted netto price.
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting //use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return string
      */
@@ -343,7 +343,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Returns formatted brutto price.
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting //use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return string
      */
@@ -357,7 +357,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Returns formatted vat value.
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting //use \OxidEsales\Eshop\Core\Price smarty plugin
      *
      * @return string
      */

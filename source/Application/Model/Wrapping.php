@@ -174,7 +174,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Returns formatted wrapping price
      *
-     * @deprecated since v5.1 (2013-10-13); use oxPrice smarty plugin for formatting in templates
+     * @deprecated since v5.1 (2013-10-13); //use \OxidEsales\Eshop\Core\Price smarty plugin for formatting in templates
      *
      * @return string
      */

@@ -914,7 +914,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         // convert currency to default
         $price = $utils->currency2Float($parameters['price']);
 
-        $priceAlarm = oxNew("oxPriceAlarm");
+        $priceAlarm = oxNew(\OxidEsales\Eshop\Application\Model\PriceAlarm::class);
         $priceAlarm->oxpricealarm__oxuserid = new oxField(oxRegistry::getSession()->getVariable('usr'));
         $priceAlarm->oxpricealarm__oxemail = new oxField($parameters['email']);
         $priceAlarm->oxpricealarm__oxartid = new oxField($parameters['aid']);

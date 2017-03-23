@@ -51,7 +51,7 @@ class Field // extends \OxidEsales\Eshop\Core\Base
     /**
      * Constructor
      * Initial value assigment is coded here by not calling a function is for performance
-     * because oxField is created MANY times and even a function call matters
+     * beca//use \OxidEsales\Eshop\Core\Field is created MANY times and even a function call matters
      *
      * if T_RAW is used, then it fills $value, because this is the value, that does
      * not need to be escaped and is by definition equal to $rawValue (which is not set
