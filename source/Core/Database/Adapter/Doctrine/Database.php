@@ -624,7 +624,8 @@ class Database implements DatabaseInterface
      * @param int    $offset     Offset of the first row to return
      * @param array  $parameters The parameters array.
      *
-     * @throws DatabaseException The exception, that can occur while executing the sql statement.
+     * @throws DatabaseException         The exception, that can occur while executing the sql statement.
+     * @throws \InvalidArgumentException The exception for invalid $offset.
      *
      * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface The result of the given query.
      */
@@ -641,6 +642,10 @@ class Database implements DatabaseInterface
                 'Please fix your code as this error may trigger an exception in future versions of OXID eShop.',
                 E_USER_DEPRECATED
             );
+        }
+
+        if (0 > $offset) {
+            throw new \InvalidArgumentException('Argument $offset must not be smaller than zero.');
         }
 
         /**

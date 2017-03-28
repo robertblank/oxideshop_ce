@@ -179,6 +179,31 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
     }
 
     /**
+     * Test, that the method 'selectLimit' returns the expected rows from the database for different
+     * values of limit and offset.
+     *
+     * This test assumes that there are at least 3 entries in the table.
+     *
+     * @param string $assertionMessage A message explaining the assertion
+     * @param int    $rowCount         Maximum number of rows to return
+     * @param int    $offset           Offset of the first row to return
+     * @param array  $expectedResult   The expected result of the method call.
+     */
+    public function testSelectLimitForOffsetBelowZero()
+    {
+        $this->loadFixtureToTestTable();
+        $sql = 'SELECT OXID FROM ' . self::TABLE_NAME . ' WHERE OXID IN (' .
+               '"' . self::FIXTURE_OXID_1 . '",' .
+               '"' . self::FIXTURE_OXID_2 . '",' .
+               '"' . self::FIXTURE_OXID_3 . '"' .
+               ')';
+
+        $this->setExpectedException(\InvalidArgumentException::class, 'Argument $offset must not be smaller than zero.');
+
+        $this->database->selectLimit($sql, 1, -1);
+    }
+
+    /**
      * Test, that startTransaction() throws the expected Exception on failure.
      */
     public function testStartTransactionThrowsExpectedExceptionOnFailure()
