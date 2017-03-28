@@ -23,7 +23,7 @@ namespace Unit\Core;
 
 use \oxarticle;
 
-use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
+use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use OxidEsales\EshopCommunity\Core\UtilsObject;
 use \oxNewDummyUserModule_parent;
